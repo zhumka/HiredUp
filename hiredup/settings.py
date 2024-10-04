@@ -78,9 +78,9 @@ WSGI_APPLICATION = 'hiredup.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'HiredUp',
+        'NAME': 'zhakomstvo',
         'USER': 'postgres',
-        'PASSWORD': 'zinko0576',
+        'PASSWORD': 'Bekzat03',
         'HOST': 'localhost',
         'PORT': '5432',
     }
