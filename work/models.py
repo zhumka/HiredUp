@@ -1,23 +1,36 @@
+from idlelib.pyparse import trans
+
 from django.db import models
 from django.db import models
+from django.db.models import ForeignKey
 from django.utils import timezone
-from users.models import EmployerProfile
+
 
 #Класс категорий профессий
 class JobCategory(models.Model):
     name = models.CharField(max_length=100, unique=True, verbose_name='Название профессии')
-    description = models.TextField(blank=True, null=True, verbose_name='Описание професии')
     created_at = models.DateTimeField(default=timezone.now, verbose_name='Дата создания')
-    updated_at = models.DateTimeField(default=timezone.now, verbose_name='Дата обновления')
+
 
     def __str__(self):
         return self.name
 
+class Profession(models.Model):
+    name=models.CharField(max_length=70,unique=True)
+    category=models.ForeignKey(JobCategory,on_delete=models.CASCADE,related_name='Профессия')
+
 #Класс вакансий
-class Job(models.Model):
-    employer = models.ForeignKey(EmployerProfile, on_delete=models.CASCADE, verbose_name='Работодатель')
+class Vacansy(models.Model):
+    JOB_TYPES = [
+        ('full_time', 'Полный рабочий день'),
+        ('part_time', 'Неполный рабочий день'),
+        ('contract', 'Контракт'),
+        ('internship', 'Стажировка'),
+    ]
+    employer = models.ForeignKey('users.EmployerProfile', on_delete=models.CASCADE, verbose_name='Работодатель')
     title = models.CharField(max_length=255, verbose_name='Название вакансии')
-    description = models.TextField(blank=True, null=True, verbose_name='Описание вакансии')
+    requirements= models.TextField(blank=True, null=True, verbose_name='Описание вакансии')
+    responsobilities=models.TextField(blank=True,null=True)
     salary_min = models.IntegerField(blank=True, null=True, verbose_name='Минимальная зарплата')
     salary_max = models.IntegerField(blank=True, null=True, verbose_name='Максимальная зарплата')
     experience_required = models.IntegerField(blank=True, null=True, verbose_name='Требуемый опыт работы')
@@ -26,7 +39,8 @@ class Job(models.Model):
     location = models.CharField(max_length=255, blank=True, null=True, verbose_name='Место работы')
     is_active = models.BooleanField(default=True, verbose_name='Статус вакансии')
     created_at = models.DateTimeField(default=timezone.now, verbose_name='Дата создания')
-    updated_at = models.DateTimeField(default=timezone.now, verbose_name='Дата обновления')
+    job_type = models.CharField(max_length=20, choices=JOB_TYPES)
+
 
     def __str__(self):
         return self.title
