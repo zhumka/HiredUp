@@ -12,7 +12,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 import os
 from pathlib import Path
 
-from django.conf.global_settings import STATICFILES_DIRS, DEFAULT_FROM_EMAIL, LOGIN_REDIRECT_URL
+from django.conf.global_settings import STATICFILES_DIRS, DEFAULT_FROM_EMAIL, LOGIN_REDIRECT_URL, LOGIN_URL
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -28,6 +28,8 @@ SECRET_KEY = 'django-insecure-mcvcon_i-fclen&y2quw*alvw(%$4##l-opa!&ki)rh-rm+v5m
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
+
+LOGIN_URL = 'login'
 
 # Авторизация на стороне бекенда
 
@@ -51,7 +53,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'users',
     'work',
-    'social_django',
 ]
 
 MIDDLEWARE = [
@@ -91,7 +92,7 @@ WSGI_APPLICATION = 'hiredup.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'HiredUp',
+        'NAME': 'hiredup',
         'USER': 'postgres',
         'PASSWORD': 'Bekzat03',
         'HOST': 'localhost',
@@ -145,3 +146,4 @@ STATICFILES_DIRS=[
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
