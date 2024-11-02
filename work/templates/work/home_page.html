@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HiredUp</title>
+</head>
+<body>
+    <header>
+        <h1>Добро пожаловать на HiredUp</h1>
+    </header>
+
+    <main>
+        {% if user.is_authenticated %}
+            <h2>Вы вошли как {{ user.username }}!</h2>
+            <form action="{% url 'logout' %}" method="POST">
+                {% csrf_token %}
+                <button type="submit">Выйти</button>
+            </form>
+        {% else %}
+            <div class="actions">
+                <a href="{% url 'login' %}" class="button">Войти</a>
+                <a href="{% url 'register' %}" class="button">Зарегистрироваться</a>
+            </div>
+        {% endif %}
+    </main>
+
+    <footer>
+        <p>&copy; 2024 HiredUp</p>
+    </footer>
+</body>
+</html>

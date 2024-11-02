@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Регистрация</title>
+
+</head>
+<body>
+    <header>
+        <h1>Регистрация</h1>
+    </header>
+
+    <main>
+        <form method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+
+            <div>
+                <button type="submit" name="user_type" value="job_seeker">Я ищу работу</button>
+                <button type="submit" name="user_type" value="employer">Я ищу сотрудников</button>
+            </div>
+        </form>
+
+        <p>Уже есть аккаунт? <a href="{% url 'login' %}">Войдите</a></p>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 HiredUp</p>
+    </footer>
+</body>
+</html>
