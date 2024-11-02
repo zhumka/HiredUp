@@ -10,7 +10,7 @@ from django.contrib import messages
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from .forms import RegistrationForm
-from users.models import UserType  # Добавьте импорт модели UserType
+from users.models import UserType, JobSeekerProfile, EmployerProfile
 
 User = get_user_model()
 
@@ -32,6 +32,12 @@ def register_view(request):
             # Создаем запись в UserType для связи с пользователем
             UserType.objects.create(user=user, user_type=user_type)
 
+            # Создаем профиль в зависимости от типа пользователя
+            if user_type == 'job_seeker':
+                JobSeekerProfile.objects.create(user=user)  # Создание профиля соискателя
+            elif user_type == 'employer':
+                EmployerProfile.objects.create(user=user)  # Создание профиля работодателя
+
             # Отправка письма для активации
             current_site = get_current_site(request)
             email_subject = 'Подтверждение вашего аккаунта'
@@ -48,6 +54,7 @@ def register_view(request):
             return redirect('activation')
 
     return render(request, 'users/register.html', {'form': form})
+
 
 def activate(request, uidb64, token):
     try:
@@ -96,10 +103,23 @@ def activation_complete_view(request):
     return render(request, 'users/active.html')
 
 
-@login_required
-def profile_jobseeker_view(request):
-    return render(request, 'users/profile_jobseeker.html')
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, redirect
+
 
 @login_required
-def profile_employer_view(request):
-    return render(request, 'users/profile_employer.html')
+def profile_view(request):
+    user_type = request.user.user_type.user_type  # Получаем тип пользователя
+
+    if user_type == 'employer':
+        employer_profile = request.user.employer_profile
+        return render(request, 'users/profile_employer.html', {'employer_profile': employer_profile})
+
+    elif user_type == 'job_seeker':
+        job_seeker_profile = request.user.job_seeker_profile
+        return render(request, 'users/profile_jobseeker.html', {'job_seeker_profile': job_seeker_profile})
+
+    else:
+        messages.error(request, "Тип пользователя неопределен.")
+        return redirect('login')  # Перенаправление на страницу логина, если тип пользователя неопределен
+
