@@ -4,6 +4,7 @@ from django.db import models
 from django.utils import timezone
 from work.models import Profession
 
+
 # Класс для хранения типов пользователей
 class UserType(models.Model):
     USER_TYPES = [
@@ -66,7 +67,7 @@ class JobSeekerProfile(models.Model):
         blank=True,
         null=True
     )
-    profession = models.ForeignKey(Profession, on_delete=models.CASCADE, related_name='job_seekers')
+    profession = models.ForeignKey(Profession, on_delete=models.CASCADE, related_name='job_seekers', null=True, blank=True)
     created_at = models.DateTimeField('Дата создания', default=timezone.now)
     status = models.BooleanField(default=False)
 
