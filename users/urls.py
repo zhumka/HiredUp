@@ -6,8 +6,7 @@ from . import views
 from work import views as W
 urlpatterns=[
     path('register/', views.register_view, name='register'),
-    path('profile/job_seeker/', views.profile_jobseeker_view, name='jobseeker_profile'),
-    path('profile/employer/', views.profile_employer_view, name='employer_profile'),
+    path('profile/', views.profile_view, name='profile'),
     path('login/', views.login_view, name='login'),
     path('logout/', views.logout_view, name='logout'),
     path('activate/<uidb64>/<token>/', views.activate, name='activate_account'),
