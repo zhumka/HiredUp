@@ -45,7 +45,6 @@ def register_view(request):
             email = EmailMessage(email_subject, message, to=[to_email])
             email.send()
 
-            messages.success(request, "Проверьте вашу почту, чтобы активировать ваш аккаунт.")
             return redirect('activation')
 
     return render(request, 'users/register.html', {'form': form})
@@ -62,7 +61,6 @@ def activate(request, uidb64, token):
         user.save()
 
         login(request, user)
-        messages.success(request, "Ваш аккаунт был успешно активирован.")
         return redirect(reverse('login'))
     else:
         messages.error(request, 'Срок действия ссылки истек или произошла ошибка.')
@@ -77,7 +75,6 @@ def login_view(request):
 
         if user is not None:
             login(request, user)
-            messages.success(request, 'Вы успешно вошли в систему.')
             return redirect('home')  # Перенаправление на главную страницу или другую
         else:
             messages.error(request, 'Неверное имя пользователя или пароль.')
