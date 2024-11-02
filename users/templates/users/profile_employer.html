@@ -1,13 +1,29 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Профиль Работодателя</title>
+    <title>{% block title %}Профиль Работодателя{% endblock %}</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'users/css/profile_jobseeker.css' %}">
 </head>
 <body>
-    <h2>Добро пожаловать, {{ user.username }}!</h2>
-    <p>Это ваша страница профиля работодателя.</p>
-    <!-- Добавьте здесь контент, связанный с профилем работодателя -->
+    {% block content %}
+    <div class="profile-container">
+        <h1 class="profile-title">Профиль Работодателя: {{ employer_profile.user.username }}</h1>
+
+        <div class="profile-info">
+            <p><strong>Имя компании:</strong> {{ employer_profile.company_name }}</p>
+            <p><strong>Описание компании:</strong> {{ employer_profile.company_description }}</p>
+            <p><strong>Адрес компании:</strong> {{ employer_profile.company_address }}</p>
+            {% if employer_profile.company_logo %}
+                <img src="{{ employer_profile.company_logo.url }}" alt="Логотип компании" class="company-logo">
+            {% else %}
+                <p>Логотип отсутствует.</p>
+            {% endif %}
+            <p><strong>Дата создания профиля:</strong> {{ employer_profile.created_at|date:"d-m-Y" }}</p>
+        </div>
+    </div>
+    {% endblock %}
 </body>
 </html>
