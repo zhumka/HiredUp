@@ -25,7 +25,7 @@ class EmployerProfile(models.Model):
     company_name = models.CharField(verbose_name='Имя компании', max_length=255, blank=True, null=True)
     company_description = models.TextField(verbose_name='Описание компании', blank=True, null=True)
     company_address = models.CharField(verbose_name='Адрес компании', max_length=255, blank=True, null=True)
-    company_logo = models.ImageField(upload_to='work/static/users/img', default='Изображение отсутствует')
+    company_logo = models.ImageField(upload_to='users/static/users/img', default='Изображение отсутствует')
     created_at = models.DateTimeField('Дата создания', default=timezone.now)
 
     def __str__(self):
@@ -47,7 +47,7 @@ class Resume(models.Model):
     skills = models.TextField(blank=True, null=True, verbose_name='Навыки')
     experience = models.TextField(blank=True, null=True, verbose_name='Опыт работы (в годах)')
     languages = models.TextField(blank=True, null=True, verbose_name='Знание языков')
-    file = models.FileField(upload_to='static/users/resumes', null=True, blank=True)
+    file = models.FileField(upload_to='users/static/users/resumes', null=True, blank=True)
     created_at = models.DateTimeField('Дата создания', default=timezone.now)
 
     def __str__(self):
