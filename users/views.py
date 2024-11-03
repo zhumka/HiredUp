@@ -1,5 +1,5 @@
 from django.contrib.auth import get_user_model, login, authenticate,logout
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect, render, get_object_or_404
 from django.contrib.sites.shortcuts import get_current_site
 from django.template.loader import render_to_string
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
@@ -9,7 +9,7 @@ from django.core.mail import EmailMessage
 from django.contrib import messages
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
-from .forms import RegistrationForm
+from .forms import RegistrationForm, EmployerProfileForm, JobSeekerProfileForm, ResumeForm
 from users.models import UserType, JobSeekerProfile, EmployerProfile
 
 User = get_user_model()
@@ -123,3 +123,54 @@ def profile_view(request):
         messages.error(request, "Тип пользователя неопределен.")
         return redirect('login')  # Перенаправление на страницу логина, если тип пользователя неопределен
 
+@login_required
+def edit_profile_view(request):
+    user_type = request.user.user_type.user_type
+
+    if user_type == 'employer':
+        employer_profile = get_object_or_404(EmployerProfile, user = request.user)
+        if request.method == 'POST':
+            form = EmployerProfileForm(request.POST, request.FILES, instance=employer_profile)
+            if form.is_valid():
+                form.save()
+            return redirect('profile')
+        else:
+            form = EmployerProfileForm(instance=employer_profile)
+        return render(request, 'users/edit_profile_employer.html', {'form': form})
+    elif user_type == 'job_seeker':
+        job_seeker_profile = get_object_or_404(JobSeekerProfile, user = request.user)
+        if request.method == 'POST':
+            form = JobSeekerProfileForm(request.POST, instance=job_seeker_profile)
+            if form.is_valid():
+                form.save()
+                return redirect('profile')
+        else:
+            form = JobSeekerProfileForm(instance=job_seeker_profile)
+        return render(request, 'users/edit_profile_jobseeker.html', {'form': form})
+    else:
+        messages.error(request, "Тип пользователя неопределен.")
+        return redirect('login')
+
+
+@login_required
+def resume_view(request):
+    job_seeker_profile = request.user.job_seeker_profile
+
+    # Если у соискателя уже есть резюме, загружаем его
+    if job_seeker_profile.resume:
+        form = ResumeForm(instance=job_seeker_profile.resume)
+    else:
+        form = ResumeForm()
+
+    if request.method == 'POST':
+        form = ResumeForm(request.POST, instance=job_seeker_profile.resume)
+        if form.is_valid():
+            resume = form.save(commit=False)  # Не сохраняем сразу
+            resume.job_seeker_profile = job_seeker_profile  # Присваиваем резюме профилю соискателя
+            resume.save()  # Теперь сохраняем резюме в БД
+            job_seeker_profile.resume = resume  # Обновляем поле resume у профиля соискателя
+            job_seeker_profile.save()  # Сохраняем профиль соискателя
+            messages.success(request, "Резюме успешно обновлено.")
+            return redirect('resume_view')  # Перенаправление на страницу резюме
+
+    return render(request, 'users/edit_resume.html', {'form': form})
