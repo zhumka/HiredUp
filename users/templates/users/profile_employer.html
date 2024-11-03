@@ -22,6 +22,7 @@
                 <p>Логотип отсутствует.</p>
             {% endif %}
             <p><strong>Дата создания профиля:</strong> {{ employer_profile.created_at|date:"d-m-Y" }}</p>
+            <a href="{% url 'edit_profile' %}">Редактировать профиль</a>
         </div>
     </div>
     {% endblock %}
