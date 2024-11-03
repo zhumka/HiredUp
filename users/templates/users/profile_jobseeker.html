@@ -17,11 +17,11 @@
         <div class="profile-info">
             <h2>Резюме</h2>
             {% if job_seeker_profile.resume %}
+                <p><strong>О соискателе:</strong> {{ job_seeker_profile.resume.summary }}</p>
                 <p><strong>Образование:</strong> {{ job_seeker_profile.resume.get_education_display }}</p>
                 <p><strong>Опыт работы:</strong> {{ job_seeker_profile.experience }} лет</p>
                 <p><strong>Навыки:</strong> {{ job_seeker_profile.resume.skills }}</p>
                 <p><strong>Знание языков:</strong> {{ job_seeker_profile.resume.languages }}</p>
-                <p><strong>Файл резюме:</strong> <a href="{{ job_seeker_profile.resume.file.url }}" class="resume-link">{{ job_seeker_profile.resume.file.name }}</a></p>
                 <p><strong>Дата создания резюме:</strong> {{ job_seeker_profile.resume.created_at|date:"d-m-Y" }}</p>
             {% else %}
                 <p>Резюме отсутствует.</p>
@@ -31,6 +31,8 @@
             <p>{{ job_seeker_profile.profession }}</p>
 
             <p><strong>Дата создания профиля:</strong> {{ job_seeker_profile.created_at|date:"d-m-Y" }}</p>
+            <a href="{% url 'edit_profile' %}">Редактировать профиль</a>
+            <a href="{% url 'resume_view' %}">Редактировать резюме</a>
         </div>
     </div>
 </body>
