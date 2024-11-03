@@ -12,5 +12,7 @@ urlpatterns=[
     path('activate/<uidb64>/<token>/', views.activate, name='activate_account'),
     path('activation',views.activation_view,name='activation'),
     path('activation/complete', views.activation_complete_view, name='activated'),
+    path('profile/edit/', views.edit_profile_view, name='edit_profile'),
+    path('resume/', views.resume_view, name='resume_view'),
 ]+static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
