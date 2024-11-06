@@ -151,6 +151,14 @@ def edit_profile_view(request):
         messages.error(request, "Тип пользователя неопределен.")
         return redirect('login')
 
+from django.http import JsonResponse
+from .models import Profession
+
+def load_professions(request):
+    category_id = request.GET.get('category_id')
+    professions = Profession.objects.filter(category_id=category_id).values('id', 'name')
+    return JsonResponse(list(professions), safe=False)
+
 
 @login_required
 def resume_view(request):
@@ -170,7 +178,6 @@ def resume_view(request):
             resume.save()  # Теперь сохраняем резюме в БД
             job_seeker_profile.resume = resume  # Обновляем поле resume у профиля соискателя
             job_seeker_profile.save()  # Сохраняем профиль соискателя
-            messages.success(request, "Резюме успешно обновлено.")
-            return redirect('resume_view')  # Перенаправление на страницу резюме
+            return redirect('profile')  # Перенаправление на страницу резюме
 
     return render(request, 'users/edit_resume.html', {'form': form})
