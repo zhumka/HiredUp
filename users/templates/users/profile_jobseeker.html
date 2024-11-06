@@ -1,7 +1,4 @@
 {% load static %}
-
-{% block title %}Hiredup{% endblock %}
-
 {% block content %}
 <!DOCTYPE html>
 <html lang="ru">
@@ -9,8 +6,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="{% static 'users/css/profile_jobseeker.css' %}">
+
 </head>
 <body>
+
+    <nav>
+        <a href="{% url 'home' %}">Главная</a>
+        {% if user.is_authenticated %}
+            <form action="{% url 'logout' %}" method="POST" style="display: inline;">
+                {% csrf_token %}
+                <button type="submit" style="background: none; border: none; color: white; cursor: pointer;">Выйти</button>
+            </form>
+        {% else %}
+            <a href="{% url 'login' %}">Войти</a>
+            <a href="{% url 'register' %}">Зарегистрироваться</a>
+        {% endif %}
+    </nav>
+
     <div class="profile-container">
         <h1 class="profile-title">Профиль Соискателя: {{ job_seeker_profile.user.username }}</h1>
 
@@ -29,6 +41,15 @@
 
             <h2>Профессия</h2>
             <p>{{ job_seeker_profile.profession }}</p>
+
+            <h2>Статус</h2>
+            <p><strong>Статус:</strong>
+                {% if job_seeker_profile.status %}
+                    Ищу работу
+                {% else %}
+                    Не ищу работу
+                {% endif %}
+            </p> <!-- Отображаем статус -->
 
             <p><strong>Дата создания профиля:</strong> {{ job_seeker_profile.created_at|date:"d-m-Y" }}</p>
             <a href="{% url 'edit_profile' %}">Редактировать профиль</a>
