@@ -1,32 +1,80 @@
 <!DOCTYPE html>
+{% load static %}
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{% static 'work/css/home_page.css' %}">
     <title>HiredUp</title>
+
+    <style>
+        /* Пример простых стилей для навбара */
+        nav {
+            background-color: #333;
+            padding: 1em;
+        }
+        nav a {
+            color: white;
+            margin: 0 1em;
+            text-decoration: none;
+        }
+        nav a:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
 <body>
+    <!-- Навбар -->
+    <nav>
+        <a href="{% url 'home' %}">Главная</a>
+        {% if user.is_authenticated %}
+            <a href="{% url 'profile' %}">Профиль</a>
+            <form action="{% url 'logout' %}" method="POST" style="display: inline;">
+                {% csrf_token %}
+                <button type="submit" style="background: none; border: none; color: white; cursor: pointer;">Выйти</button>
+            </form>
+        {% else %}
+            <a href="{% url 'login' %}">Войти</a>
+            <a href="{% url 'register' %}">Зарегистрироваться</a>
+        {% endif %}
+    </nav>
+
     <header>
         <h1>Добро пожаловать на HiredUp</h1>
     </header>
-
     <main>
         {% if user.is_authenticated %}
             <h2>Вы вошли как {{ user.username }}!</h2>
-            <form action="{% url 'logout' %}" method="POST">
-                {% csrf_token %}
-                <button type="submit">Выйти</button>
-            </form>
-        {% else %}
-            <div class="actions">
-                <a href="{% url 'login' %}" class="button">Войти</a>
-                <a href="{% url 'register' %}" class="button">Зарегистрироваться</a>
-            </div>
         {% endif %}
     </main>
 
+    <!-- Приветствие и описание -->
+    <section class="intro">
+        <h1>Добро пожаловать на сайт для поиска работы!</h1>
+        <p>Здесь вы можете найти подходящие вакансии, создать резюме и найти работу вашей мечты.</p>
+    </section>
+
+    <!-- Рекомендуемые вакансии -->
+    <section class="recommended">
+        <h2>Рекомендуемые вакансии</h2>
+        <div class="vacancy-list">
+            {% for vacancy in recommended_vacancies %}
+                <div class="vacancy">
+                    <h3>{{ vacancy.title }}</h3>
+                    <p><strong>Категория:</strong> {{ vacancy.category.name }}</p>
+                    <p><strong>Зарплата:</strong> от {{ vacancy.salary_min }} до {{ vacancy.salary_max }} руб.</p>
+<!--                    <a href="{% url 'vacancy_detail' vacancy.id %}">Подробнее</a>-->
+                </div>
+            {% endfor %}
+        </div>
+    </section>
+
+    <!-- Подвал -->
     <footer>
-        <p>&copy; 2024 HiredUp</p>
+        <p>&copy; 2024 Все права защищены</p>
     </footer>
+
+
+
 </body>
 </html>
