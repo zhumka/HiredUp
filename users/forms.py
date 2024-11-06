@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 
 from users.models import EmployerProfile, JobSeekerProfile, Resume
+from work.models import JobCategory
 
 User=get_user_model()
 
@@ -26,12 +27,20 @@ class EmployerProfileForm(forms.ModelForm):
         model = EmployerProfile
         fields = ['company_name', 'company_description', 'company_address', 'company_logo']
 
+from django import forms
+from .models import JobSeekerProfile
+
 class JobSeekerProfileForm(forms.ModelForm):
+    category = forms.ModelChoiceField(queryset=JobCategory.objects.all(), required=False, label="Категория")
     class Meta:
         model = JobSeekerProfile
-        fields = ['status', 'experience', 'profession']
+        fields = ['category' ,'status', 'experience', 'profession']
+        widgets = {
+            'status': forms.RadioSelect(choices=[(True, 'Ищу работу'), (False, 'Не ищу работу')]),
+        }
+
 
 class ResumeForm(forms.ModelForm):
     class Meta:
         model = Resume
-        fields = ['education', 'summary', 'skills', 'experience', 'languages']
+        fields = ['education', 'summary', 'skills', 'languages']
