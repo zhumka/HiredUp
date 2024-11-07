@@ -6,7 +6,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="{% static 'users/css/profile_jobseeker.css' %}">
-
 </head>
 <body>
 
@@ -27,11 +26,22 @@
         <h1 class="profile-title">Профиль Соискателя: {{ job_seeker_profile.user.username }}</h1>
 
         <div class="profile-info">
+            <h2>Основная информация</h2>
+            <p><strong>Имя пользователя:</strong> {{ job_seeker_profile.user.username }}</p>
+            <p><strong>Имя:</strong> {{ job_seeker_profile.user.first_name }}</p>
+            <p><strong>Фамилия:</strong> {{ job_seeker_profile.user.last_name }}</p>
+            <p><strong>Email-адрес:</strong> {{ job_seeker_profile.user.email }}</p>
+
+            <p>
+            <strong>Опыт работы:</strong>
+            {{ experience_display }}
+            </p>
+
+
             <h2>Резюме</h2>
             {% if job_seeker_profile.resume %}
                 <p><strong>О соискателе:</strong> {{ job_seeker_profile.resume.summary }}</p>
                 <p><strong>Образование:</strong> {{ job_seeker_profile.resume.get_education_display }}</p>
-                <p><strong>Опыт работы:</strong> {{ job_seeker_profile.experience }} лет</p>
                 <p><strong>Навыки:</strong> {{ job_seeker_profile.resume.skills }}</p>
                 <p><strong>Знание языков:</strong> {{ job_seeker_profile.resume.languages }}</p>
                 <p><strong>Дата создания резюме:</strong> {{ job_seeker_profile.resume.created_at|date:"d-m-Y" }}</p>
@@ -49,7 +59,7 @@
                 {% else %}
                     Не ищу работу
                 {% endif %}
-            </p> <!-- Отображаем статус -->
+            </p>
 
             <p><strong>Дата создания профиля:</strong> {{ job_seeker_profile.created_at|date:"d-m-Y" }}</p>
             <a href="{% url 'edit_profile' %}">Редактировать профиль</a>
