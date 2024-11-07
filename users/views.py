@@ -14,6 +14,7 @@ from users.models import UserType, JobSeekerProfile, EmployerProfile
 
 User = get_user_model()
 
+#Вьюшка регистрации
 def register_view(request):
     form = RegistrationForm()
     if request.method == "POST":
@@ -56,6 +57,7 @@ def register_view(request):
     return render(request, 'users/register.html', {'form': form})
 
 
+#Вьюшка активации аккаунта
 def activate(request, uidb64, token):
     try:
         uid = force_str(urlsafe_base64_decode(uidb64))
@@ -73,7 +75,7 @@ def activate(request, uidb64, token):
         messages.error(request, 'Срок действия ссылки истек или произошла ошибка.')
         return redirect('activation_complete')
 
-
+#Вьюшка логина
 def login_view(request):
     if request.method == 'POST':
         username = request.POST.get('username')  # Используем get вместо прямого доступа
@@ -96,9 +98,10 @@ def logout_view(request):
     messages.success(request, 'Вы вышли из системы.')
     return redirect('home')  # Перенаправление на страницу логина
 
+#?
 def activation_view(request):
     return render(request, 'users/activation_complete.html')
-
+#?
 def activation_complete_view(request):
     return render(request, 'users/active.html')
 
@@ -107,6 +110,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 
 
+#Вьюшка профилей
 @login_required
 def profile_view(request):
     user_type = request.user.user_type.user_type  # Получаем тип пользователя
@@ -117,49 +121,69 @@ def profile_view(request):
 
     elif user_type == 'job_seeker':
         job_seeker_profile = request.user.job_seeker_profile
-        return render(request, 'users/profile_jobseeker.html', {'job_seeker_profile': job_seeker_profile})
+
+        # Обработка правильности вывода опыта работы (год/года/лет).
+        experience = job_seeker_profile.experience
+        if experience == 1:
+            experience_display = f"{experience} год"
+        elif 2 <= experience % 10 <= 4 and not (11 <= experience % 100 <= 14):
+            experience_display = f"{experience} года"
+        else:
+            experience_display = f"{experience} лет"
+
+        return render(request, 'users/profile_jobseeker.html', {
+            'job_seeker_profile': job_seeker_profile,
+            'experience_display': experience_display
+        })
 
     else:
         messages.error(request, "Тип пользователя неопределен.")
-        return redirect('login')  # Перенаправление на страницу логина, если тип пользователя неопределен
+        return redirect('login')
 
+
+#Вьюшка страницы редактирования профилей.
 @login_required
 def edit_profile_view(request):
     user_type = request.user.user_type.user_type
 
     if user_type == 'employer':
-        employer_profile = get_object_or_404(EmployerProfile, user = request.user)
+        employer_profile = get_object_or_404(EmployerProfile, user=request.user)
         if request.method == 'POST':
             form = EmployerProfileForm(request.POST, request.FILES, instance=employer_profile)
             if form.is_valid():
                 form.save()
-            return redirect('profile')
+                return redirect('profile')
         else:
             form = EmployerProfileForm(instance=employer_profile)
         return render(request, 'users/edit_profile_employer.html', {'form': form})
+
     elif user_type == 'job_seeker':
-        job_seeker_profile = get_object_or_404(JobSeekerProfile, user = request.user)
+        job_seeker_profile = get_object_or_404(JobSeekerProfile, user=request.user)
         if request.method == 'POST':
-            form = JobSeekerProfileForm(request.POST, instance=job_seeker_profile)
+            form = JobSeekerProfileForm(request.POST, instance=job_seeker_profile, user=request.user)
             if form.is_valid():
                 form.save()
                 return redirect('profile')
         else:
-            form = JobSeekerProfileForm(instance=job_seeker_profile)
+            form = JobSeekerProfileForm(instance=job_seeker_profile, user=request.user)  # Добавлено user=request.user
         return render(request, 'users/edit_profile_jobseeker.html', {'form': form})
+
     else:
         messages.error(request, "Тип пользователя неопределен.")
         return redirect('login')
 
+
 from django.http import JsonResponse
 from .models import Profession
 
+#Эта вьюшка нужна для редактирования профиля соискателя, чтобы удобно было выбирать профессию
 def load_professions(request):
     category_id = request.GET.get('category_id')
     professions = Profession.objects.filter(category_id=category_id).values('id', 'name')
     return JsonResponse(list(professions), safe=False)
 
 
+#Вьюшка страницы редактирования резюме
 @login_required
 def resume_view(request):
     job_seeker_profile = request.user.job_seeker_profile
