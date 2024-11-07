@@ -1,22 +1,49 @@
 <!DOCTYPE html>
+{% load static %}
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Регистрация</title>
-
+    <link rel="stylesheet" type="text/css" href="{% static 'users/css/register.css' %}">
 </head>
 <body>
     <header>
         <h1>Регистрация</h1>
     </header>
 
-    <main>
-        <form method="POST">
+    <main class="main-container">
+        <form method="POST" class="registration-form">
             {% csrf_token %}
-            {{ form.as_p }}
 
-            <div>
+            <!-- Поля формы -->
+        <!-- ДЛЯ ТИМЫ: такой вид записей полей формы помогает делать для формы стили, если будеш что-то делать с ними, делай так -->
+            <div class="form-group">
+                <label for="id_username">Имя пользователя</label>
+                {{ form.username }}
+                <div class="error">{{ form.username.errors }}</div>
+            </div>
+
+            <div class="form-group">
+                <label for="id_email">Email</label>
+                {{ form.email }}
+                <div class="error">{{ form.email.errors }}</div>
+            </div>
+
+            <div class="form-group">
+                <label for="id_password1">Пароль</label>
+                {{ form.password1 }}
+                <div class="error">{{ form.password1.errors }}</div>
+            </div>
+
+            <div class="form-group">
+                <label for="id_password2">Подтверждение пароля</label>
+                {{ form.password2 }}
+                <div class="error">{{ form.password2.errors }}</div>
+            </div>
+
+            <!-- Кнопки для выбора типа пользователя -->
+            <div class="user-type-buttons">
                 <button type="submit" name="user_type" value="job_seeker">Я ищу работу</button>
                 <button type="submit" name="user_type" value="employer">Я ищу сотрудников</button>
             </div>
