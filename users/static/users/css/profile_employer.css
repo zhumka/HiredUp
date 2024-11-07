@@ -1,0 +1,123 @@
+/* Основные стили страницы */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+    color: #333;
+}
+
+/* Стили для навигации */
+nav {
+    background-color: #333;
+    padding: 15px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+nav a {
+    color: white;
+    margin: 0 15px;
+    text-decoration: none;
+    font-size: 16px;
+    transition: color 0.3s ease;
+}
+
+nav a:hover {
+    color: #ff9900;
+}
+
+nav form button {
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+/* Стили для контейнера профиля */
+.profile-container {
+    max-width: 960px;
+    margin: 30px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Заголовок профиля */
+.profile-title {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+/* Стили для информации о профиле */
+.profile-info p {
+    font-size: 18px;
+    line-height: 1.6;
+    margin: 10px 0;
+}
+
+.profile-info strong {
+    color: #333;
+}
+
+/* Логотип компании */
+.company-logo {
+    max-width: 150px;
+    margin-top: 20px;
+    border-radius: 8px;
+}
+
+/* Ссылки для редактирования профиля */
+.profile-info a {
+    display: inline-block;
+    margin-top: 20px;
+    color: #ff9900;
+    font-size: 18px;
+    text-decoration: none;
+    padding: 10px 20px;
+    background-color: #333;
+    color: white;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+.profile-info a:hover {
+    background-color: #ff9900;
+    color: #333;
+}
+
+/* Мобильная адаптация */
+@media (max-width: 768px) {
+    nav {
+        text-align: center;
+    }
+
+    nav a {
+        display: inline-block;
+        margin: 10px 0;
+    }
+
+    .profile-container {
+        margin: 20px;
+        padding: 15px;
+    }
+
+    .profile-title {
+        font-size: 20px;
+    }
+
+    .profile-info p {
+        font-size: 16px;
+    }
+
+    .company-logo {
+        max-width: 120px;
+    }
+
+    .profile-info a {
+        font-size: 16px;
+        padding: 8px 16px;
+    }
+}
