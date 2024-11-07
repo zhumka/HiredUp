@@ -1,24 +1,28 @@
-{% load static %}
 <!DOCTYPE html>
+{% load static %}
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Редактирование профиля соискателя</title>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- Подключение jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- Подключение jQuery, не убирать это для скрипта который снизу -->
     <link rel="stylesheet" type="text/css" href="{% static 'users/css/edit_profile_jobseeker.css' %}">
-
-
-
 </head>
 <body>
-
-
-
-
     <h1>Редактирование профиля соискателя</h1>
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
+
+    <!-- ДЛЯ ТИМЫ: такой вид записей полей формы помогает делать для формы стили, если будеш что-то делать с ними, делай так -->
+        <!-- Поля для username, first_name и last_name -->
+        <label for="id_username">Имя пользователя</label>
+        {{ form.username }}
+
+        <label for="id_first_name">Имя</label>
+        {{ form.first_name }}
+
+        <label for="id_last_name">Фамилия</label>
+        {{ form.last_name }}
 
         <!-- Поле для выбора категории -->
         <label for="id_category">Категория</label>
@@ -29,10 +33,20 @@
         {{ form.profession }}
 
         <!-- Поле для опыта работы -->
+        <!-- ДЛЯ ТИМЫ: здесь идет обработка ошибки, для правильно записи год/года/лет -->
         <label for="id_experience">Опыт работы</label>
         {{ form.experience }}
+        {% if form.experience.errors %}
+            <ul class="error-list">
+                {% for error in form.experience.errors %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+
 
         <!-- Поле для статуса -->
+        <!-- ДЛЯ ТИМЫ: поле статуса в БД идет как True/False, это кастомная запись чтобы отображался текст -->
         <label for="id_status">Статус</label>
         <div class="status-options">
             <label>
@@ -43,10 +57,11 @@
             </label>
         </div>
 
-
         <button type="submit">Сохранить изменения</button>
     </form>
 
+<!-- ДЛЯ ТИМЫ: этот скрипт нужен, чтобы при выборе категории отображались только профессии данной категории, это оставляем
+не трогаем-->
     <script>
         // Функция для загрузки профессий по категории
         $('#id_category').change(function() {
