@@ -15,5 +15,7 @@ urlpatterns=[
     path('profile/edit/', views.edit_profile_view, name='edit_profile'),
     path('resume/', views.resume_view, name='resume_view'),
     path('load_professions/', views.load_professions, name='load_professions'),
+    path('create-vacancy/', views.create_vacancy_view, name='create_vacancy'),
+
 ]+static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
