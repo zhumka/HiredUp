@@ -4,6 +4,8 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.template.loader import render_to_string
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes, force_str
+
+from work.forms import VacancyForm
 from .tokens import account_activation_token
 from django.core.mail import EmailMessage
 from django.contrib import messages
@@ -205,3 +207,21 @@ def resume_view(request):
             return redirect('profile')  # Перенаправление на страницу резюме
 
     return render(request, 'users/edit_resume.html', {'form': form})
+
+@login_required
+def create_vacancy_view(request):
+    if not hasattr(request.user, 'employer_profile'):
+        messages.error(request, "Только работодатели могут создавать вакансии")
+        return redirect('profile')
+
+    if request.method == 'POST':
+        form = VacancyForm(request.POST)
+        if form.is_valid():
+            vacancy = form.save(commit=False)
+            vacancy.employer = request.user.employer_profile
+            vacancy.save()
+            return redirect('profile')
+    else:
+        form = VacancyForm()
+
+    return render(request, 'users/create_vacancy.html', {'form': form})
