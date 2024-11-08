@@ -44,7 +44,7 @@
     </header>
     <main>
         {% if user.is_authenticated %}
-            <h2>Вы вошли как {{ user.username }}!</h2>
+            <h2>Вы вошли как {{user.username }}!</h2>
         {% endif %}
     </main>
 
@@ -63,7 +63,6 @@
                     <h3>{{ vacancy.title }}</h3>
                     <p><strong>Категория:</strong> {{ vacancy.category.name }}</p>
                     <p><strong>Зарплата:</strong> от {{ vacancy.salary_min }} до {{ vacancy.salary_max }} руб.</p>
-<!--                    <a href="{% url 'vacancy_detail' vacancy.id %}">Подробнее</a>-->
                 </div>
             {% endfor %}
         </div>
