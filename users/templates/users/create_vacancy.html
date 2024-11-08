@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Создание вакансии</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- Подключение jQuery для AJAX -->
+    <link rel="stylesheet" type="text/css" href="{% static 'users/css/create_vacancy.css' %}">
+</head>
+<body>
+    <h1>Создание вакансии</h1>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <!-- Поле для названия вакансии -->
+        <label for="id_title">Название вакансии</label>
+        {{ form.title }}
+
+        <!-- Поле для описания вакансии -->
+        <label for="id_requirements">Описание вакансии</label>
+        {{ form.requirements }}
+
+        <!-- Поле для обязанностей -->
+        <label for="id_responsibilities">Обязанности</label>
+        {{ form.responsibilities }}
+
+        <!-- Поля для минимальной и максимальной зарплаты -->
+        <label for="id_salary_min">Минимальная зарплата</label>
+        {{ form.salary_min }}
+
+        <label for="id_salary_max">Максимальная зарплата</label>
+        {{ form.salary_max }}
+
+        <!-- Поле для выбора категории профессии -->
+        <label for="id_category">Категория профессии</label>
+        {{ form.category }}
+
+        <!-- Поле для выбора профессии -->
+        <label for="id_profession">Профессия</label>
+        {{ form.profession }}
+
+        <!-- Поле для требуемого опыта -->
+        <label for="id_experience_required">Требуемый опыт работы (в годах)</label>
+        {{ form.experience_required }}
+        {% if form.experience_required.errors %}
+            <ul class="error-list">
+                {% for error in form.experience_required.errors %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+
+        <!-- Поле для типа занятости -->
+        <label for="id_job_type">Тип занятости</label>
+        {{ form.job_type }}
+
+        <!-- Поле для места работы -->
+        <label for="id_location">Место работы</label>
+        {{ form.location }}
+
+        <label for="id_is_active">Статус</label>
+        <div class="status-options">
+        <label>
+          <input type="radio" name="is_active" value="True" {% if form.is_active.value == 'True' %}checked{% endif %}> Активная
+        </label>
+        <label>
+          <input type="radio" name="is_active" value="False" {% if form.is_active.value == 'False' %}checked{% endif %}> Не активная
+        </label>
+        </div>
+
+        <!-- Кнопка для отправки формы -->
+        <button type="submit">Создать вакансию</button>
+    </form>
+
+    <!-- Скрипт для фильтрации профессий по категории -->
+    <script>
+        $('#id_category').change(function() {
+            var categoryId = $(this).val();
+
+            // Отправка AJAX-запроса для получения профессий по категории
+            $.ajax({
+                url: "{% url 'load_professions' %}",
+                data: {
+                    'category_id': categoryId
+                },
+                success: function(data) {
+                    var professionSelect = $('#id_profession');
+                    professionSelect.empty();  // Очистка существующих опций
+
+                    // Добавление новой опции по умолчанию
+                    professionSelect.append('<option value="">Выберите профессию</option>');
+
+                    // Заполнение выпадающего списка новыми данными
+                    $.each(data, function(key, value) {
+                        professionSelect.append('<option value="' + value.id + '">' + value.name + '</option>');
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
