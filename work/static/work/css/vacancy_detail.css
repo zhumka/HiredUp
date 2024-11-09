@@ -1,0 +1,115 @@
+/* Стили для подробностей вакансии */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+nav {
+    background-color: #333;
+    padding: 1em;
+}
+
+nav a {
+    color: white;
+    margin: 0 1em;
+    text-decoration: none;
+}
+
+nav a:hover {
+    text-decoration: underline;
+}
+
+header {
+    background-color: #4CAF50;
+    color: white;
+    padding: 20px;
+    text-align: center;
+}
+
+.vacancy-detail {
+    background-color: #fff;
+    padding: 20px;
+    margin: 20px auto;
+    max-width: 1000px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.vacancy-header p {
+    font-size: 1.2rem;
+    margin: 10px 0;
+}
+
+.vacancy-status {
+    margin-top: 10px;
+}
+
+.status {
+    padding: 5px 10px;
+    font-weight: bold;
+}
+
+.status.active {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.status.inactive {
+    background-color: #f44336;
+    color: white;
+}
+
+.vacancy-description, .vacancy-responsibilities {
+    margin-top: 30px;
+}
+
+.vacancy-description h3, .vacancy-responsibilities h3 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+}
+
+.vacancy-description p, .vacancy-responsibilities p {
+    font-size: 1.1rem;
+    line-height: 1.6;
+}
+
+.company-profile {
+    background-color: #f9f9f9;
+    padding: 20px;
+    margin-top: 30px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.company-profile h3 {
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+}
+
+.company-profile p {
+    font-size: 1.1rem;
+    line-height: 1.5;
+    margin: 10px 0;
+}
+
+.company-profile strong {
+    font-weight: bold;
+}
+
+.vacancy-back {
+    margin-top: 20px;
+}
+
+.button-back {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+.button-back:hover {
+    background-color: #45a049;
+}
