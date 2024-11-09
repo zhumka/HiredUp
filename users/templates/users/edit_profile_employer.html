@@ -5,14 +5,33 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Редактирование профиля работодателя</title>
-    <link rel="stylesheet" type="text/css" href="{% static 'users/css/edit_profile_jobseeker.css' %}">
+    <link rel="stylesheet" href="{% static 'users/css/edit_profile_employer.css' %}">
 </head>
 <body>
     <h1>Редактирование профиля работодателя</h1>
+
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
-        {{ form.as_p }}
+
+        <!-- Поле для названия компании -->
+        <label for="id_company_name">Название компании</label>
+        {{ form.company_name }}
+
+        <!-- Поле для описания компании -->
+        <label for="id_company_description">Описание компании</label>
+        {{ form.company_description }}
+
+        <!-- Поле для адреса компании -->
+        <label for="id_company_address">Адрес компании</label>
+        {{ form.company_address }}
+
+        <!-- Поле для загрузки логотипа компании -->
+        <label for="id_company_logo">Логотип компании</label>
+        {{ form.company_logo }}
+
+        <!-- Кнопка для отправки формы -->
         <button type="submit">Сохранить изменения</button>
     </form>
+
 </body>
 </html>
