@@ -60,7 +60,7 @@
         <div class="vacancy-list">
             {% for vacancy in recommended_vacancies %}
                 <div class="vacancy">
-                    <h3>{{ vacancy.title }}</h3>
+                    <h3><a href="{% url 'vacancy_detail' vacancy_id=vacancy.id %}">{{ vacancy.title }}</a></h3>
                     <p><strong>Категория:</strong> {{ vacancy.category.name }}</p>
                     <p><strong>Зарплата:</strong> от {{ vacancy.salary_min }} до {{ vacancy.salary_max }} руб.</p>
                 </div>
