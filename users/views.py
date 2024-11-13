@@ -124,14 +124,18 @@ def profile_view(request):
     elif user_type == 'job_seeker':
         job_seeker_profile = request.user.job_seeker_profile
 
-        # Обработка правильности вывода опыта работы (год/года/лет).
+        # Проверяем, что поле experience не None
         experience = job_seeker_profile.experience
-        if experience == 1:
-            experience_display = f"{experience} год"
-        elif 2 <= experience % 10 <= 4 and not (11 <= experience % 100 <= 14):
-            experience_display = f"{experience} года"
+        if experience is not None:
+            # Обработка правильности вывода опыта работы (год/года/лет).
+            if experience == 1:
+                experience_display = f"{experience} год"
+            elif 2 <= experience % 10 <= 4 and not (11 <= experience % 100 <= 14):
+                experience_display = f"{experience} года"
+            else:
+                experience_display = f"{experience} лет"
         else:
-            experience_display = f"{experience} лет"
+            experience_display = "опыт не указан"
 
         return render(request, 'users/profile_jobseeker.html', {
             'job_seeker_profile': job_seeker_profile,
@@ -141,7 +145,6 @@ def profile_view(request):
     else:
         messages.error(request, "Тип пользователя неопределен.")
         return redirect('login')
-
 
 #Вьюшка страницы редактирования профилей.
 @login_required
