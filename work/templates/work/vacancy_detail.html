@@ -26,6 +26,15 @@
         <h1>{{ vacancy.title }}</h1>
     </header>
 
+    <!-- Блок для отображения сообщений -->
+    <div class="messages">
+        {% for message in messages %}
+            <div class="message {{ message.tags }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    </div>
+
     <section class="vacancy-detail">
         <div class="vacancy-header">
             <h2>Основные данные:</h2>
@@ -36,7 +45,7 @@
             <p><strong>Зарплата:</strong> от {{ vacancy.salary_min }} до {{ vacancy.salary_max }} руб.</p>
             <div class="vacancy-status">
                 <span class="status {% if vacancy.is_active %}active{% else %}inactive{% endif %}">
-                    {% if vacancy.is_active %}Статус вакансии:Активная{% else %}Статус вакансии:Не активная{% endif %}
+                    {% if vacancy.is_active %}Статус вакансии: Активная{% else %}Статус вакансии: Не активная{% endif %}
                 </span>
             </div>
         </div>
@@ -62,6 +71,17 @@
         <div class="vacancy-back">
             <a href="{% url 'home' %}" class="button-back">Назад</a>
         </div>
+
+        {% if user.user_type.user_type == 'job_seeker' %}
+            {% if not existing_application %}
+                <form method="post" action="{% url 'apply_to_vacancy' vacancy.id %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-primary">Откликнуться на вакансию</button>
+                </form>
+            {% else %}
+                <button class="btn btn-secondary" disabled>Вы уже откликнулись на эту вакансию</button>
+            {% endif %}
+        {% endif %}
     </section>
 </body>
 </html>
