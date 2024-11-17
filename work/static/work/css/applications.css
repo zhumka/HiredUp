@@ -1,0 +1,72 @@
+/* Пример простых стилей для страницы откликов */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+nav {
+    background-color: #333;
+    padding: 10px;
+    text-align: right;
+}
+
+nav a {
+    color: white;
+    margin-left: 15px;
+    text-decoration: none;
+}
+
+nav form {
+    display: inline;
+}
+
+header {
+    background-color: #282828;
+    color: white;
+    padding: 20px;
+    text-align: center;
+}
+
+.applications-section {
+    padding: 20px;
+}
+
+.applications-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.application-item {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    padding: 15px;
+    margin: 10px 0;
+    border-radius: 5px;
+}
+
+.application-item h3 {
+    margin: 0 0 10px;
+}
+
+.status {
+    font-weight: bold;
+    padding: 3px 8px;
+    border-radius: 3px;
+}
+
+.status.pending {
+    background-color: orange;
+    color: white;
+}
+
+.status.approved {
+    background-color: green;
+    color: white;
+}
+
+.status.rejected {
+    background-color: red;
+    color: white;
+}
