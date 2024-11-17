@@ -42,3 +42,33 @@ class Vacancy(models.Model):  # Исправил опечатку с 'Vacansy'
 
     def __str__(self):
         return self.title
+
+class Application(models.Model):
+    STATUS_CHOICES = [
+        ('pending', 'В ожидании'),
+        ('reviewed', 'Рассмотрено'),
+        ('accepted', 'Принято'),
+        ('rejected', 'Отклонено'),
+    ]
+
+    vacancy = models.ForeignKey(
+        'work.Vacancy',
+        on_delete=models.CASCADE,
+        related_name='applications',
+        verbose_name='Вакансия'
+    )
+    job_seeker = models.ForeignKey(
+        'users.JobSeekerProfile',
+        on_delete=models.CASCADE,
+        related_name='applications',
+        verbose_name='Соискатель'
+    )
+    created_at = models.DateTimeField(
+        default=timezone.now,
+        verbose_name='Дата подачи'
+    )
+
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending', verbose_name='Статус отклика')
+
+    def __str__(self):
+        return f"Application: {self.job_seeker.user.username} to {self.vacancy.title}"
