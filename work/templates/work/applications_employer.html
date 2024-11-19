@@ -30,9 +30,12 @@
             <ul class="applications-list">
                 {% for application in applications %}
                     <li class="application-item">
-                        <h3>{{ application.job_seeker.user.get_full_name }}</h3>
-                        <p>Отклик на вакансию: <a href="{% url 'vacancy_detail' application.vacancy.id %}">{{ application.vacancy.title }}</a></p>
-                        <p><strong>Статус отклика:</strong> <span class="status {{ application.get_status_display|lower }}">{{ application.get_status_display }}</span></p>
+                        <!-- Сделать карточку отклика кликабельной, обернув её в ссылку -->
+                        <a href="{% url 'application_detail' application.id %}" class="application-card">
+                            <h3>{{ application.job_seeker.user.get_full_name }}</h3>
+                            <p>Отклик на вакансию: <a href="{% url 'vacancy_detail' application.vacancy.id %}">{{ application.vacancy.title }}</a></p>
+                            <p><strong>Статус отклика:</strong> <span class="status {{ application.get_status_display|lower }}">{{ application.get_status_display }}</span></p>
+                        </a>
                     </li>
                 {% endfor %}
             </ul>
