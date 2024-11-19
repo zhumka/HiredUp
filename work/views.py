@@ -1,3 +1,4 @@
+from django.http import HttpResponseRedirect
 from django.utils import timezone
 
 from django.contrib.auth.decorators import login_required
@@ -85,4 +86,68 @@ def applications_view(request):
         return render(request, 'work/applications_job_seeker.html', {'applications': applications})
     else:
         return redirect('home')
+
+@login_required
+def application_detail_view(request, application_id):
+    application = get_object_or_404(Application, id=application_id)
+
+    is_employer = request.user.user_type.user_type == 'employer'
+    is_job_seeker = request.user.user_type.user_type == 'job_seeker'
+
+    if is_employer:
+        if application.vacancy.employer != request.user.employer_profile:
+            return redirect('home')
+
+        return render(request, 'work/application_detail.html', {
+            'application': application,
+            'vacancy': application.vacancy,
+            'job_seeker':application.job_seeker,
+            'is_employer': is_employer,
+        })
+
+    if is_job_seeker:
+        return redirect('vacancy_detail', vacancy_id=application.vacancy.id)
+    return redirect('home')
+
+from django.shortcuts import get_object_or_404, redirect
+from django.http import HttpResponseRedirect
+from django.contrib import messages
+from .models import Application
+
+@login_required
+def update_application_status(request, application_id):
+    application = get_object_or_404(Application, id=application_id)
+
+    # Проверяем, что пользователь - работодатель
+    if request.user.user_type.user_type != 'employer':
+        return redirect('home')
+
+    # Проверяем, что вакансия принадлежит работодателю, который делает запрос
+    if application.vacancy.employer != request.user.employer_profile:
+        return redirect('home')
+
+    if request.method == 'POST':
+        status = request.POST.get('status')
+
+        if status in dict(Application.STATUS_CHOICES):
+            # Если отклик уже принят или отклонен, блокируем возможность изменений
+            if application.status in ['accepted', 'rejected']:
+                messages.error(request, "Статус заявки уже был изменен. Невозможно повторно изменить статус.")
+                return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+            # Если отклик принят, меняем статус вакансии на неактивный
+            if status == 'accepted':
+                application.vacancy.is_active = False
+                application.vacancy.save()
+
+            # Обновляем статус отклика
+            application.status = status
+            application.save()
+
+            messages.success(request, f"Статус заявки изменен на {application.get_status_display()}")
+        else:
+            messages.error(request, "Недействительный статус.")
+
+        # Перенаправляем обратно на страницу, с которой пришел запрос
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
