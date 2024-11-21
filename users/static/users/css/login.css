@@ -10,7 +10,7 @@ body {
   margin: 0;
   padding: 0;
   font-family: Arial, sans-serif;
-  background-image: url("/static/users/img/registerBackground.jpg");
+  background-image: url("/static/users/img/loginBackground.jpg");
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center center;
@@ -94,9 +94,9 @@ body {
 /* Header styling */
 h1 {
   font-size: 50px;
-  font-weight:300;
+  font-weight: 200;
   color: white;
-  opacity: 0.9;
+  opacity: 0.8;
   margin-top: 50px;
   margin-left: 300px;
    position: absolute;
@@ -106,7 +106,7 @@ h1 {
 }
 h2 {
   font-size: 25px;
-  font-weight:100;
+  font-weight: 200;
   color: white;
   margin-bottom: 20px;
   width: 500px;
@@ -140,7 +140,7 @@ h2 {
 }
 
 /* Form styling */
-.form {
+form {
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -179,14 +179,8 @@ h2 {
   outline: none;
 }
 
-/* Button styling */
-.user-type-buttons {
-  display: flex;
-  justify-content: space-between;
-  gap: 20px;
-}
 
-.user-type-buttons button {
+button {
   align-items: center;
   background: linear-gradient(120deg, rgba(28, 176, 255, 1), rgba(175, 64, 255, 1) );
   border: 0;
@@ -210,12 +204,12 @@ h2 {
   transition: all 0.3s;
 }
 
-.user-type-buttons button:active,
+button:active,
 .user-type-buttons button:hover {
   outline: 0;
 }
 
-.user-type-buttons button span {
+button span {
   background-color: rgb(5, 6, 45);
   padding: 16px 24px;
   border-radius: 10px;
@@ -225,11 +219,11 @@ h2 {
 }
 
 
-.user-type-buttons button:hover span {
+button:hover span {
   background: none;
 }
 
-.user-type-buttons button:active {
+button:active {
   transform: scale(0.9);
 }
 
@@ -246,7 +240,6 @@ p a{
 p a:hover {
     color: rgba(175, 64, 255, 1);
 }
-
 
 /* Footer styling */
 footer {

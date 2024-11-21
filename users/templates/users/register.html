@@ -14,16 +14,18 @@
         </div>
         <nav class="nav-menu">
             <a href="{% url 'home' %}">Главная</a>
-            <a href="#companies">Companies</a>
-            <a href="#profile">Profile</a>
-            <a href="#register">Register</a>
-            <a href="#login">Login</a>
+            <a href="{% url 'login' %}">Войти</a>
+            <a href="#profile">Вакансии дня</a>
+            <a href="#register">Помощь</a>
+            <a href="#login">Еще что-то</a>
         </nav>
     </header>
+
+
+
 <div class="main-content">
-    <header>
-        <h1>Регистрация</h1>
-    </header>
+    <h1>Регистрация</h1>
+    <h2>Зарегистрируйтесь чтобы работодатель или работник мог связаться с вами</h2>
     <div class="form-container">
         <form method="POST" class="registration-form form">
             {% csrf_token %}
@@ -51,22 +53,26 @@
                 <label for="id_password2">Подтверждение пароля</label>
                 <div class="error">{{ form.password2.errors }}</div>
             </div>
-
+    </div>
             <!-- Кнопки для выбора типа пользователя -->
-            <div class="user-type-buttons">
+
+
+    <div class="user-type-buttons">
                 <button type="submit" name="user_type" value="job_seeker">
                     <span class ="text">Я ищу работу</span>
                 </button>
                 <button type="submit" name="user_type" value="employer">
                     <span class ="text">Я ищу сотрудников</span>
                 </button>
-            </div>
-        </form>
+
     </div>
+
         <p>Уже есть аккаунт? <a href="{% url 'login' %}">Войдите</a></p>
-</div>
-    <footer>
+    </form>
+<footer>
         <p>&copy; 2024 HiredUp</p>
     </footer>
+</div>
+
 </body>
 </html>

@@ -1,82 +1,62 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Вход в систему</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            padding: 50px;
-        }
-        .container {
-            max-width: 400px;
-            margin: auto;
-            background: #fff;
-            padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
-        h2 {
-            text-align: center;
-        }
-        .form-group {
-            margin-bottom: 15px;
-        }
-        label {
-            display: block;
-            margin-bottom: 5px;
-        }
-        input[type="text"],
-        input[type="password"] {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-        button {
-            width: 100%;
-            padding: 10px;
-            background-color: #007bff;
-            border: none;
-            color: white;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #0056b3;
-        }
-        .error-message {
-            color: red;
-            text-align: center;
-        }
-    </style>
+    <link rel="stylesheet" type="text/css" href="{% static 'users/css/login.css' %}">
 </head>
 <body>
-    <div class="container">
-        <h2>Вход в систему</h2>
 
-        {% if messages %}
+<header class="left-panel">
+        <div class="logotype">
+            <img src="{% static 'users/img/Logo.svg' %}" alt="HiredUp Logo">
+        </div>
+        <nav class="nav-menu">
+            <a href="{% url 'home' %}">Главная</a>
+            <a href="{% url 'register' %}">Зарегистрироваться</a>
+            <a href="#profile">Вакансии дня</a>
+            <a href="#register">Помощь</a>
+            <a href="#login">Еще что-то</a>
+        </nav>
+    </header>
+
+    <!-- Основной контент -->
+    <div class="main-content">
+        <h1>Авторизация</h1>
+        <h2>Введите свои данные, чтобы войти в учетную запись</h2>
+        <div class="form-container">
+             {% if messages %}
             {% for message in messages %}
                 <div class="error-message">{{ message }}</div>
             {% endfor %}
         {% endif %}
+            <form method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                    <input class="form-input" type="text" name="username" id="username" placeholder=" ">
+                    <label for="username">Имя пользователя</label>
+                </div>
+                <div class="form-group">
+                    <input class="form-input" type="password" name="password" id="password" placeholder=" ">
+                    <label for="password">Пароль</label>
+                </div>
 
-        <form method="post">
-            {% csrf_token %}
-            <div class="form-group">
-                <label for="username">Имя пользователя:</label>
-                <input type="text" name="username" id="username" required>
-            </div>
-            <div class="form-group">
-                <label for="password">Пароль:</label>
-                <input type="password" name="password" id="password" required>
-            </div>
-            <button type="submit">Войти</button>
+        </div>
+        <button type="submit" name="user_type">
+                    <span class ="text">Войти</span>
+                </button>
+        <p>Нет аккаунта? <a href="{% url 'register' %}">Зарегистрируйтесь здесь</a></p>
         </form>
-
-        <p>Нет аккаунта? <a href="{% url 'register' %}">Зарегистрируйтесь здесь</a>.</p>
+        <footer>
+    <p>&copy; 2024 HiredUp</p>
+</footer>
     </div>
+
+
+<!-- Footer -->
+
+
 </body>
 </html>
