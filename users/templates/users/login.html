@@ -10,9 +10,10 @@
 <body>
 
 <header class="left-panel">
-        <div class="logotype">
-            <img src="{% static 'users/img/Logo.svg' %}" alt="HiredUp Logo">
+        <div class="logotype" >
+            <a href="{% url 'home' %}"><img src="{% static 'users/img/Logo.svg' %}" alt="HiredUp Logo"></a>
         </div>
+
         <nav class="nav-menu">
             <a href="{% url 'home' %}">Главная</a>
             <a href="{% url 'register' %}">Зарегистрироваться</a>
