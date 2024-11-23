@@ -4,3 +4,4 @@ psycopg2
 decouple
 Pillow
 social-auth-app-django
+django-filter
