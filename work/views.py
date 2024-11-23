@@ -4,9 +4,11 @@ from django.utils import timezone
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.shortcuts import render, get_object_or_404, redirect
+from django_filters.views import FilterView
 
 from hiredup.wsgi import application
 from work.models import Vacancy, JobCategory, Application
+from .filters import VacancyFilter
 
 
 # Create your views here.
@@ -151,3 +153,18 @@ def update_application_status(request, application_id):
         # Перенаправляем обратно на страницу, с которой пришел запрос
         return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
+class VacancySearchView(FilterView):
+    model = Vacancy
+    template_name = 'work/search_results.html'
+    filterset_class = VacancyFilter
+    context_object_name = 'vacancies'
+    paginate_by = 1
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+
+        # Если фильтры пустые, показывать только активные вакансии случайным образом
+        if not self.request.GET:
+            return queryset.filter(is_active=True).order_by('?')  # Сортировка активных вакансий случайным образом
+
+        return queryset
