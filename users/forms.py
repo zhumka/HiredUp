@@ -87,7 +87,7 @@ class JobSeekerProfileForm(forms.ModelForm):
 
     class Meta:
         model = JobSeekerProfile
-        fields = ['username', 'first_name', 'last_name', 'category', 'status', 'experience', 'profession']
+        fields = ['username', 'first_name', 'last_name', 'category', 'status', 'profession','phone_number', 'date_of_birth', 'avatar']
         widgets = {
             'status': forms.RadioSelect(choices=[(True, 'Ищу работу'), (False, 'Не ищу работу')]),
             'experience': forms.TextInput(attrs={'placeholder': 'Введите опыт работы в годах'}),
@@ -118,19 +118,21 @@ class JobSeekerProfileForm(forms.ModelForm):
             profile.save()
         return profile
 
-    # Функция проверки правильности написания опыта работы
-    def clean_experience(self):
-        experience = self.cleaned_data.get('experience')
-        if experience:
-            if experience < 0:
-                raise ValidationError("Опыт работы не может быть меньше 0 лет")
-            if experience > 50:
-                raise ValidationError("Опыт работы не может быть больше 50 лет")
-        return experience
+
 
 
 # Форма для редактирования резюме
 class ResumeForm(forms.ModelForm):
     class Meta:
         model = Resume
-        fields = ['education', 'summary', 'skills', 'languages']
+        fields = ['education', 'summary', 'skills', 'languages', 'experience']
+
+        # Функция проверки правильности написания опыта работы
+        def clean_experience(self):
+            experience = self.cleaned_data.get('experience')
+            if experience:
+                if experience < 0:
+                    raise ValidationError("Опыт работы не может быть меньше 0 лет")
+                if experience > 50:
+                    raise ValidationError("Опыт работы не может быть больше 50 лет")
+            return experience

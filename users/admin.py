@@ -24,7 +24,7 @@ class ResumeAdmin(admin.ModelAdmin):
 
 # Настройка админ-класса для JobSeekerProfile
 class JobSeekerProfileAdmin(admin.ModelAdmin):
-    list_display = ('user', 'profession', 'created_at', 'status', 'phone_number', 'date_of_birth')
+    list_display = ('user', 'profession', 'created_at', 'status', 'phone_number', 'date_of_birth', 'avatar')
     search_fields = ('user__username', 'profession__name')
     ordering = ('created_at',)
     list_filter = ('profession', 'status')
