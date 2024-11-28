@@ -125,7 +125,7 @@ def profile_view(request):
         job_seeker_profile = request.user.job_seeker_profile
 
         # Проверяем, что поле experience не None
-        experience = job_seeker_profile.experience
+        experience = job_seeker_profile.resume.experience
         if experience is not None:
             # Обработка правильности вывода опыта работы (год/года/лет).
             if experience == 1:

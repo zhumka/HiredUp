@@ -4,22 +4,43 @@ from django.utils import timezone
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.shortcuts import render, get_object_or_404, redirect
+from django_filters.views import FilterView
 
 from hiredup.wsgi import application
+from users.models import JobSeekerProfile
 from work.models import Vacancy, JobCategory, Application
+from .filters import VacancyFilter
 
 
-# Create your views here.
 def home_view(request):
     # Получаем все категории профессий
     job_categories = JobCategory.objects.all()
 
-    # Рекомендуемые вакансии (случайно отбираем 5 вакансий)
+    # Рекомендованные вакансии (случайно выбираем 5 вакансий)
     recommended_vacancies = Vacancy.objects.filter(is_active=True).order_by('?')[:5]
+
+    # Персонализированные вакансии для соискателей
+    personalized_vacancies = []
+    if request.user.is_authenticated and hasattr(request.user, 'job_seeker_profile'):
+        # Обновляем профиль из базы
+        job_seeker_profile = JobSeekerProfile.objects.select_related('profession').get(user=request.user)
+        if job_seeker_profile.profession and job_seeker_profile.profession.category:
+            personalized_vacancies = Vacancy.objects.filter(
+                category=job_seeker_profile.profession.category,
+                is_active=True
+            ).order_by('?')[:5]
+
+    # Рекомендации для работодателей (например, по популярным категориям)
+    employer_recommended_vacancies = []
+    if request.user.is_authenticated and hasattr(request.user, 'employer_profile'):
+        # Рекомендуем вакансии по популярным категориям
+        employer_recommended_vacancies = Vacancy.objects.filter(is_active=True).order_by('?')[:5]
 
     return render(request, 'work/home_page.html', {
         'job_categories': job_categories,
         'recommended_vacancies': recommended_vacancies,
+        'personalized_vacancies': personalized_vacancies,
+        'employer_recommended_vacancies': employer_recommended_vacancies,
     })
 
 def vacancy_detail_view(request, vacancy_id):
@@ -150,4 +171,26 @@ def update_application_status(request, application_id):
 
         # Перенаправляем обратно на страницу, с которой пришел запрос
         return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+from django.db.models import Q
+
+class VacancySearchView(FilterView):
+    model = Vacancy
+    template_name = 'work/search_results.html'
+    filterset_class = VacancyFilter
+    context_object_name = 'vacancies'
+    paginate_by = 10
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+
+        # Фильтрация по полю 'q', если оно передано в запросе
+        query = self.request.GET.get('q', '')  # Получаем строку запроса по ключу 'q'
+        if query:
+            queryset = queryset.filter(Q(title__icontains=query) | Q(requirements__icontains=query))
+
+        # Фильтрация вакансий по статусу активности
+        queryset = queryset.filter(is_active=True)
+
+        return queryset
 

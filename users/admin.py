@@ -17,14 +17,14 @@ class EmployerProfileAdmin(admin.ModelAdmin):
 
 # Настройка админ-класса для Resume
 class ResumeAdmin(admin.ModelAdmin):
-    list_display = ('job_seeker_profile', 'education', 'created_at')
+    list_display = ('job_seeker_profile', 'education', 'experience', 'created_at')
     search_fields = ('job_seeker_profile__user__username',)
     ordering = ('created_at',)
     list_filter = ('education',)
 
 # Настройка админ-класса для JobSeekerProfile
 class JobSeekerProfileAdmin(admin.ModelAdmin):
-    list_display = ('user', 'profession', 'experience', 'created_at', 'status')
+    list_display = ('user', 'profession', 'created_at', 'status', 'phone_number', 'date_of_birth', 'avatar')
     search_fields = ('user__username', 'profession__name')
     ordering = ('created_at',)
     list_filter = ('profession', 'status')

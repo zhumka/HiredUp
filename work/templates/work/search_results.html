@@ -1,0 +1,107 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'work/css/search.css' %}">
+    <title>Поиск вакансий</title>
+</head>
+<body>
+    <!-- Main container -->
+    <div class="container">
+        <!-- Left panel (Optional, if you want a sidebar) -->
+        <div class="left-panel">
+            <div class="nav-menu">
+                <a href="/">Главная</a>
+                <a href="/search/" class="active">Поиск вакансий</a>
+                <!-- Add more links here as needed -->
+            </div>
+        </div>
+
+        <!-- Main content -->
+        <div class="main-content">
+            <h1>Поиск вакансий</h1>
+
+            <!-- Search and filter form -->
+            <div class="form-container">
+                <form method="get">
+                    <div class="form-group">
+                        <label for="search">Ключевые слова:</label>
+                        <input type="text" name="search" id="search" class="form-input" placeholder="Введите ключевые слова" value="{{ filter.data.search }}">
+                    </div>
+
+                    <!-- Filter options -->
+                    <div class="form-group">
+                        <label for="category">Категория:</label>
+                        {{ filter.form.category }}
+                    </div>
+                    <div class="form-group">
+                        <label for="salary_min">Мин. зарплата:</label>
+                        {{ filter.form.salary_min }}
+                    </div>
+                    <div class="form-group">
+                        <label for="salary_max">Макс. зарплата:</label>
+                        {{ filter.form.salary_max }}
+                    </div>
+                    <div class="form-group">
+                        <label for="experience_required">Опыт:</label>
+                        {{ filter.form.experience_required }}
+                    </div>
+                    <div class="form-group">
+                        <label for="job_type">Тип работы:</label>
+                        {{ filter.form.job_type }}
+                    </div>
+
+                    <button type="submit" class="user-type-buttons button">
+                        Применить фильтры
+                    </button>
+                </form>
+            </div>
+
+            <!-- Results section -->
+            <section class="results">
+                {% if vacancies %}
+                    <ul>
+                        {% for vacancy in vacancies %}
+                            <li>
+                                <h2>{{ vacancy.title }}</h2>
+                                <p><strong>Компания:</strong> {{ vacancy.employer.company_name }}</p>
+                                <p><strong>Категория:</strong> {{ vacancy.category.name }}</p>
+                                <p><strong>Зарплата:</strong> от {{ vacancy.salary_min }} до {{ vacancy.salary_max }}</p>
+                                <p><strong>Опыт:</strong> {{ vacancy.experience_required }} лет</p>
+                                <a href="{% url 'vacancy_detail' vacancy.id %}">Подробнее</a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p>Вакансии не найдены. Попробуйте изменить параметры фильтрации.</p>
+                {% endif %}
+            </section>
+
+            <!-- Pagination -->
+
+                <section class="pagination">
+                    {% if vacancies.has_previous %}
+                        <a href="?page=1{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}{% if request.GET.salary_min %}&salary_min={{ request.GET.salary_min }}{% endif %}{% if request.GET.salary_max %}&salary_max={{ request.GET.salary_max }}{% endif %}{% if request.GET.experience_required %}&experience_required={{ request.GET.experience_required }}{% endif %}{% if request.GET.job_type %}&job_type={{ request.GET.job_type }}{% endif %}">Первая</a>
+                        <a href="?page={{ vacancies.previous_page_number }}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}{% if request.GET.salary_min %}&salary_min={{ request.GET.salary_min }}{% endif %}{% if request.GET.salary_max %}&salary_max={{ request.GET.salary_max }}{% endif %}{% if request.GET.experience_required %}&experience_required={{ request.GET.experience_required }}{% endif %}{% if request.GET.job_type %}&job_type={{ request.GET.job_type }}{% endif %}">Предыдущая</a>
+                    {% endif %}
+
+                    <span>Страница {{ vacancies.number }} из {{ vacancies.paginator.num_pages }}</span>
+
+                    {% if vacancies.has_next %}
+                        <a href="?page={{ vacancies.next_page_number }}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}{% if request.GET.salary_min %}&salary_min={{ request.GET.salary_min }}{% endif %}{% if request.GET.salary_max %}&salary_max={{ request.GET.salary_max }}{% endif %}{% if request.GET.experience_required %}&experience_required={{ request.GET.experience_required }}{% endif %}{% if request.GET.job_type %}&job_type={{ request.GET.job_type }}{% endif %}">Следующая</a>
+                        <a href="?page={{ vacancies.paginator.num_pages }}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}{% if request.GET.salary_min %}&salary_min={{ request.GET.salary_min }}{% endif %}{% if request.GET.salary_max %}&salary_max={{ request.GET.salary_max }}{% endif %}{% if request.GET.experience_required %}&experience_required={{ request.GET.experience_required }}{% endif %}{% if request.GET.job_type %}&job_type={{ request.GET.job_type }}{% endif %}">Последняя</a>
+                    {% endif %}
+                </section>
+
+
+
+
+
+
+        </div>
+    </div>
+
+</body>
+</html>
