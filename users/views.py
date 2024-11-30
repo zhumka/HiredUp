@@ -165,7 +165,7 @@ def edit_profile_view(request):
     elif user_type == 'job_seeker':
         job_seeker_profile = get_object_or_404(JobSeekerProfile, user=request.user)
         if request.method == 'POST':
-            form = JobSeekerProfileForm(request.POST, instance=job_seeker_profile, user=request.user)
+            form = JobSeekerProfileForm(request.POST, request.FILES, instance=job_seeker_profile, user=request.user)
             if form.is_valid():
                 form.save()
                 return redirect('profile')
