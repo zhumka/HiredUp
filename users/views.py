@@ -125,15 +125,18 @@ def profile_view(request):
         job_seeker_profile = request.user.job_seeker_profile
 
         # Проверяем, что поле experience не None
-        experience = job_seeker_profile.resume.experience
-        if experience is not None:
-            # Обработка правильности вывода опыта работы (год/года/лет).
-            if experience == 1:
-                experience_display = f"{experience} год"
-            elif 2 <= experience % 10 <= 4 and not (11 <= experience % 100 <= 14):
-                experience_display = f"{experience} года"
+        if job_seeker_profile.resume is not None:
+            experience = job_seeker_profile.resume.experience
+            if experience is not None:
+                # Обработка правильности вывода опыта работы (год/года/лет).
+                if experience == 1:
+                    experience_display = f"{experience} год"
+                elif 2 <= experience % 10 <= 4 and not (11 <= experience % 100 <= 14):
+                    experience_display = f"{experience} года"
+                else:
+                    experience_display = f"{experience} лет"
             else:
-                experience_display = f"{experience} лет"
+                experience_display = "опыт не указан"
         else:
             experience_display = "опыт не указан"
 
