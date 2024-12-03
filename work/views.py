@@ -10,6 +10,7 @@ from hiredup.wsgi import application
 from users.models import JobSeekerProfile
 from work.models import Vacancy, JobCategory, Application
 from .filters import VacancyFilter
+from .forms import VacancyForm
 
 
 def home_view(request):
@@ -194,3 +195,35 @@ class VacancySearchView(FilterView):
 
         return queryset
 
+@login_required
+def edit_vacancy_view(request, vacancy_id):
+    try:
+        vacancy = Vacancy.objects.get(id=vacancy_id)
+    except Vacancy.DoesNotExist:
+        messages.error(request, "Вакансия не найдена.")
+        return redirect('profile')
+
+    # Проверка, что пользователь является владельцем вакансии
+    if vacancy.employer != request.user.employer_profile:
+        messages.error(request, "Вы не можете редактировать эту вакансию.")
+        return redirect('profile')
+
+    if request.method == 'POST':
+        form = VacancyForm(request.POST, instance=vacancy)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Вакансия успешно обновлена.")
+            return redirect('profile')
+    else:
+        form = VacancyForm(instance=vacancy)
+
+    return render(request, 'work/edit_vacancy.html', {'form': form, 'vacancy': vacancy})
+
+@login_required
+def employer_vacancies_view(request):
+    if not hasattr(request.user, 'employer_profile'):
+        messages.error(request, "Только работодатели могут просматривать вакансии")
+        return redirect('profile')
+
+    vacancies = Vacancy.objects.filter(employer=request.user.employer_profile)
+    return render(request, 'work/employer_vacancies.html', {'vacancies': vacancies})
