@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{% static 'work/css/edit_vacancy.css' %}">
+    <title>Редактирование вакансии</title>
+</head>
+<body>
+    <h1>Редактирование вакансии</h1>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <label for="id_title">Название вакансии</label>
+        {{ form.title }}
+
+        <label for="id_requirements">Требования</label>
+        {{ form.requirements }}
+
+        <label for="id_responsibilities">Обязанности</label>
+        {{ form.responsibilities }}
+
+        <label for="id_salary_min">Минимальная зарплата</label>
+        {{ form.salary_min }}
+
+        <label for="id_salary_max">Максимальная зарплата</label>
+        {{ form.salary_max }}
+
+        <label for="id_experience_required">Требуемый опыт</label>
+        {{ form.experience_required }}
+
+        <label for="id_category">Категория</label>
+        {{ form.category }}
+
+        <label for="id_profession">Профессия</label>
+        {{ form.profession }}
+
+        <label for="id_location">Местоположение</label>
+        {{ form.location }}
+
+        <label for="id_job_type">Тип работы</label>
+        {{ form.job_type }}
+
+        <!-- Статус вакансии с радиокнопками для редактирования -->
+        {% if form.is_active.widget != 'HiddenInput' %}
+        <label for="id_is_active">Статус вакансии</label>
+        <div class="status-options">
+            <label>
+                <input type="radio" name="is_active" value="True" {% if form.is_active.value == True %}checked{% endif %}> Активная
+            </label>
+            <label>
+                <input type="radio" name="is_active" value="False" {% if form.is_active.value == False %}checked{% endif %}> Не активная
+            </label>
+        </div>
+        {% endif %}
+
+        <button type="submit">Сохранить изменения</button>
+    </form>
+</body>
+</html>
