@@ -59,15 +59,8 @@
         <label for="id_location">Место работы</label>
         {{ form.location }}
 
-        <label for="id_is_active">Статус</label>
-        <div class="status-options">
-        <label>
-          <input type="radio" name="is_active" value="True" {% if form.is_active.value == 'True' %}checked{% endif %}> Активная
-        </label>
-        <label>
-          <input type="radio" name="is_active" value="False" {% if form.is_active.value == 'False' %}checked{% endif %}> Не активная
-        </label>
-        </div>
+        <!-- Скрытое поле для статуса вакансии, которое будет установлено как активное по умолчанию -->
+        {{ form.is_active }}
 
         <!-- Кнопка для отправки формы -->
         <button type="submit">Создать вакансию</button>
