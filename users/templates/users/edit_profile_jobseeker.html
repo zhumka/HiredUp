@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Редактирование профиля соискателя</title>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- Подключение jQuery, не убирать это для скрипта который снизу -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- Подключение jQuery -->
     <link rel="stylesheet" type="text/css" href="{% static 'users/css/edit_profile_jobseeker.css' %}">
 </head>
 <body>
@@ -13,7 +13,6 @@
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
 
-    <!-- ДЛЯ ТИМЫ: такой вид записей полей формы помогает делать для формы стили, если будеш что-то делать с ними, делай так -->
         <!-- Поля для username, first_name и last_name -->
         <label for="id_username">Имя пользователя</label>
         {{ form.username }}
@@ -35,43 +34,42 @@
         <label for="id_phone_number">Номер телефона</label>
         {{ form.phone_number }}
 
-        <label for="id_date_of_birth">Дата рождения</label>
-        {{ form.date_of_birth }}
-
-        <label for="id_avatar">Аватарка</label>
-        {{ form.avatar }}
-
-
-        <!-- Поле для опыта работы -->
-        <!-- ДЛЯ ТИМЫ: здесь идет обработка ошибки, для правильно записи год/года/лет -->
-        <label for="id_experience">Опыт работы</label>
-        {{ form.experience }}
-        {% if form.experience.errors %}
-            <ul class="error-list">
-                {% for error in form.experience.errors %}
-                    <li>{{ error }}</li>
+        <label for="id_date_of_birth">Дата рождения (текущее значение):</label>
+        <span>{{ form.date_of_birth.value|date:"d.m.Y" }}</span>
+        <br>
+        <!-- Поле для редактирования даты -->
+        <input type="date" name="date_of_birth" id="id_date_of_birth" value="{{ form.date_of_birth.value|date:'Y-m-d' }}">
+        <!-- Вывод ошибок для даты рождения -->
+        {% if form.date_of_birth.errors %}
+            <div class="error">
+                {% for error in form.date_of_birth.errors %}
+                    <p>{{ error }}</p>
                 {% endfor %}
-            </ul>
+            </div>
         {% endif %}
 
 
-        <!-- Поле для статуса -->
-        <!-- ДЛЯ ТИМЫ: поле статуса в БД идет как True/False, это кастомная запись чтобы отображался текст -->
-        <label for="id_status">Статус</label>
+        <!-- Поле для аватара -->
+        <label for="id_avatar">Аватарка</label>
+        {{ form.avatar }}
+
+        <!-- Текущее значение для статуса -->
+        <label for="id_status">Статус (текущее значение):</label>
+        <span>{% if form.status.value == True %}Ищу работу{% else %}Не ищу работу{% endif %}</span>
+        <br>
+        <!-- Поле для выбора статуса -->
         <div class="status-options">
             <label>
-                <input type="radio" name="status" value="True" {% if form.status.value == 'True' %}checked{% endif %}> Ищу работу
+                <input type="radio" name="status" value="True" {% if form.status.value == True %}checked{% endif %}> Ищу работу
             </label>
             <label>
-                <input type="radio" name="status" value="False" {% if form.status.value == 'False' %}checked{% endif %}> Не ищу работу
+                <input type="radio" name="status" value="False" {% if form.status.value == False %}checked{% endif %}> Не ищу работу
             </label>
         </div>
 
         <button type="submit">Сохранить изменения</button>
     </form>
 
-<!-- ДЛЯ ТИМЫ: этот скрипт нужен, чтобы при выборе категории отображались только профессии данной категории, это оставляем
-не трогаем-->
     <script>
         // Функция для загрузки профессий по категории
         $('#id_category').change(function() {
