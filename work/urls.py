@@ -12,4 +12,6 @@ urlpatterns = [
     path('application/<int:application_id>/', views.application_detail_view, name='application_detail'),
     path('application/<int:application_id>/update_status/', views.update_application_status, name='update_application_status'),
     path('search/', VacancySearchView.as_view(), name='search'),
+    path('vacancies/', views.employer_vacancies_view, name='employer_vacancies'),  # Страница со списком вакансий
+    path('vacancy/edit/<int:vacancy_id>/', views.edit_vacancy_view, name='edit_vacancy'),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
