@@ -109,6 +109,28 @@ def applications_view(request):
     else:
         return redirect('home')
 
+def format_experience(experience):
+    """Возвращает строку с корректным отображением опыта работы."""
+    if experience == 0:
+        return "без опыта работы"
+    elif experience == 1:
+        return f"{experience} год"
+    elif 2 <= experience % 10 <= 4 and not (11 <= experience % 100 <= 14):
+        return f"{experience} года"
+    else:
+        return f"{experience} лет"
+
+def format_experience(experience):
+    """Возвращает строку с корректным отображением опыта работы."""
+    if experience == 0:
+        return "без опыта работы"
+    elif experience == 1:
+        return f"{experience} год"
+    elif 2 <= experience % 10 <= 4 and not (11 <= experience % 100 <= 14):
+        return f"{experience} года"
+    else:
+        return f"{experience} лет"
+
 @login_required
 def application_detail_view(request, application_id):
     application = get_object_or_404(Application, id=application_id)
@@ -120,16 +142,28 @@ def application_detail_view(request, application_id):
         if application.vacancy.employer != request.user.employer_profile:
             return redirect('home')
 
+        # Форматируем опыт работы вакансии
+        vacancy_experience_display = format_experience(application.vacancy.experience_required)
+
+        # Форматируем опыт работы соискателя
+        job_seeker_experience = getattr(application.job_seeker.resume, 'experience', 0)
+        job_seeker_experience_display = format_experience(job_seeker_experience)
+
         return render(request, 'work/application_detail.html', {
             'application': application,
             'vacancy': application.vacancy,
-            'job_seeker':application.job_seeker,
+            'job_seeker': application.job_seeker,
             'is_employer': is_employer,
+            'vacancy_experience_display': vacancy_experience_display,
+            'job_seeker_experience_display': job_seeker_experience_display,
         })
 
     if is_job_seeker:
         return redirect('vacancy_detail', vacancy_id=application.vacancy.id)
+
     return redirect('home')
+
+
 
 from django.shortcuts import get_object_or_404, redirect
 from django.http import HttpResponseRedirect

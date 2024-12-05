@@ -50,7 +50,7 @@
             <p><strong>Обязанности:</strong> {{ vacancy.responsibilities }}</p>
             <p><strong>Местоположение:</strong> {{ vacancy.location }}</p>
             <p><strong>Тип работы:</strong> {{ vacancy.get_job_type_display }}</p>
-            <p><strong>Опыт работы:</strong> {{ vacancy.experience_required }} лет</p>
+            <p><strong>Опыт работы:</strong> {{ vacancy_experience_display }} </p>
         </div>
 
         <!-- Блок с информацией о соискателе -->
@@ -61,16 +61,19 @@
             <p><strong>Фамилия:</strong> {{ job_seeker.user.last_name }}</p>
             <p><strong>Почта:</strong> {{ job_seeker.user.email }}</p>
 
-            <h4>Резюме:</h4>
-            <p><strong>Образование:</strong> {{ job_seeker.resume.get_education_display }}</p>
-            <p><strong>Навыки:</strong> {{ job_seeker.resume.skills }}</p>
-            <p><strong>Опыт работы:</strong> {{ job_seeker.resume.experience }} лет</p>
-            <p><strong>Знание языков:</strong> {{ job_seeker.resume.languages }}</p>
-
-            {% if job_seeker.resume.file %}
-                <p><strong>Резюме:</strong> <a href="{{ job_seeker.resume.file.url }}" target="_blank">Скачать резюме</a></p>
+            <h2>Резюме</h2>
+            {% if job_seeker.resume %}
+                <p><strong>О соискателе:</strong> {{ job_seeker.resume.summary }}</p>
+                <p><strong>Образование:</strong> {{ job_seeker.resume.get_education_display }}</p>
+                <p><strong>Навыки:</strong> {{ job_seeker.resume.skills }}</p>
+                <p><strong>Знание языков:</strong> {{ job_seeker.resume.languages }}</p>
+                <p>
+                <strong>Опыт работы:</strong>
+                {{ job_seeker_experience_display }}
+                </p>
+                <p><strong>Дата создания резюме:</strong> {{ job_seeker.resume.created_at|date:"d-m-Y" }}</p>
             {% else %}
-                <p>Резюме не прикреплено.</p>
+                <p>Резюме отсутствует.</p>
             {% endif %}
         </div>
 
