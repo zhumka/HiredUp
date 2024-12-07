@@ -26,9 +26,9 @@
     </header>
 
     <section class="applications-section">
-        {% if applications %}
+        {% if page_obj %}
             <ul class="applications-list">
-                {% for application in applications %}
+                {% for application in page_obj %}
                     <li class="application-item">
                         <!-- Сделать карточку отклика кликабельной, обернув её в ссылку -->
                         <a href="{% url 'application_detail' application.id %}" class="application-card">
@@ -42,6 +42,27 @@
         {% else %}
             <p>На ваши вакансии пока нет откликов.</p>
         {% endif %}
+    </section>
+
+    <!-- Навигация по страницам -->
+    <section class="pagination-section">
+        <!-- Пагинация -->
+        <!--Тима, это пагинация, ее тоже можно настраивать стилями -->
+    <div class="pagination">
+        <span class="step-links">
+            {% if page_obj.has_previous %}
+                <a href="?page=1">Первая</a>
+                <a href="?page={{ page_obj.previous_page_number }}">Назад</a>
+            {% endif %}
+
+            <span>Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}</span>
+
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}">Вперед</a>
+                <a href="?page={{ page_obj.paginator.num_pages }}">Последняя</a>
+            {% endif %}
+        </span>
+    </div>
     </section>
 </body>
 </html>
