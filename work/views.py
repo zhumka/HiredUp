@@ -1,3 +1,4 @@
+from django.core.paginator import Paginator
 from django.http import HttpResponseRedirect
 from django.utils import timezone
 
@@ -46,13 +47,8 @@ def home_view(request):
 
 def vacancy_detail_view(request, vacancy_id):
     vacancy = get_object_or_404(Vacancy, id=vacancy_id)
-    experience = vacancy.experience_required
-    if experience == 1:
-        experience_display = f"{experience} год"
-    elif 2 <= experience % 10 <= 4 and not (11 <= experience % 100 <= 14):
-        experience_display = f"{experience} года"
-    else:
-        experience_display = f"{experience} лет"
+    experience_display = format_experience(vacancy.experience_required)
+
 
     # Выводим данные вакансии на странице
     return render(request, 'work/vacancy_detail.html', {
@@ -101,11 +97,27 @@ def applications_view(request):
         employer_profile = request.user.employer_profile
         vacancies = Vacancy.objects.filter(employer=employer_profile)
         applications = Application.objects.filter(vacancy__in=vacancies)
-        return render(request, 'work/applications_employer.html', {'applications': applications})
+
+        paginator = Paginator(applications, 1)
+        page_number = request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+
+        return render(request, 'work/applications_employer.html', {
+            'applications': applications,
+            'page_obj': page_obj,
+        })
     elif request.user.user_type.user_type == 'job_seeker':
         job_seeker_profile = request.user.job_seeker_profile
         applications = Application.objects.filter(job_seeker=job_seeker_profile)
-        return render(request, 'work/applications_job_seeker.html', {'applications': applications})
+
+        paginator = Paginator(applications, 5)
+        page_number = request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+
+        return render(request, 'work/applications_employer.html', {
+            'applications': applications,
+            'page_obj': page_obj,
+        })
     else:
         return redirect('home')
 
@@ -120,16 +132,6 @@ def format_experience(experience):
     else:
         return f"{experience} лет"
 
-def format_experience(experience):
-    """Возвращает строку с корректным отображением опыта работы."""
-    if experience == 0:
-        return "без опыта работы"
-    elif experience == 1:
-        return f"{experience} год"
-    elif 2 <= experience % 10 <= 4 and not (11 <= experience % 100 <= 14):
-        return f"{experience} года"
-    else:
-        return f"{experience} лет"
 
 @login_required
 def application_detail_view(request, application_id):
@@ -209,25 +211,46 @@ def update_application_status(request, application_id):
 
 from django.db.models import Q
 
+from django.core.paginator import Paginator
+
 class VacancySearchView(FilterView):
     model = Vacancy
     template_name = 'work/search_results.html'
     filterset_class = VacancyFilter
     context_object_name = 'vacancies'
-    paginate_by = 10
 
     def get_queryset(self):
+        # Используем фильтр для обработки параметров GET
         queryset = super().get_queryset()
+        filter_data = self.filterset_class(self.request.GET, queryset=queryset)
 
-        # Фильтрация по полю 'q', если оно передано в запросе
+        # Проверяем валидность фильтра и возвращаем отфильтрованные данные
+        if filter_data.is_valid():
+            queryset = filter_data.qs
+
+        # Добавляем дополнительный поиск по ключевым словам
         query = self.request.GET.get('q', '')  # Получаем строку запроса по ключу 'q'
         if query:
             queryset = queryset.filter(Q(title__icontains=query) | Q(requirements__icontains=query))
 
         # Фильтрация вакансий по статусу активности
-        queryset = queryset.filter(is_active=True)
+        return queryset.filter(is_active=True)
 
-        return queryset
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        queryset = self.get_queryset()
+
+        # Пагинация
+        paginator = Paginator(queryset, 5)  # Показывать 5 вакансий на странице
+        page_number = self.request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+
+        context['vacancies'] = page_obj
+        context['page_obj'] = page_obj
+        context['filter'] = self.filterset_class(self.request.GET, queryset=self.model.objects.all())
+        return context
+
+
 
 @login_required
 def edit_vacancy_view(request, vacancy_id):
@@ -253,11 +276,29 @@ def edit_vacancy_view(request, vacancy_id):
 
     return render(request, 'work/edit_vacancy.html', {'form': form, 'vacancy': vacancy})
 
+from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator
+from django.shortcuts import render, redirect
+from django.contrib import messages
+from .models import Vacancy
+
 @login_required
 def employer_vacancies_view(request):
+    # Проверяем, что у пользователя есть профиль работодателя
     if not hasattr(request.user, 'employer_profile'):
-        messages.error(request, "Только работодатели могут просматривать вакансии")
+        messages.error(request, "Только работодатели могут просматривать вакансии.")
         return redirect('profile')
 
+    # Получаем вакансии текущего работодателя
     vacancies = Vacancy.objects.filter(employer=request.user.employer_profile)
-    return render(request, 'work/employer_vacancies.html', {'vacancies': vacancies})
+
+    # Пагинация
+    paginator = Paginator(vacancies, 5)  # Количество вакансий на одной странице
+    page_number = request.GET.get('page')  # Текущий номер страницы из URL
+    page_obj = paginator.get_page(page_number)
+
+    # Рендер шаблона с передачей объекта пагинации
+    return render(request, 'work/employer_vacancies.html', {
+        'page_obj': page_obj,
+    })
+
