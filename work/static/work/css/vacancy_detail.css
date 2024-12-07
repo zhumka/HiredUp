@@ -152,3 +152,38 @@ button:disabled {
 .button-back:hover {
     background-color: #1976D2;
 }
+
+.edit-vacancy {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.edit-vacancy .btn {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    color: white;
+    background-color: #ffa726; /* Оранжевый цвет */
+    border: none;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    cursor: pointer;
+}
+
+.edit-vacancy .btn:hover {
+    background-color: #fb8c00; /* Более насыщенный оранжевый */
+    transform: scale(1.05); /* Легкое увеличение кнопки при наведении */
+}
+
+.edit-vacancy .btn:active {
+    background-color: #ef6c00; /* Темный оранжевый */
+    transform: scale(1); /* Возврат к изначальному размеру */
+}
+
+.edit-vacancy .btn:focus {
+    outline: none;
+    box-shadow: 0 0 5px 2px rgba(255, 138, 0, 0.5); /* Оранжевая подсветка */
+}
+
