@@ -7,6 +7,8 @@
     <title>Редактирование резюме</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- Подключение jQuery -->
     <link rel="stylesheet" type="text/css" href="{% static 'users/css/edit_resume.css' %}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+
 </head>
 <body>
 
@@ -29,19 +31,35 @@
         {% csrf_token %}
 
         <!-- Поле для образования -->
-        <label for="id_education">Образование</label>
+        <label for="id_education">Образование
+            <span class="tooltip">?
+                <span class="tooltip-text">Выберите уровень вашего образования (например, бакалавр, магистр).</span>
+            </span>
+        </label>
         {{ form.education }}
 
         <!-- Поле для краткого описания -->
-        <label for="id_summary">Краткое описание</label>
+        <label for="id_summary">Краткое описание
+            <span class="tooltip">?
+                <span class="tooltip-text">Опишите себя, свои сильные стороны и цели в трёх-четырёх предложениях.</span>
+            </span>
+        </label>
         {{ form.summary }}
 
         <!-- Поле для навыков -->
-        <label for="id_skills">Навыки</label>
+        <label for="id_skills">Навыки
+            <span class="tooltip">?
+                <span class="tooltip-text">Перечислите и опишите навыки, которыми владеете в вашей профессии.</span>
+            </span>
+        </label>
         {{ form.skills }}
 
         <!-- Поле для языков -->
-        <label for="id_languages">Языки</label>
+        <label for="id_languages">Языки
+            <span class="tooltip">?
+                <span class="tooltip-text">Укажите через запятую языки, которыми владеете (например, Русский, Английский).</span>
+            </span>
+        </label>
         {{ form.languages }}
         {% if form.languages.errors %}
             <div class="error">

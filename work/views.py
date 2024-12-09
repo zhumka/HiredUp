@@ -98,7 +98,7 @@ def applications_view(request):
         vacancies = Vacancy.objects.filter(employer=employer_profile)
         applications = Application.objects.filter(vacancy__in=vacancies)
 
-        paginator = Paginator(applications, 1)
+        paginator = Paginator(applications, 5)
         page_number = request.GET.get('page')
         page_obj = paginator.get_page(page_number)
 

@@ -150,6 +150,63 @@ button[type="submit"]:hover {
     margin-bottom: 1em;
 }
 
+
+/* Стили для вопросика и подсказки */
+.tooltip {
+    display: inline-block;
+    position: relative;
+    cursor: pointer;
+    color: #6C757D; /* Цвет вопросика */
+    font-weight: bold;
+    font-size: 1.2em;
+    margin-left: 5px;
+}
+
+.tooltip .tooltip-text {
+    visibility: hidden;
+    width: 200px;
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    border-radius: 4px;
+    padding: 5px;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%; /* Расположение подсказки */
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0;
+    transition: opacity 0.3s;
+    font-size: 0.9em;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Треугольник у подсказки */
+.tooltip .tooltip-text::after {
+    content: "";
+    position: absolute;
+    top: 100%; /* Позиция треугольника */
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #333 transparent transparent transparent;
+}
+
+/* Показываем подсказку при наведении */
+.tooltip:hover .tooltip-text {
+    visibility: visible;
+    opacity: 1;
+}
+
+/* Дополнительные стили для вопросика */
+.tooltip:hover {
+    color: #343A40; /* Цвет при наведении */
+}
+
+
+
+
 /* Адаптивный дизайн */
 @media (max-width: 768px) {
     form {
@@ -168,3 +225,5 @@ button[type="submit"]:hover {
         margin-bottom: 0.5em;
     }
 }
+
+
