@@ -95,31 +95,26 @@ def apply_to_vacancy(request, vacancy_id):
 def applications_view(request):
     if request.user.user_type.user_type == 'employer':
         employer_profile = request.user.employer_profile
-        vacancies = Vacancy.objects.filter(employer=employer_profile)
-        applications = Application.objects.filter(vacancy__in=vacancies)
+        applications = Application.objects.filter(vacancy__employer=employer_profile).order_by('-created_at')  # Упорядочиваем по дате
 
-        paginator = Paginator(applications, 5)
-        page_number = request.GET.get('page')
-        page_obj = paginator.get_page(page_number)
-
-        return render(request, 'work/applications_employer.html', {
-            'applications': applications,
-            'page_obj': page_obj,
-        })
     elif request.user.user_type.user_type == 'job_seeker':
         job_seeker_profile = request.user.job_seeker_profile
-        applications = Application.objects.filter(job_seeker=job_seeker_profile)
+        applications = Application.objects.filter(job_seeker=job_seeker_profile).order_by('-created_at')  # Упорядочиваем по дате
 
-        paginator = Paginator(applications, 5)
-        page_number = request.GET.get('page')
-        page_obj = paginator.get_page(page_number)
-
-        return render(request, 'work/applications_employer.html', {
-            'applications': applications,
-            'page_obj': page_obj,
-        })
     else:
         return redirect('home')
+
+    # Пагинация
+    paginator = Paginator(applications, 5)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    # Рендерим шаблон с результатами
+    return render(request, 'work/applications_employer.html', {
+        'applications': applications,
+        'page_obj': page_obj,
+    })
+
 
 def format_experience(experience):
     """Возвращает строку с корректным отображением опыта работы."""
