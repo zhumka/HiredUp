@@ -47,7 +47,9 @@ def home_view(request):
 def vacancy_detail_view(request, vacancy_id):
     vacancy = get_object_or_404(Vacancy, id=vacancy_id)
     experience = vacancy.experience_required
-    if experience == 1:
+    if experience == 0:
+        experience_display = "без опыта работы"
+    elif experience == 1:
         experience_display = f"{experience} год"
     elif 2 <= experience % 10 <= 4 and not (11 <= experience % 100 <= 14):
         experience_display = f"{experience} года"

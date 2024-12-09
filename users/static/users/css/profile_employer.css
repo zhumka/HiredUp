@@ -1,92 +1,264 @@
-/* Основные стили страницы */
+/* Основные стили */
 body {
-    font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #f4f4f4;
-    color: #333;
+    font-family: Arial, sans-serif;
+    background-image: url("/static/users/img/jobSeekerProfilebackground.jpg");
+    background-repeat: no-repeat;
+    background-size: 100% auto;
+    background-position: flex;
 }
 
-/* Стили для навигации */
-nav {
-    background-color: #333;
-    padding: 15px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
-
-nav a {
+/* Хэдер */
+.top-panel {
+    background: linear-gradient(rgb(5, 6, 45, 0.9), rgb(33, 33, 33, 0.5)) padding-box,
+        linear-gradient(120deg, transparent 0%, #1d1d1d, #af40ff) border-box;
+    box-shadow: rgba(151, 65, 252, 0.2) 0 15px 30px 5px;
+    width: 100%;
+    padding: 20px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-sizing: border-box;
+    background-size: 200% 200%;
+    transition: background-position 0.5s ease, transform 0.3s ease;
+    position: relative;
+    top: 0;
+    z-index: 1000;
     color: white;
-    margin: 0 15px;
-    text-decoration: none;
-    font-size: 16px;
-    transition: color 0.3s ease;
 }
 
-nav a:hover {
-    color: #ff9900;
+.top-panel:hover {
+    background-position: 100% 0;
 }
 
-nav form button {
-    background: none;
-    border: none;
-    color: white;
+.logotype img {
+    width: 100px;
+    height: auto;
+}
+
+.nav-menu {
+    display: flex;
+    align-items: center;
+    gap: 50px;
+}
+
+.nav-menu a {
+    font-size: 18px;
+    color: rgba(177, 94, 192, 1);
     cursor: pointer;
-    font-size: 16px;
+    justify-content: center;
+    text-decoration: none;
+}
+
+.nav-menu a:hover {
+    color: white;
+}
+
+
+button {
+    color: white;
+    background: none;
+    font-size: 18px;
+    border-radius: 50px;
+    border: 3px solid white;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    max-width: 100%;
+    min-width: 140px;
+    padding: 10px;
+    opacity: 0.8;
+}
+
+button:hover {
+    color: rgba(177, 94, 192, 1);
+    border: 3px solid rgba(177, 94, 192, 1);
+    box-shadow: rgba(151, 65, 252, 0.2) 0 15px 30px 5px;
 }
 
 /* Стили для контейнера профиля */
 .profile-container {
-    max-width: 960px;
-    margin: 30px auto;
-    padding: 20px;
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background: linear-gradient(rgb(5, 6, 45, 0.9), rgb(5, 6, 45, 0.9)) padding-box,
+        linear-gradient(100deg, transparent 0%, #af40ff, #af40ff) border-box;
+    border: 1px solid transparent;
+    box-shadow: rgba(151, 65, 252, 0.2) 0 15px 30px -5px;
+    padding: 32px 24px;
+    font-size: 16px;
+    color: white;
+    display: flex;
+    flex-direction: column;
+
+    box-sizing: border-box;
+    border-radius: 14px;
+    max-width: 600px;
+    width: 100%;
+
+    margin: 50px auto;
+    margin-bottom:100px;
+    position: relative;
+    overflow: hidden;
+    transition: max-height 0.5s ease, opacity 0.5s ease;
+
 }
+
+/* Кнопка редактирующая профиль*/
+.edit-icon {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    color: white;
+    width:35px;
+}
+
+.edit-icon:hover {
+    transform: scale(1.1);
+    color:white;
+
+}
+
+.edit-icon img {
+    width: 35px;
+    height: auto;
+}
+/*==========================*/
 
 /* Заголовок профиля */
 .profile-title {
-    font-size: 24px;
-    margin-bottom: 20px;
-    color: #333;
+    text-align: center;
+    font-size: 25px;
+    font-weight: bold;
+    margin-top: 10px;
+    opacity: 0.7;
+    color:#B2DDFF;
+}
+/*===================*/
+
+/*Аватарка */
+.profile-pic {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 2px solid white;
+    align-self: center;
+    margin-right: 5px;
 }
 
-/* Стили для информации о профиле */
-.profile-info p {
-    font-size: 18px;
-    line-height: 1.6;
-    margin: 10px 0;
+.profile-pic img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
+/*==============*/
 
-.profile-info strong {
-    color: #333;
-}
-
-/* Логотип компании */
-.company-logo {
-    max-width: 150px;
-    margin-top: 20px;
-    border-radius: 8px;
-}
-
-/* Ссылки для редактирования профиля */
-.profile-info a {
-    display: inline-block;
-    margin-top: 20px;
-    color: #ff9900;
-    font-size: 18px;
-    text-decoration: none;
-    padding: 10px 20px;
-    background-color: #333;
+/* Кнопка создающая вакансии */
+.button {
     color: white;
-    border-radius: 4px;
-    transition: background-color 0.3s ease;
+    background: none;
+    font-size: 14px;
+    border-radius: 50px;
+    border: 3px solid white;
+    cursor: pointer;
+    padding: 10px 20px;
+    text-decoration: none;
+    display: inline-block;
+    text-align: center;
+    opacity: 0.8;
+    margin-left: 200px;
+    margin-bottom:20px;
+    position:sticky;
 }
 
-.profile-info a:hover {
-    background-color: #ff9900;
-    color: #333;
+.button:hover {
+    color: rgba(177, 94, 192, 1);
+    border: 3px solid rgba(177, 94, 192, 1);
+    box-shadow: rgba(151, 65, 252, 0.2) 0 0px 35px 5px;
 }
+/*==========================================================*/
+
+/* Прочие стили */
+
+h5{
+    font-size: 15px;
+    font-weight: 100;
+    margin-top:10px;
+    margin-bottom:10px;
+    margin-left:290px;
+    opacity:0.5;
+    position:absolute;
+}
+
+.NAME{
+    font-size: 25px;
+    font-weight:600;
+    opacity:0.9;
+    text-align:center;
+}
+strong{
+     opacity: 0.9;
+     color:#B2DDFF;
+}
+strong img{
+    width: 16px;
+    height:auto;
+}
+
+.det {
+    margin-left: 150px;
+    justify-content: center; /* Центрируем элементы вертикально, если нужно */
+    gap: 10px; /* Расстояние между элементами */
+}
+
+.det p {
+    margin: 0;
+    line-height: 1.5;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+
+
+h2{
+    font-size: 18px;
+    opacity: 0.9;
+    color:#B2DDFF;
+    border-bottom: 1px solid #B2DDFF;
+}
+
+.description{
+    word-wrap: break-word; /* Перенос длинных слов */
+    word-break: break-word; /* Перенос слов при необходимости */
+    overflow-wrap: break-word; /* Совместимость с различными браузерами */
+    white-space: pre-wrap; /* Сохраняет переносы строк и форматирование */
+    margin: 0;
+    margin-bottom: 20px;
+    line-height: 1.6;
+}
+/*==============*/
+
+/* Footer */
+footer {
+    position: block;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+    background-color: rgba(5, 6, 45, 0.19);
+    color: white;
+    font-size: 14px;
+    padding: 10px 0;
+    z-index: 1000;
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+}
+
+footer p {
+    margin-bottom: 20px;
+}
+
+
+
+
 
 /* Мобильная адаптация */
 @media (max-width: 768px) {

@@ -1,110 +1,199 @@
-/* Общие стили */
-* {
+/* Основные стили */
+body {
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
-}
-
-body {
     font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-    color: #333;
-    line-height: 1.6;
+    background: linear-gradient(rgb(5, 6, 45, 0.9), rgb(33, 33, 33, 0.5)) padding-box,
+        linear-gradient(120deg, transparent 0%, #1d1d1d, #af40ff) border-box;
+
+
 }
 
-/* Навбар */
-nav {
-    background-color: #333;
-    padding: 1em 2em;
+.main{
+    background-image: url("/static/users/img/backG2.jpg");
+    background-repeat: no-repeat;
+    background-size:cover;
+    background-position: center; /* Центрирует изображение */
+    width:100%;
+    height:600px;
+    box-shadow: rgba(151, 65, 252, 0.2) 0 0px 35px 5px;
+}
+
+.top-panel {
+    width: 100%;
+    padding: 20px 40px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-}
-
-nav a {
+    box-sizing: border-box;
+    background-size: 200% 200%;
+    transition: background-position 0.5s ease, transform 0.3s ease;
+    position: relative;
+    top: 0;
+    z-index: 1000;
     color: white;
-    margin: 0 1em;
-    text-decoration: none;
-    font-size: 16px;
 }
 
-nav a:hover {
-    text-decoration: underline;
+
+.logotype img {
+    width: 100px;
+    height: auto;
 }
 
-/* Кнопка */
-button {
-    background-color: #5b42f3;
+.nav-menu {
+    display: flex;
+    align-items: center;
+    gap: 50px;
+}
+
+.nav-menu a {
+    font-size: 18px;
     color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
     cursor: pointer;
-    font-size: 16px;
-    transition: background-color 0.3s ease;
+    justify-content: center;
+    text-decoration: none;
 }
 
-button:hover {
-    background-color: #00ddeb;
+.nav-menu a:hover {
+    color: rgba(177, 94, 192, 1);
 }
 
-/* Хедер */
-header {
-    background-color: #333;
+
+.leave {
+    color: rgba(177, 94, 192, 1);
+    background: none;
+    font-size: 18px;
+    border-radius: 50px;
+    border: 3px solid rgba(177, 94, 192, 1);
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    max-width: 100%;
+    min-width: 140px;
+    padding: 10px;
+    opacity: 0.8;
+}
+
+.leave:hover {
     color: white;
-    text-align: center;
-    padding: 20px;
+    border: 3px solid white;;
+    box-shadow: white; 0 15px 30px 5px;
 }
 
-header h1 {
-    font-size: 32px;
+.button {
+    color: rgba(177, 94, 192, 1);
+    background: none;
+    font-size: 18px;
+    border-radius: 50px;
+    border: 3px solid rgba(177, 94, 192, 1);
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    max-width: 100%;
+    min-width: 140px;
+    padding: 10px;
+    opacity: 0.8;
 }
 
-/* Разделы */
-section {
-    padding: 20px;
-    margin: 20px;
-    background-color: white;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+.button:hover {
+    color: white;
+    border: 3px solid white;
+    box-shadow: white; 0 15px 30px 5px;
 }
 
-/* Приветствие */
-.intro {
-    text-align: center;
+
+h1{
+    color:white;
+    margin-left:40px;
+
+    display: inline;
+}
+.customh1{
+    color:rgba(177, 94, 192, 1);
+    display: inline;
+    margin-left:0px;
+
 }
 
-/* Поиск */
-form {
-    margin: 20px 0;
+/*Форма поиска*/
+.search-form {
+    margin-top:130px;
     display: flex;
     justify-content: center;
     align-items: center;
+    border-radius: 50px; /* Округление формы */
+    padding: 5px;
+    transition: 0.5s;
 }
 
-input[type="text"] {
-    padding: 10px;
-    font-size: 16px;
-    border-radius: 5px;
-    border: 1px solid #ddd;
-    margin-right: 10px;
-    width: 300px;
+.form-group {
+    position: relative;
+    display: flex;
+    align-items: center;
+
 }
 
-button[type="submit"] {
-    background-color: #333;
+.form-group input {
+    width: 450px;
+    padding: 10px 10px 10px 15px;
+    margin-right: -30px;
+    border-radius: 25px;
+    border:none;
+    outline: none;
+    font-size: 20px;
+}
+
+.form-group label {
+    position: absolute;
+    top: 28px;
+    left: 15px;
+    font-size:20px;
+    background: transparent;
+    padding: 0 5px;
+    color: grey;
+    transition: 0.3s ease;
+    pointer-events: none;
+}
+
+.form-group input:focus ~ label,
+.form-group input:not(:placeholder-shown) ~ label {
+    top: 28px;
+    left: -200px;
+    font-size: 18px;
     color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
 }
 
-button[type="submit"]:hover {
-    background-color: #5b42f3;
+button.srch {
+    border-radius:50%;
+    border: none;
+    cursor: pointer;
+    width:80px;
+    height:80px;
+    background-color:rgba(177, 94, 192, 1);
 }
+
+button.srch img {
+    height: 40px;
+    width: auto;
+}
+
+/*======================================*/
+
+
+
 
 /* Вакансии */
+
+.recommended{
+    margin-bottom: 50px;
+}
+h2{
+    text-align:center;
+    color:white;
+    border-bottom: 2px solid white;
+    margin:50px;
+}
+
 .vacancy-list {
     display: flex;
     flex-wrap: wrap;
@@ -145,9 +234,15 @@ button[type="submit"]:hover {
     text-decoration: underline;
 }
 
+.vacancy img{
+    border-radius: 50px;
+    width:100px;
+    height:100px;
+}
+
 /* Персонализированные вакансии */
 .personalized {
-    background-color: #f7f7f7;
+    background:transparent;
     padding: 20px;
 }
 
@@ -183,14 +278,21 @@ button[type="submit"]:hover {
     margin-bottom: 20px;
 }
 
-/* Подвал */
+
+/* Footer */
 footer {
-    background-color: #333;
-    color: white;
-    padding: 15px;
-    text-align: center;
-    font-size: 14px;
-    position: relative;
+    position: block;
     bottom: 0;
     width: 100%;
+    text-align: center;
+    background-color: rgba(5, 6, 45, 0.19);
+    color: white;
+    font-size: 14px;
+    padding: 10px 0;
+    z-index: 1000;
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+}
+
+footer p {
+    margin-bottom: 20px;
 }

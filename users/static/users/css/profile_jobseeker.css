@@ -1,22 +1,19 @@
 /* Основные стили */
 body {
-    display: relative;
-    align-items: center;
-    height: 100vh; /* Высота экрана */
     margin: 0;
     padding: 0;
     font-family: Arial, sans-serif;
-    background-image: url("/static/users/img/jobSeekerProfileBackground.jpg");
-    background-size: 100% 100%;
-    background-repeat: cover;
-    background-position: center center;
+    background-image: url("/static/users/img/jobSeekerProfilebackground.jpg");
+    background-repeat: no-repeat;
+    background-size: 100% auto;
+    background-position: flex;
 }
+
 
 /* Хэдер */
 .top-panel {
     background: linear-gradient(rgb(5, 6, 45, 0.9), rgb(33, 33, 33, 0.5)) padding-box,
         linear-gradient(120deg, transparent 0%, #1d1d1d, #af40ff) border-box;
-    border: 1px solid transparent;
     box-shadow: rgba(151, 65, 252, 0.2) 0 15px 30px 5px;
     width: 100%;
     padding: 20px 40px;
@@ -46,6 +43,20 @@ body {
     align-items: center;
     gap: 50px;
 }
+
+.nav-menu a {
+    font-size: 18px;
+    color: rgba(177, 94, 192, 1);
+    cursor: pointer;
+    justify-content: center;
+    text-decoration: none;
+}
+
+.nav-menu a:hover {
+    color: white;
+}
+
+
 button {
     color: white;
     background: none;
@@ -67,60 +78,12 @@ button:hover {
     box-shadow: rgba(151, 65, 252, 0.2) 0 15px 30px 5px;
 }
 
-.nav-menu a {
-    font-size: 18px;
-    color: rgba(177, 94, 192, 1);
-    cursor: pointer;
-    justify-content: center;
-}
 
-.nav-menu a:hover {
-    color: white;
-}
 
-/* Карточка профиля */
-.user-info {
-    position: relative;
-    align-items: flex-start;
-    gap: 5px;
-}
-
-.profile-pic {
-    width: 130px;
-    height: 150px;
-    border-radius: 10%;
-    overflow: hidden;
-    border: 2px solid white;
-    align-self: center;
-    margin-right: 5px;
-}
-
-.profile-pic img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.edit-icon {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    color: white;
-    padding: 5px 10px;
-}
-
-.edit-icon:hover {
-    transform: scale(1.1);
-}
-
-.edit-icon img {
-    width: 25px;
-    height: auto;
-}
-
+/* Главный контейнер */
 .profile-container {
-    background: linear-gradient(rgb(5, 6, 45, 1), rgb(33, 33, 33, 1)) padding-box,
-        linear-gradient(120deg, transparent 0%, #1d1d1d, #af40ff) border-box;
+    background: linear-gradient(rgb(5, 6, 45, 0.9), rgb(5, 6, 45, 0.9)) padding-box,
+        linear-gradient(100deg, transparent 0%, #af40ff, #af40ff) border-box;
     border: 1px solid transparent;
     box-shadow: rgba(151, 65, 252, 0.2) 0 15px 30px -5px;
     padding: 32px 24px;
@@ -128,74 +91,37 @@ button:hover {
     color: white;
     display: flex;
     flex-direction: column;
-    gap: 20px;
+
     box-sizing: border-box;
     border-radius: 14px;
     max-width: 600px;
     width: 100%;
+
     margin: 50px auto;
+    margin-bottom:100px;
     position: relative;
     overflow: hidden;
     transition: max-height 0.5s ease, opacity 0.5s ease;
+
 }
+/*================================================================================*/
 
-h2 {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    border-bottom: 1px solid #B2DDFF;
-    font-size: 18px;
-    opacity: 0.9;
-    color:#B2DDFF;
-}
-
-.toggle-icon {
-    width: 30px; /* Размер иконки */
-    height: auto;
-    cursor: pointer; /* Указатель мыши при наведении */
-    margin-left: 10px; /* Отступ от текста */
-    transition: transform 0.3s ease; /* Анимация поворота */
-}
-.toggle-icon.rotated {
-    transform: rotate(180deg); /* Поворот на 180 градусов */
-}
-
-/* Стиль для блока profile-info */
-
-.profile-info {
-    max-height: 0; /* Начальное состояние - карточка закрыта */
-    opacity: 0; /* Карточка невидима */
-    overflow: hidden; /* Скрыть все содержимое, выходящее за пределы */
-    transition: max-height 0.5s ease, opacity 0.5s ease; /* Плавное изменение max-height и opacity */
-}
-
-.profile-info.collapsed {
-    max-height: 1000px; /* Меньше значение, чтобы раскрыть, но не слишком большое */
-    opacity: 1; /* Карточка становится видимой */
-    padding: 10px 20px; /* Добавляем немного отступов при открытии */
-}
-
-.toggle-icon {
-    width: 45px; /* Размер иконки */
-    height: auto;
-    cursor: pointer; /* Указатель мыши при наведении */
-    margin-left: 10px; /* Отступ от текста */
-    transition: transform 0.3s ease; /* Плавный поворот иконки */
-}
-
-.toggle-icon.rotated {
-    transform: rotate(180deg); /* Поворот на 180 градусов */
-}
-
-
+/* Никнейм юзера */
 .profile-title {
     text-align: center;
     font-size: 25px;
     font-weight: bold;
     margin-top: 10px;
+    opacity: 0.7;
+    color:#B2DDFF;
 }
+/*===============*/
+
+
+/* Данные пользователя(Имя и тд.) */
 
 .user-info {
+    position: relative;
     display: flex;
     align-items: flex-start;
     gap: 20px;
@@ -209,17 +135,73 @@ h2 {
     display: flex;
     flex-direction: column;
     justify-content: center;
+
 }
-strong{
-opacity: 0.9;
-color:#B2DDFF;
+.profile-details p {
+    margin: 8px 0; /* Уменьшает отступы сверху и снизу */
+    line-height: 1.5; /* Снижает межстрочный интервал */
 }
-li{
-margin-bottom: 5px;
-margin-top:10px;
-font-weight: 600;
-color:#B2DDFF;
-opacity:0.9;
+/*======================================================*/
+
+/*Аватарка */
+.profile-pic {
+    width: 130px;
+    height: 150px;
+    border-radius: 0%;
+    overflow: hidden;
+    border: 2px solid white;
+    align-self: center;
+    margin-right: 5px;
+}
+
+.profile-pic img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+/*==============*/
+
+
+/* Кнопка редактирующая профиль*/
+.edit-icon {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    color: white;
+    width:35px;
+}
+
+.edit-icon:hover {
+    transform: scale(1.1);
+    color:white;
+   
+}
+
+.edit-icon img {
+    width: 35px;
+    height: auto;
+}
+/*==========================*/
+
+/* Выравнивает кое-что */
+.res-det{
+    margin: 5px 0; /* Уменьшает отступы сверху и снизу */
+    line-height: 1.2; /* Снижает межстрочный интервал */
+}
+
+/* Контейнер РЕЗЮМЕ */
+
+.profile-info {
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    transition: max-height 0.5s ease, opacity 0.5s ease;
+}
+
+.profile-info.collapsed {
+    max-height: 1000px;
+    opacity: 1;
+    padding: 10px 20px;
 }
 
 .profile-info h2 {
@@ -228,6 +210,7 @@ opacity:0.9;
     border-bottom: 2px solid rgba(255, 221, 87, 1);
     border-color: #B2DDFF;
     padding-bottom: 5px;
+
 }
 
 .profile-info p {
@@ -236,11 +219,90 @@ opacity:0.9;
     overflow-wrap: break-word; /* Совместимость с различными браузерами */
     white-space: pre-wrap; /* Сохраняет переносы строк и форматирование */
     margin: 0;
-    line-height: 1.5; /* Для улучшенной читаемости */
+    line-height: 1.2;
+}
+/*=========================================================================*/
+
+/* Кнопка редактирующая резюме */
+.button {
+    color: white;
+    background: none;
+    font-size: 14px;
+    border-radius: 50px;
+    border: 3px solid white;
+    cursor: pointer;
+    padding: 10px 20px;
+    text-decoration: none;
+    display: inline-block;
+    text-align: center;
+    opacity: 0.8;
+    margin-left:170px;
+    margin-top:50px;
+    margin-bottom:20px;
+    position:sticky;
 }
 
+.button:hover {
+    color: rgba(177, 94, 192, 1);
+    border: 3px solid rgba(177, 94, 192, 1);
+    box-shadow: rgba(151, 65, 252, 0.2) 0 0px 35px 5px;
+}
+/*==========================================================*/
+
+/* Иконка свертывания/развертывания */
+.toggle-icon {
+    width: 45px;
+    height: auto;
+    cursor: pointer;
+    margin-left: 10px;
+    transition: transform 0.3s ease;
+}
+.toggle-icon.rotated {
+    transform: rotate(180deg); /* Поворот на 180 градусов */
+}
+.toggle-icon: hover{
+    transform: scale(1.1);
+}
+/*==================================*/
 
 
+/* =Прочие стили= */
+
+.NAME{
+    font-size: 25px;
+    font-weight:600;
+    opacity:0.9;
+}
+.yes{
+    color:rgba(69, 251, 163, 1);
+    font-weight:200;
+    margin:0;
+    line-height: 0.2;
+}
+.no{
+ color:rgba(251, 69, 69, 1);
+    font-weight:200;
+    font-weight:200;
+    margin:0;
+    line-height: 0.2;
+}
+strong{
+     opacity: 0.9;
+     color:#B2DDFF;
+}
+strong img{
+    width: 16px;
+    height:auto;
+}
+
+li{
+     margin-bottom: 10px;
+     margin-top:20px;
+     font-weight: 600;
+     color:#B2DDFF;
+     opacity:0.9;
+     line-height: 1.1;
+}
 h5{
     font-size: 15px;
     font-weight: 100;
@@ -250,6 +312,19 @@ h5{
     opacity:0.5;
     position:absolute;
 }
+h2 {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid #B2DDFF;
+
+    font-size: 18px;
+    opacity: 0.9;
+    color:#B2DDFF;
+    margin-top:50px;
+}
+
+/*===========================================*/
 
 /* Footer */
 footer {
