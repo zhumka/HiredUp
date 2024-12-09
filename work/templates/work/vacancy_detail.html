@@ -82,6 +82,12 @@
                 <button class="btn btn-secondary" disabled>Вы уже откликнулись на эту вакансию</button>
             {% endif %}
         {% endif %}
+
+        {% if user.user_type.user_type == 'employer' and user == vacancy.employer.user %}
+            <div class="edit-vacancy">
+                <a href="{% url 'edit_vacancy' vacancy.id %}" class="btn btn-warning">Редактировать вакансию</a>
+            </div>
+        {% endif %}
     </section>
 </body>
 </html>

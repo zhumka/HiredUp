@@ -80,6 +80,42 @@ li.empty {
     color: #888;
 }
 
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin: 20px 0;
+    font-family: Arial, sans-serif;
+}
+
+.step-links a, .step-links span {
+    display: inline-block;
+    padding: 8px 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    color: #333;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    font-size: 14px;
+}
+
+.step-links a:hover {
+    background-color: #007bff;
+    color: white;
+    border-color: #007bff;
+}
+
+.step-links span {
+    font-weight: bold;
+    background-color: #e9ecef;
+    border-color: #dcdcdc;
+    cursor: default;
+}
+
+
 /* Адаптивные стили для мобильных устройств */
 @media (max-width: 600px) {
     body {
