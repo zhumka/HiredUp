@@ -25,7 +25,7 @@ class EmployerProfile(models.Model):
     company_name = models.CharField(verbose_name='Имя компании', max_length=255, blank=True, null=True)
     company_description = models.TextField(verbose_name='Описание компании', blank=True, null=True)
     company_address = models.CharField(verbose_name='Адрес компании', max_length=255, blank=True, null=True)
-    company_logo = models.ImageField(upload_to='users/static/users/img', default='Изображение отсутствует')
+    company_logo = models.ImageField(upload_to='users/static/users/img', default='users/static/users/img/defaultCompanyAvatar.svg')
     created_at = models.DateTimeField('Дата создания', default=timezone.now)
 
     def __str__(self):
@@ -83,7 +83,7 @@ class JobSeekerProfile(models.Model):
     )  # Новое поле для даты рождения
     avatar = models.ImageField(
         upload_to='users/static/users/img',  # Папка для сохранения изображений
-        default='users/static/users/img/vindicta.jpg',  # Значение по умолчанию
+        default='users/static/users/img/defaultUserAvatar.svg',  # Значение по умолчанию
         blank=True,
         null=True,
         verbose_name='Аватар'
