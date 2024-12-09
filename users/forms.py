@@ -179,18 +179,26 @@ class JobSeekerProfileForm(forms.ModelForm):
         return profile
 
 
-# Форма для редактирования резюме
+import re
+from django import forms
+from django.core.exceptions import ValidationError
+from .models import Resume
+
 class ResumeForm(forms.ModelForm):
     class Meta:
         model = Resume
         fields = ['education', 'summary', 'skills', 'languages', 'experience']
 
-        # Функция проверки правильности написания опыта работы
-        def clean_experience(self):
-            experience = self.cleaned_data.get('experience')
-            if experience:
-                if experience < 0:
-                    raise ValidationError("Опыт работы не может быть меньше 0 лет")
-                if experience > 50:
-                    raise ValidationError("Опыт работы не может быть больше 50 лет")
-            return experience
+    # Валидация языков
+    def clean_languages(self):
+        languages = self.cleaned_data.get('languages')
+        if languages:
+            # Проверяем формат: слова разделены запятыми, без лишних пробелов
+            if not re.match(r'^[a-zA-Zа-яА-ЯёЁ]+(, ?[a-zA-Zа-яА-ЯёЁ]+)*$', languages):
+                raise ValidationError(
+                    "Языки должны быть перечислены через запятую (например: Английский, Русский, Немецкий)."
+                )
+            # Приводим к единому формату (удаляем лишние пробелы)
+            languages = ", ".join(language.strip() for language in languages.split(","))
+        return languages
+
