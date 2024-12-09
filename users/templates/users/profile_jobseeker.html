@@ -1,7 +1,7 @@
 {% load static %}
 {% block content %}
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="ru" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,63 +9,119 @@
 </head>
 <body>
 
-    <nav>
+<header class="top-panel">
+        <div class="logotype" >
+            <a href="{% url 'home' %}"><img src="{% static 'users/img/Logo.svg' %}" alt="HiredUp Logo"></a>
+        </div>
+
+        <nav class="nav-menu">
         <a href="{% url 'home' %}">Главная</a>
         {% if user.is_authenticated %}
-            <form action="{% url 'logout' %}" method="POST" style="display: inline;">
+            <a href="{% url 'applications' %}">Отклики</a>
+            <form action="{% url 'logout' %}" method="POST">
                 {% csrf_token %}
-                <button type="submit" style="background: none; border: none; color: white; cursor: pointer;">Выйти</button>
+                <button type="submit" >Выйти</button>
             </form>
         {% else %}
             <a href="{% url 'login' %}">Войти</a>
             <a href="{% url 'register' %}">Зарегистрироваться</a>
         {% endif %}
     </nav>
+    </header>
 
-    <div class="profile-container">
-        <h1 class="profile-title">Профиль Соискателя: {{ job_seeker_profile.user.username }}</h1>
+    <div class="profile-container" id="profile-card">
+        <h1 class="profile-title">{{ job_seeker_profile.user.username }}</h1>
+    <a class="edit-icon" href="{% url 'edit_profile' %}" title="Редактировать профиль">
+        <img src="{% static 'users/img/editIcon.svg' %}" alt="edit icon">
+    </a>
 
-        <div class="profile-info">
-            <h2>Основная информация</h2>
-            <p><strong>Имя пользователя:</strong> {{ job_seeker_profile.user.username }}</p>
-            <p><strong>Имя:</strong> {{ job_seeker_profile.user.first_name }}</p>
-            <p><strong>Фамилия:</strong> {{ job_seeker_profile.user.last_name }}</p>
-            <p><strong>Email-адрес:</strong> {{ job_seeker_profile.user.email }}</p>
 
-            <p>
-            <strong>Опыт работы:</strong>
-            {{ experience_display }}
+    <div class="user-info">
+        <div class="profile-pic">
+    {% if job_seeker_profile.avatar %}
+        <img src="{{ job_seeker_profile.avatar.url }}" alt="Profile Picture">
+    {% else %}
+            <img src="{% static 'users/img/defaultUserAvatar.svg' %}" alt="Profile Picture">
+    {% endif %}
+</div>
+
+
+        <div class="profile-details">
+            <p class="NAME">
+                {{ job_seeker_profile.user.last_name }}
+                {{ job_seeker_profile.user.first_name }}
+            </p>
+            <p><strong><img src="{% static 'users/img/suitcaseIcon.svg' %}"></strong>
+                {{ job_seeker_profile.profession }}, {{ experience_display }}
             </p>
 
-
-            <h2>Резюме</h2>
-            {% if job_seeker_profile.resume %}
-                <p><strong>О соискателе:</strong> {{ job_seeker_profile.resume.summary }}</p>
-                <p><strong>Образование:</strong> {{ job_seeker_profile.resume.get_education_display }}</p>
-                <p><strong>Навыки:</strong> {{ job_seeker_profile.resume.skills }}</p>
-                <p><strong>Знание языков:</strong> {{ job_seeker_profile.resume.languages }}</p>
-                <p><strong>Дата создания резюме:</strong> {{ job_seeker_profile.resume.created_at|date:"d-m-Y" }}</p>
-            {% else %}
-                <p>Резюме отсутствует.</p>
-            {% endif %}
-
-            <h2>Профессия</h2>
-            <p>{{ job_seeker_profile.profession }}</p>
-
-            <h2>Статус</h2>
-            <p><strong>Статус:</strong>
-                {% if job_seeker_profile.status %}
-                    Ищу работу
-                {% else %}
-                    Не ищу работу
-                {% endif %}
+            <p><strong><img src="{% static 'users/img/emailIcon.svg' %}"></strong>
+                {{ job_seeker_profile.user.email }}
             </p>
-
-            <p><strong>Дата создания профиля:</strong> {{ job_seeker_profile.created_at|date:"d-m-Y" }}</p>
-            <a href="{% url 'edit_profile' %}">Редактировать профиль</a>
-            <a href="{% url 'resume_view' %}">Редактировать резюме</a>
+            <p><strong><img src="{% static 'users/img/phoneIcon.svg' %}"></strong>
+                {{ job_seeker_profile.phone_number }}
+            </p>
         </div>
     </div>
+        <div class="res-det">
+    <p>
+            {% if job_seeker_profile.status %}
+                <li class="yes">Ищу работу</li>
+            {% else %}
+                <li class="no">Не ищу работу</li>
+            {% endif %}
+        </p>
+
+        <h2>РЕЗЮМЕ
+            <img
+        src="{% static 'users/img/toggleIcon.svg' %}"
+        alt="Toggle Icon"
+        class="toggle-icon"
+        onclick="toggleCard()"
+        title="Свернуть/Развернуть">
+    </h2>
+        </div>
+
+    <div class="profile-info" id="profile-info">
+    {% if job_seeker_profile.resume %}
+        <li>ДАТА РОЖДЕНИЯ</li>
+        <p>{{ job_seeker_profile.date_of_birth }}</p>
+        <li>УРОВЕНЬ ОБРАЗОВАНИЯ</li>
+        <p>{{ job_seeker_profile.resume.get_education_display }}</p>
+        <li>ОБРАЗОВАНИЕ</li>
+        <p>{{ job_seeker_profile.resume.skills }}</p>
+        <li>ОПЫТ РАБОТЫ</li>
+        <p>{{ job_seeker_profile.resume.summary }}</p>
+        <li>ЗНАНИЕ ЯЗЫКОВ </li>
+        <p>{{ job_seeker_profile.resume.languages }}</p>
+
+    {% else %}
+        <p>Резюме отсутствует.</p>
+    {% endif %}
+
+        <a href="{% url 'resume_view' %}" class="button">Редактировать резюме</a>
+
+        <h5>Дата создания профиля: {{ job_seeker_profile.created_at|date:"d-m-Y" }}</h5>
+</div>
+
+</div>
+<script>
+function toggleCard() {
+    const profileInfo = document.querySelector('.profile-info');
+    const toggleIcon = document.querySelector('.toggle-icon');
+
+    // Переключаем класс для открытия/закрытия карточки
+    profileInfo.classList.toggle('collapsed');
+    // Переключаем класс для поворота иконки
+    toggleIcon.classList.toggle('rotated');
+}
+
+</script>
+
+<footer>
+        <p>&copy; 2024 HiredUp</p>
+    </footer>
+</div>
 </body>
 </html>
 {% endblock %}
