@@ -30,7 +30,8 @@
         {% else %}
 
             <a href="{% url 'login' %}" >Войти</a>
-            <button onclick="{% url 'register' %}" class="button">Зарегистрироваться </button>
+            <button onclick="window.location.href='{% url 'register' %}';" class="button">Зарегистрироваться</button>
+
         {% endif %}
 
     </nav>
