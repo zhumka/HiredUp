@@ -1,0 +1,84 @@
+/* Общий стиль страницы */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background-color: #05062d;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+/* Основной контейнер */
+.container {
+    background: linear-gradient(rgb(5, 6, 45, 0.9), rgb(5, 6, 45, 0.9)) padding-box,
+        linear-gradient(100deg, transparent 0%, #af40ff, #af40ff) border-box;
+    border: 1px solid transparent;
+    box-shadow: rgba(151, 65, 252, 0.2) 0 15px 30px -5px;
+    border-radius: 14px;
+    padding: 32px;
+    width: 100%;
+    max-width: 500px;
+    text-align: center;
+    box-sizing: border-box;
+}
+
+/* Заголовок */
+.container h1 {
+    font-size: 24px;
+    font-weight: bold;
+    color: #B2DDFF;
+    margin-bottom: 20px;
+}
+
+/* Основной текст */
+.container p {
+    font-size: 16px;
+    margin-bottom: 20px;
+    opacity: 0.9;
+}
+
+/* Кнопка */
+.container button {
+    padding: 12px 24px;
+    font-size: 16px;
+    font-weight: bold;
+    color: white;
+    background: none;
+    border: 3px solid #B2DDFF;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+}
+
+.container button:hover {
+    color: rgba(177, 94, 192, 1);
+    border-color: rgba(177, 94, 192, 1);
+    box-shadow: rgba(151, 65, 252, 0.2) 0 15px 30px 5px;
+}
+
+/* Ссылка на главную */
+.back-home {
+    display: inline-block;
+    margin-top: 20px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #B2DDFF;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.back-home:hover {
+    color: rgba(177, 94, 192, 1);
+}
+
+/* Подвал */
+.footer {
+    margin-top: 20px;
+    font-size: 14px;
+    color: #B2DDFF;
+    opacity: 0.8;
+}

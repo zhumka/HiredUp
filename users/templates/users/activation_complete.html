@@ -1,12 +1,26 @@
 <!DOCTYPE html>
+{% load static %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Подтверждение почты.</title>
+    <title>Подтверждение почты</title>
+    <link rel="stylesheet" href="{% static 'users/css/activation_complete.css' %}">
 </head>
 <body>
-    <h1>Подтверждение вашего email.</h1>
-    <p>Мы отправили активационное письмо на почту, пожалуйста проверьте вашу почту!</p>
+    <div class="container">
+        <h1>Подтверждение почты!</h1>
+        <p>
+            Мы отправили активационное письмо на ваш email.
+            Пожалуйста, проверьте почту и нажмите на ссылку, чтобы завершить активацию.
+        </p>
+        <a href="mailto:soslippyyy@gmail.com">
+            <button>Связаться с поддержкой</button>
+        </a>
+        <div class="footer">
+            Если письмо не пришло, проверьте папку "Спам" или повторите попытку через 10 минут.
+        </div>
+        <a href="/" class="back-home">Вернуться на главную</a>
+    </div>
 </body>
 </html>
