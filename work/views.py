@@ -97,9 +97,15 @@ def applications_view(request):
         employer_profile = request.user.employer_profile
         applications = Application.objects.filter(vacancy__employer=employer_profile).order_by('-created_at')  # Упорядочиваем по дате
 
+        # Рендерим шаблон для работодателя
+        template = 'work/applications_employer.html'
+
     elif request.user.user_type.user_type == 'job_seeker':
         job_seeker_profile = request.user.job_seeker_profile
         applications = Application.objects.filter(job_seeker=job_seeker_profile).order_by('-created_at')  # Упорядочиваем по дате
+
+        # Рендерим шаблон для соискателя
+        template = 'work/applications_job_seeker.html'
 
     else:
         return redirect('home')
@@ -109,8 +115,8 @@ def applications_view(request):
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
-    # Рендерим шаблон с результатами
-    return render(request, 'work/applications_employer.html', {
+    # Рендерим выбранный шаблон с результатами
+    return render(request, template, {
         'applications': applications,
         'page_obj': page_obj,
     })
