@@ -7,6 +7,7 @@
     <title>Создание вакансии</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- Подключение jQuery для AJAX -->
     <link rel="stylesheet" type="text/css" href="{% static 'users/css/create_vacancy.css' %}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
 <body>
     <h1>Создание вакансии</h1>
@@ -14,34 +15,66 @@
         {% csrf_token %}
 
         <!-- Поле для названия вакансии -->
-        <label for="id_title">Название вакансии</label>
+        <label for="id_title">Название вакансии
+            <span class="tooltip">?
+                <span class="tooltip-text">Укажите название вакансии, которое точно отражает должностные обязанности.</span>
+            </span>
+        </label>
         {{ form.title }}
 
         <!-- Поле для описания вакансии -->
-        <label for="id_requirements">Описание вакансии</label>
+        <label for="id_requirements">Описание вакансии
+            <span class="tooltip">?
+                <span class="tooltip-text">Опишите основные требования и задачи, которые стоят перед кандидатом.</span>
+            </span>
+        </label>
         {{ form.requirements }}
 
         <!-- Поле для обязанностей -->
-        <label for="id_responsibilities">Обязанности</label>
+        <label for="id_responsibilities">Обязанности
+            <span class="tooltip">?
+                <span class="tooltip-text">Перечислите основные обязанности, которые будут возложены на кандидата.</span>
+            </span>
+        </label>
         {{ form.responsibilities }}
 
         <!-- Поля для минимальной и максимальной зарплаты -->
-        <label for="id_salary_min">Минимальная зарплата</label>
+        <label for="id_salary_min">Минимальная зарплата
+            <span class="tooltip">?
+                <span class="tooltip-text">Укажите минимальный диапазон зарплаты для этой вакансии.</span>
+            </span>
+        </label>
         {{ form.salary_min }}
 
-        <label for="id_salary_max">Максимальная зарплата</label>
+        <label for="id_salary_max">Максимальная зарплата
+            <span class="tooltip">?
+                <span class="tooltip-text">Укажите максимальный диапазон зарплаты для этой вакансии.</span>
+            </span>
+        </label>
         {{ form.salary_max }}
 
         <!-- Поле для выбора категории профессии -->
-        <label for="id_category">Категория профессии</label>
+        <label for="id_category">Категория профессии
+            <span class="tooltip">?
+                <span class="tooltip-text">Выберите категорию, которая наиболее точно соответствует вакансии.</span>
+            </span>
+        </label>
         {{ form.category }}
 
         <!-- Поле для выбора профессии -->
-        <label for="id_profession">Профессия</label>
+        <label for="id_profession">Профессия
+            <span class="tooltip">?
+                <span class="tooltip-text">Выберите профессию, для которой создается вакансия.</span>
+            </span>
+        </label>
         {{ form.profession }}
 
         <!-- Поле для требуемого опыта -->
-        <label for="id_experience_required">Требуемый опыт работы (в годах)</label>
+        <label for="id_experience_required">Требуемый опыт работы (в годах)
+            <span class="tooltip">?
+                <span class="tooltip-text">Укажите минимальное количество лет опыта, которые требуются для этой вакансии.</span>
+            </span>
+        </label>
         {{ form.experience_required }}
         {% if form.experience_required.errors %}
             <ul class="error-list">
@@ -52,11 +85,19 @@
         {% endif %}
 
         <!-- Поле для типа занятости -->
-        <label for="id_job_type">Тип занятости</label>
+        <label for="id_job_type">Тип занятости
+            <span class="tooltip">?
+                <span class="tooltip-text">Выберите тип занятости: полная, частичная или временная.</span>
+            </span>
+        </label>
         {{ form.job_type }}
 
         <!-- Поле для места работы -->
-        <label for="id_location">Место работы</label>
+        <label for="id_location">Место работы
+            <span class="tooltip">?
+                <span class="tooltip-text">Укажите место, где будет проходить работа.</span>
+            </span>
+        </label>
         {{ form.location }}
 
         <!-- Скрытое поле для статуса вакансии, которое будет установлено как активное по умолчанию -->

@@ -41,10 +41,8 @@
         <h1 class="profile-title">{{employer_profile.user.username }}</h1>
         <div class="profile-pic">
         {% if employer_profile.company_logo %}
-                <img src="{{ employer_profile.company_logo.url }}" alt="Логотип компании">
-            {% else %}
-                <img src="{% static 'users/img/defaultCompanyAvatar.svg' %}" alt="Логотип компании">
-            {% endif %}
+            <img src="{{ employer_profile.company_logo.url }}" >
+        {% endif %}
         </div>
 
         <div class="profile-info">

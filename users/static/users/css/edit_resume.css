@@ -1,42 +1,229 @@
-/* Styling for the form container */
-.form-container {
-    width: 100%;
-    max-width: 600px;  /* Limit the width of the form */
-    margin: 0 auto;    /* Center the form horizontally */
-    padding: 20px;
-    background-color: #f9f9f9;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+/* Общий стиль для страницы */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f5;
+    margin: 0;
+    padding: 0;
+    color: #333;
+    line-height: 1.6;
 }
 
-/* Styling the form fields */
-.form-container input, .form-container textarea {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 15px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 16px;
-}
-
-/* Specific styling for textarea fields */
-.form-container textarea {
-    min-height: 150px;
-    resize: vertical; /* Allow resizing the textarea vertically */
-}
-
-/* Submit button styling */
-.submit-btn {
-    padding: 10px 20px;
-    font-size: 16px;
-    background-color: #007bff;
+/* Общий стиль для навбара */
+nav {
+    background-color: #333;
     color: white;
+    padding: 1em 2em;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Ссылки навбара */
+nav a {
+    color: white;
+    text-decoration: none;
+    margin-right: 1.5em;
+    font-weight: 500;
+    font-size: 1em;
+    transition: color 0.3s ease;
+}
+
+nav a:last-child {
+    margin-right: 0; /* Убираем отступ у последней ссылки */
+}
+
+nav a:hover {
+    color: #00aced; /* Цвет при наведении */
+}
+
+/* Стиль формы выхода */
+nav form {
+    margin: 0;
+    display: inline;
+}
+
+nav button {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1em;
+    cursor: pointer;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+nav button:hover {
+    color: #00aced; /* Цвет при наведении */
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    nav {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    nav a, nav button {
+        margin: 0.5em 0;
+        font-size: 0.9em;
+    }
+
+    nav a:first-child {
+        margin-top: 0;
+    }
+}
+
+
+/* Основной заголовок */
+h1 {
+    text-align: center;
+    margin: 2em 0 1em 0;
+    font-size: 2.5em;
+    color: #444;
+}
+
+/* Стили для формы */
+form {
+    max-width: 600px;
+    margin: 0 auto;
+    background-color: white;
+    padding: 2em;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+form label {
+    display: block;
+    margin-bottom: 0.5em;
+    font-weight: bold;
+    color: #555;
+}
+
+form input,
+form textarea,
+form select {
+    width: 100%;
+    padding: 0.8em;
+    margin-bottom: 1.5em;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1em;
+    box-sizing: border-box;
+}
+
+form textarea {
+    resize: vertical;
+    height: 100px;
+}
+
+form input:focus,
+form textarea:focus,
+form select:focus {
+    outline: none;
+    border-color: #007BFF;
+    box-shadow: 0 0 4px rgba(0, 123, 255, 0.5);
+}
+
+button[type="submit"] {
+    width: 100%;
+    padding: 1em;
+    font-size: 1em;
+    color: white;
+    background-color: #007BFF;
     border: none;
     border-radius: 4px;
     cursor: pointer;
-    transition: background-color 0.3s;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
 }
 
-.submit-btn:hover {
+button[type="submit"]:hover {
     background-color: #0056b3;
 }
+
+/* Ошибки формы */
+.error {
+    color: red;
+    font-size: 0.9em;
+    margin-top: -1em;
+    margin-bottom: 1em;
+}
+
+
+/* Стили для вопросика и подсказки */
+.tooltip {
+    display: inline-block;
+    position: relative;
+    cursor: pointer;
+    color: #6C757D; /* Цвет вопросика */
+    font-weight: bold;
+    font-size: 1.2em;
+    margin-left: 5px;
+}
+
+.tooltip .tooltip-text {
+    visibility: hidden;
+    width: 200px;
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    border-radius: 4px;
+    padding: 5px;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%; /* Расположение подсказки */
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0;
+    transition: opacity 0.3s;
+    font-size: 0.9em;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Треугольник у подсказки */
+.tooltip .tooltip-text::after {
+    content: "";
+    position: absolute;
+    top: 100%; /* Позиция треугольника */
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #333 transparent transparent transparent;
+}
+
+/* Показываем подсказку при наведении */
+.tooltip:hover .tooltip-text {
+    visibility: visible;
+    opacity: 1;
+}
+
+/* Дополнительные стили для вопросика */
+.tooltip:hover {
+    color: #343A40; /* Цвет при наведении */
+}
+
+
+
+
+/* Адаптивный дизайн */
+@media (max-width: 768px) {
+    form {
+        padding: 1.5em;
+    }
+
+    h1 {
+        font-size: 2em;
+    }
+
+    nav {
+        flex-wrap: wrap;
+    }
+
+    nav a, nav button {
+        margin-bottom: 0.5em;
+    }
+}
+
+
