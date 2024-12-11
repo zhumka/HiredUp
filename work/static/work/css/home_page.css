@@ -163,7 +163,7 @@ h1{
     color: white;
 }
 
-button.srch {
+.srch {
     border-radius:50%;
     border: none;
     cursor: pointer;
@@ -172,7 +172,13 @@ button.srch {
     background-color:rgba(177, 94, 192, 1);
 }
 
-button.srch img {
+.srch: hover {
+     width:900px;
+    height:900px;
+
+}
+
+.srch img {
     height: 40px;
     width: auto;
 }
