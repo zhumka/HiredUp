@@ -30,13 +30,39 @@
             <ul class="applications-list">
                 {% for application in page_obj %}
                     <li class="application-item">
-                        <!-- Сделать карточку отклика кликабельной, обернув её в ссылку -->
                         <a href="{% url 'application_detail' application.id %}" class="application-card">
                             <h3>{{ application.job_seeker.user.get_full_name }}</h3>
                             <p>Отклик на вакансию: <a href="{% url 'vacancy_detail' application.vacancy.id %}">{{ application.vacancy.title }}</a></p>
                             <p><strong>Статус отклика:</strong> <span class="status {{ application.get_status_display|lower }}">{{ application.get_status_display }}</span></p>
+
+                            <!-- Кнопка для написания сообщения работодателю -->
+                            {% if application.status == 'accepted' %}
+                                <button class="contactBtn" data-modal-id="modal-{{ application.id }}">Написать соискателю</button>
+                            {% endif %}
                         </a>
                     </li>
+
+                    <!-- Модальное окно для отправки сообщения соискателю -->
+                    <div id="modal-{{ application.id }}" class="modal">
+                        <div class="modal-content">
+                            <span class="close" data-modal-id="modal-{{ application.id }}">&times;</span>
+                            <h3>Связаться с соискателем</h3>
+                            <p>Вы можете написать на почту соискателя:</p>
+                            {% if application.job_seeker.user.email %}
+                                <a href="mailto:{{ application.job_seeker.user.email }}" target="_blank">{{ application.job_seeker.user.email }}</a>
+                            {% else %}
+                                <p>Почта не доступна.</p>
+                            {% endif %}
+                            <p>Номер телефона соискателя:
+                                {% if application.job_seeker.phone_number %}
+                                    {{ application.job_seeker.phone_number }}
+                                {% else %}
+                                    Номер не доступен.
+                                {% endif %}
+                            </p>
+                        </div>
+                    </div>
+
                 {% endfor %}
             </ul>
         {% else %}
@@ -46,23 +72,45 @@
 
     <!-- Навигация по страницам -->
     <section class="pagination-section">
-        <!-- Пагинация -->
-        <!--Тима, это пагинация, ее тоже можно настраивать стилями -->
-    <div class="pagination">
-        <span class="step-links">
-            {% if page_obj.has_previous %}
-                <a href="?page=1">Первая</a>
-                <a href="?page={{ page_obj.previous_page_number }}">Назад</a>
-            {% endif %}
+        <div class="pagination">
+            <span class="step-links">
+                {% if page_obj.has_previous %}
+                    <a href="?page=1">Первая</a>
+                    <a href="?page={{ page_obj.previous_page_number }}">Назад</a>
+                {% endif %}
 
-            <span>Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}</span>
+                <span>Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}</span>
 
-            {% if page_obj.has_next %}
-                <a href="?page={{ page_obj.next_page_number }}">Вперед</a>
-                <a href="?page={{ page_obj.paginator.num_pages }}">Последняя</a>
-            {% endif %}
-        </span>
-    </div>
+                {% if page_obj.has_next %}
+                    <a href="?page={{ page_obj.next_page_number }}">Вперед</a>
+                    <a href="?page={{ page_obj.paginator.num_pages }}">Последняя</a>
+                {% endif %}
+            </span>
+        </div>
     </section>
+
+    <script>
+        // Открытие и закрытие модальных окон
+        document.querySelectorAll('.contactBtn').forEach(button => {
+            button.addEventListener('click', function() {
+                const modalId = this.getAttribute('data-modal-id');
+                document.getElementById(modalId).style.display = "block";
+            });
+        });
+
+        document.querySelectorAll('.close').forEach(span => {
+            span.addEventListener('click', function() {
+                const modalId = this.getAttribute('data-modal-id');
+                document.getElementById(modalId).style.display = "none";
+            });
+        });
+
+        // Закрытие модальных окон при клике за пределами окна
+        window.addEventListener('click', function(event) {
+            if (event.target.classList.contains('modal')) {
+                event.target.style.display = "none";
+            }
+        });
+    </script>
 </body>
 </html>

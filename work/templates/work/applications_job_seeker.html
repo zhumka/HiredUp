@@ -35,12 +35,57 @@
                         <p>Статус: <span class="status {{ application.get_status_display|lower }}">{{ application.get_status_display }}</span></p>
                         <p><strong>Вакансия:</strong> {{ application.vacancy.profession.name }}</p>
                         <p><strong>Компания:</strong> {{ application.vacancy.employer.company_name }}</p>
+
+                        <!-- Показываем кнопку только если отклик принят -->
+                        {% if application.status == 'accepted' %}
+                            <button class="contactBtn" data-modal-id="modal-{{ application.id }}">Написать работодателю</button>
+                        {% endif %}
                     </li>
+
+                    <!-- Модальное окно для отправки сообщения работодателю -->
+                    <div id="modal-{{ application.id }}" class="modal">
+                        <div class="modal-content">
+                            <span class="close" data-modal-id="modal-{{ application.id }}">&times;</span>
+                            <h3>Связаться с работодателем</h3>
+                            <p>Вы можете написать на почту работодателя:</p>
+                            <!-- Проверка, что почта существует -->
+                            {% if application.vacancy.employer.user.email %}
+                                <a href="mailto:{{ application.vacancy.employer.user.email }}" target="_blank">{{ application.vacancy.employer.user.email }}</a>
+                            {% else %}
+                                <p>Почта не доступна.</p>
+                            {% endif %}
+                        </div>
+                    </div>
+
                 {% endfor %}
             </ul>
         {% else %}
             <p>У вас нет откликов на вакансии.</p>
         {% endif %}
     </section>
+
+    <script>
+        // Открытие и закрытие модальных окон
+        document.querySelectorAll('.contactBtn').forEach(button => {
+            button.addEventListener('click', function() {
+                const modalId = this.getAttribute('data-modal-id');
+                document.getElementById(modalId).style.display = "block";
+            });
+        });
+
+        document.querySelectorAll('.close').forEach(span => {
+            span.addEventListener('click', function() {
+                const modalId = this.getAttribute('data-modal-id');
+                document.getElementById(modalId).style.display = "none";
+            });
+        });
+
+        // Закрытие модальных окон при клике за пределами окна
+        window.addEventListener('click', function(event) {
+            if (event.target.classList.contains('modal')) {
+                event.target.style.display = "none";
+            }
+        });
+    </script>
 </body>
 </html>
