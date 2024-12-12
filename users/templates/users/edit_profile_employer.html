@@ -8,30 +8,67 @@
     <link rel="stylesheet" href="{% static 'users/css/edit_profile_employer.css' %}">
 </head>
 <body>
-    <h1>Редактирование профиля работодателя</h1>
 
-    <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
+    <header class="left-panel">
+        <div class="logotype">
+            <a href="{% url 'home' %}"><img src="{% static 'users/img/Logo.svg' %}" alt="HiredUp Logo"></a>
+        </div>
 
-        <!-- Поле для названия компании -->
-        <label for="id_company_name">Название компании</label>
-        {{ form.company_name }}
+        <nav class="nav-menu">
+        {% if user.is_authenticated %}
+            <a href="{% url 'profile' %}">Профиль</a>
+            <a href="{% url 'applications' %}">Отклики</a>
+            {% if user.employer_profile %}  <!-- Проверяем, является ли пользователь работодателем -->
+            <a href="{% url 'employer_vacancies' %}">Мои вакансии</a>  <!-- Ссылка на страницу списка вакансий -->
+        {% endif %}
+            <form action="{% url 'logout' %}" method="POST">
+                {% csrf_token %}
+                <button class="leave">Выйти</button>
+            </form>
 
-        <!-- Поле для описания компании -->
-        <label for="id_company_description">Описание компании</label>
-        {{ form.company_description }}
+        {% else %}
 
-        <!-- Поле для адреса компании -->
-        <label for="id_company_address">Адрес компании</label>
-        {{ form.company_address }}
+            <a href="{% url 'login' %}" >Войти</a>
+            <button onclick="{% url 'register' %}" class="button">Зарегистрироваться </button>
+        {% endif %}
 
-        <!-- Поле для загрузки логотипа компании -->
-        <label for="id_company_logo">Логотип компании</label>
-        {{ form.company_logo }}
+    </nav>
+    </header>
 
-        <!-- Кнопка для отправки формы -->
-        <button type="submit">Сохранить изменения</button>
-    </form>
+     <div class="container">
+        <h1>Редактирование профиля работодателя</h1>
+
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <!-- Поле для названия компании -->
+            <div class="form-group">
+                <label for="id_company_name">Название компании</label>
+                {{ form.company_name }}
+            </div>
+
+            <!-- Поле для описания компании -->
+            <div class="form-group">
+                <label for="id_company_description">Описание компании</label>
+                {{ form.company_description }}
+            </div>
+
+            <!-- Поле для адреса компании -->
+            <div class="form-group">
+                <label for="id_company_address">Адрес компании</label>
+                {{ form.company_address }}
+            </div>
+
+            <!-- Поле для загрузки логотипа компании -->
+            <div class="form-group">
+                <label for="id_company_logo">Логотип компании</label>
+                {{ form.company_logo }}
+            </div>
+
+            <!-- Кнопка для отправки формы -->
+            <button type="submit">Сохранить изменения</button>
+        </form>
+    </div>
 
 </body>
 </html>
