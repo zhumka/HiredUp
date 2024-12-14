@@ -19,7 +19,7 @@ def home_view(request):
     job_categories = JobCategory.objects.all()
 
     # Рекомендованные вакансии (случайно выбираем 5 вакансий)
-    recommended_vacancies = Vacancy.objects.filter(is_active=True).order_by('?')[:5]
+    recommended_vacancies = Vacancy.objects.filter(is_active=True).order_by('?')[:6]
 
     # Персонализированные вакансии для соискателей
     personalized_vacancies = []
@@ -30,13 +30,13 @@ def home_view(request):
             personalized_vacancies = Vacancy.objects.filter(
                 category=job_seeker_profile.profession.category,
                 is_active=True
-            ).order_by('?')[:5]
+            ).order_by('?')[:3]
 
     # Рекомендации для работодателей (например, по популярным категориям)
     employer_recommended_vacancies = []
     if request.user.is_authenticated and hasattr(request.user, 'employer_profile'):
         # Рекомендуем вакансии по популярным категориям
-        employer_recommended_vacancies = Vacancy.objects.filter(is_active=True).order_by('?')[:5]
+        employer_recommended_vacancies = Vacancy.objects.filter(is_active=True).order_by('?')[:6]
 
     return render(request, 'work/home_page.html', {
         'job_categories': job_categories,

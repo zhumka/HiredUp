@@ -9,66 +9,111 @@
     <link rel="stylesheet" type="text/css" href="{% static 'users/css/edit_profile_jobseeker.css' %}">
 </head>
 <body>
-    <h1>Редактирование профиля соискателя</h1>
-    <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-
-        <!-- Поля для username, first_name и last_name -->
-        <label for="id_username">Имя пользователя</label>
-        {{ form.username }}
-
-        <label for="id_first_name">Имя</label>
-        {{ form.first_name }}
-
-        <label for="id_last_name">Фамилия</label>
-        {{ form.last_name }}
-
-        <!-- Поле для выбора категории -->
-        <label for="id_category">Категория</label>
-        {{ form.category }}
-
-        <!-- Поле для выбора профессии -->
-        <label for="id_profession">Профессия</label>
-        {{ form.profession }}
-
-        <label for="id_phone_number">Номер телефона</label>
-        {{ form.phone_number }}
-
-        <label for="id_date_of_birth">Дата рождения (текущее значение):</label>
-        <span>{{ form.date_of_birth.value|date:"d.m.Y" }}</span>
-        <br>
-        <!-- Поле для редактирования даты -->
-        <input type="date" name="date_of_birth" id="id_date_of_birth" value="{{ form.date_of_birth.value|date:'Y-m-d' }}">
-        <!-- Вывод ошибок для даты рождения -->
-        {% if form.date_of_birth.errors %}
-            <div class="error">
-                {% for error in form.date_of_birth.errors %}
-                    <p>{{ error }}</p>
-                {% endfor %}
-            </div>
-        {% endif %}
 
 
-        <!-- Поле для аватара -->
-        <label for="id_avatar">Аватарка</label>
-        {{ form.avatar }}
-
-        <!-- Текущее значение для статуса -->
-        <label for="id_status">Статус (текущее значение):</label>
-        <span>{% if form.status.value == True %}Ищу работу{% else %}Не ищу работу{% endif %}</span>
-        <br>
-        <!-- Поле для выбора статуса -->
-        <div class="status-options">
-            <label>
-                <input type="radio" name="status" value="True" {% if form.status.value == True %}checked{% endif %}> Ищу работу
-            </label>
-            <label>
-                <input type="radio" name="status" value="False" {% if form.status.value == False %}checked{% endif %}> Не ищу работу
-            </label>
+    <header class="left-panel">
+        <div class="logotype">
+            <a href="{% url 'home' %}"><img src="{% static 'users/img/Logo.svg' %}" alt="HiredUp Logo"></a>
         </div>
 
-        <button type="submit">Сохранить изменения</button>
-    </form>
+        <nav class="nav-menu">
+        {% if user.is_authenticated %}
+            <a href="{% url 'profile' %}">Профиль</a>
+            <a href="{% url 'applications' %}">Отклики</a>
+            {% if user.employer_profile %}  <!-- Проверяем, является ли пользователь работодателем -->
+            <a href="{% url 'employer_vacancies' %}">Мои вакансии</a>  <!-- Ссылка на страницу списка вакансий -->
+        {% endif %}
+            <form action="{% url 'logout' %}" method="POST">
+                {% csrf_token %}
+                <button class="leave">Выйти</button>
+            </form>
+
+        {% else %}
+
+            <a href="{% url 'login' %}" >Войти</a>
+            <button onclick="{% url 'register' %}" class="button">Зарегистрироваться </button>
+        {% endif %}
+
+    </nav>
+    </header>
+
+    <div class="container">
+        <h1>Редактирование профиля соискателя</h1>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <!-- Поля для username, first_name и last_name -->
+            <div class="form-group">
+                <label for="id_username">Имя пользователя</label>
+                {{ form.username }}
+            </div>
+
+            <div class="form-group">
+                <label for="id_first_name">Имя</label>
+                {{ form.first_name }}
+            </div>
+
+            <div class="form-group">
+                <label for="id_last_name">Фамилия</label>
+                {{ form.last_name }}
+            </div>
+
+            <!-- Поле для выбора категории -->
+            <div class="form-group">
+                <label for="id_category">Категория</label>
+                {{ form.category }}
+            </div>
+
+            <!-- Поле для выбора профессии -->
+            <div class="form-group">
+                <label for="id_profession">Профессия</label>
+                {{ form.profession }}
+            </div>
+
+            <div class="form-group">
+                <label for="id_phone_number">Номер телефона</label>
+                {{ form.phone_number }}
+            </div>
+
+            <div class="form-group">
+                <label for="id_date_of_birth">Дата рождения (текущее значение):</label>
+                <span>{{ form.date_of_birth.value|date:"d.m.Y" }}</span>
+                <br>
+                <!-- Поле для редактирования даты -->
+                <input type="date" name="date_of_birth" id="id_date_of_birth" value="{{ form.date_of_birth.value|date:'Y-m-d' }}">
+                <!-- Вывод ошибок для даты рождения -->
+                {% if form.date_of_birth.errors %}
+                    <div class="error-message">
+                        {% for error in form.date_of_birth.errors %}
+                            <p>{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                <label for="id_avatar">Аватарка</label>
+                {{ form.avatar }}
+            </div>
+
+            <div class="form-group">
+                <label for="id_status">Статус (текущее значение):</label>
+                <span>{% if form.status.value == True %}Ищу работу{% else %}Не ищу работу{% endif %}</span>
+                <br>
+                <!-- Поле для выбора статуса -->
+                <div class="status-options">
+                    <label>
+                        <input type="radio" name="status" value="True" {% if form.status.value == True %}checked{% endif %}> Ищу работу
+                    </label>
+                    <label>
+                        <input type="radio" name="status" value="False" {% if form.status.value == False %}checked{% endif %}> Не ищу работу
+                    </label>
+                </div>
+            </div>
+
+            <button type="submit">Сохранить изменения</button>
+        </form>
+    </div>
 
     <script>
         // Функция для загрузки профессий по категории
