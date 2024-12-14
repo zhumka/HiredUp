@@ -30,7 +30,8 @@
         {% else %}
 
             <a href="{% url 'login' %}" >Войти</a>
-            <button onclick="{% url 'register' %}" class="button">Зарегистрироваться </button>
+            <button onclick="window.location.href='{% url 'register' %}';" class="button">Зарегистрироваться</button>
+
         {% endif %}
 
     </nav>
@@ -64,62 +65,64 @@
 
 </div>
 
-    <!-- Рекомендуемые вакансии -->
+{% if personalized_vacancies %}
     <section class="recommended">
-        <h2>Рекомендуемые вакансии</h2>
+        <h2>Вакансии по вашей категории</h2>
         <div class="vacancy-list">
-            {% for vacancy in recommended_vacancies %}
-                <div class="vacancy">
-                    {% if vacancy.employer.company_logo %}
-                        <img src="{{ vacancy.employer.company_logo.url }}" alt="Логотип компании">
-                    {% endif %}
+            {% for vacancy in personalized_vacancies %}
+                <a href="{% url 'vacancy_detail' vacancy_id=vacancy.id %}" class="vacancy">
+            <div class="emp-info2">
+            {% if vacancy.employer.company_logo %}
+                <img src="{{ vacancy.employer.company_logo.url }}" alt="Логотип компании">
+            {% endif %}
+             <div class="emp-info3">
                     <h3>{{ vacancy.employer.company_name }}</h3>
-                     <p>  {{vacancy.employer.company_address }}</p>
-                    <h3><a href="{% url 'vacancy_detail' vacancy_id=vacancy.id %}">{{ vacancy.title }}</a></h3>
-                    <p><strong>Категория:</strong> {{ vacancy.category.name }}</p>
-                    <p><strong>Зарплата:</strong> от {{ vacancy.salary_min }} до {{ vacancy.salary_max }} руб.</p>
+                    <p><img src="{% static 'users/img/addressIcon.svg' %}" alt="Иконка адреса" class="address"> {{ vacancy.employer.company_address }}</p>
                 </div>
+                </div>
+            <h3>{{ vacancy.title }}</h3>
+            <p><strong>Категория:</strong> {{ vacancy.category.name }}</p>
+            <p class="salary"> <img src="{% static 'users/img/salary.svg' %}"> от {{ vacancy.salary_min }} до {{ vacancy.salary_max }} сом</p>
+        </a>
+            {% empty %}
+                <p>Нет вакансий, соответствующих вашей категории.</p>
             {% endfor %}
         </div>
     </section>
+{% endif %}
 
-    {% if personalized_vacancies %}
-        <section class="personalized">
-            <h2>Вакансии по вашей категории</h2>
-            <div class="vacancy-list">
-                {% for vacancy in personalized_vacancies %}
-                    <div class="vacancy">
-                        <h3><a href="{% url 'vacancy_detail' vacancy_id=vacancy.id %}">{{ vacancy.title }}</a></h3>
-                        <p><strong>Категория:</strong> {{ vacancy.category.name }}</p>
-                        <p><strong>Зарплата:</strong> от {{ vacancy.salary_min }} до {{ vacancy.salary_max }} руб.</p>
-                    </div>
-                {% empty %}
-                    <p>Нет вакансий, соответствующих вашей категории.</p>
-                {% endfor %}
+    <!-- Рекомендуемые вакансии -->
+    <section class="recommended">
+    <h2>Рекомендуемые вакансии</h2>
+    <div class="vacancy-list">
+        {% for vacancy in recommended_vacancies %}
+        <a href="{% url 'vacancy_detail' vacancy_id=vacancy.id %}" class="vacancy">
+            <div class="emp-info2">
+                {% if vacancy.employer.company_logo %}
+                <img src="{{ vacancy.employer.company_logo.url }}" alt="Логотип компании">
+                {% endif %}
+                <div class="emp-info3">
+                    <h3>{{ vacancy.employer.company_name }}</h3>
+                    <p><img src="{% static 'users/img/addressIcon.svg' %}" alt="Иконка адреса" class="address"> {{ vacancy.employer.company_address }}</p>
+                </div>
             </div>
-        </section>
-    {% endif %}
-
-
-    {% if employer_recommended_vacancies %}
-        <section class="recommended">
-            <h2>Рекомендации для работодателей</h2>
-            <div class="vacancy-list">
-                {% for vacancy in employer_recommended_vacancies %}
-                    <div class="vacancy">
-                        <h3><a href="{% url 'vacancy_detail' vacancy_id=vacancy.id %}">{{ vacancy.title }}</a></h3>
-                        <p><strong>Категория:</strong> {{ vacancy.category.name }}</p>
-                        <p><strong>Зарплата:</strong> от {{ vacancy.salary_min }} до {{ vacancy.salary_max }} руб.</p>
-                    </div>
-                {% empty %}
-                    <p>Пока нет доступных вакансий для рекомендованных категорий.</p>
-                {% endfor %}
-            </div>
-        </section>
-    {% endif %}
+            <h3>{{ vacancy.title }}</h3>
+            <p><strong>Категория:</strong> {{ vacancy.category.name }}</p>
+            <p class="salary"><img src="{% static 'users/img/salary.svg' %}" > {{ vacancy.salary_min }} - {{ vacancy.salary_max }} сом</p>
+        </a>
+        {% endfor %}
+    </div>
+    </section>
 
     <footer>
+        <h4>тех. поддержка</h4>
+        <a>instagram</a>
+        <a>telegram</a>
+        <a>phone number</a>
+
         <p>HiredUp &copy; 2024 Все права защищены</p>
+
+
     </footer>
 
 </body>

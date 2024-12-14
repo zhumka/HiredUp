@@ -280,7 +280,7 @@ button:hover {
     line-height: 0.2;
 }
 .no{
- color:rgba(251, 69, 69, 1);
+    color:rgba(251, 69, 69, 1);
     font-weight:200;
     font-weight:200;
     margin:0;
@@ -317,7 +317,6 @@ h2 {
     align-items: center;
     justify-content: space-between;
     border-bottom: 1px solid #B2DDFF;
-
     font-size: 18px;
     opacity: 0.9;
     color:#B2DDFF;
