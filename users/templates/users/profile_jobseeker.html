@@ -1,20 +1,21 @@
 {% load static %}
+
 {% block content %}
 <!DOCTYPE html>
-<html lang="ru" xmlns="http://www.w3.org/1999/html">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="{% static 'users/css/profile_jobseeker.css' %}">
+
 </head>
 <body>
 
 <header class="top-panel">
-        <div class="logotype" >
-            <a href="{% url 'home' %}"><img src="{% static 'users/img/Logo.svg' %}" alt="HiredUp Logo"></a>
-        </div>
-
-        <nav class="nav-menu">
+    <div class="logotype">
+        <a href="{% url 'home' %}"><img src="{% static 'users/img/Logo.svg' %}" alt="HiredUp Logo"></a>
+    </div>
+    <nav class="nav-menu">
         <a href="{% url 'home' %}">Главная</a>
         {% if user.is_authenticated %}
             <a href="{% url 'applications' %}">Отклики</a>
@@ -27,34 +28,28 @@
             <a href="{% url 'register' %}">Зарегистрироваться</a>
         {% endif %}
     </nav>
-    </header>
+</header>
 
-    <div class="profile-container" id="profile-card">
-        <h1 class="profile-title">{{ job_seeker_profile.user.username }}</h1>
+<div class="profile-container" id="profile-card">
+    <h1 class="profile-title">{{ job_seeker_profile.user.username }}</h1>
     <a class="edit-icon" href="{% url 'edit_profile' %}" title="Редактировать профиль">
         <img src="{% static 'users/img/editIcon.svg' %}" alt="edit icon">
     </a>
 
-
     <div class="user-info">
         <div class="profile-pic">
-    {% if job_seeker_profile.avatar %}
-        <img src="{{ job_seeker_profile.avatar.url }}" alt="Profile Picture">
-    {% else %}
-            <img src="{% static 'users/img/defaultUserAvatar.svg' %}" alt="Profile Picture">
-    {% endif %}
-</div>
-
+            {% if job_seeker_profile.avatar %}
+                <img src="{{ job_seeker_profile.avatar.url }}" alt="Profile Picture">
+            {% else %}
+                <img src="{% static 'users/img/defaultUserAvatar.svg' %}" alt="Profile Picture">
+            {% endif %}
+        </div>
 
         <div class="profile-details">
-            <p class="NAME">
-                {{ job_seeker_profile.user.last_name }}
-                {{ job_seeker_profile.user.first_name }}
-            </p>
+            <p class="NAME">{{ job_seeker_profile.user.last_name }} {{ job_seeker_profile.user.first_name }}</p>
             <p><strong><img src="{% static 'users/img/suitcaseIcon.svg' %}"></strong>
                 {{ job_seeker_profile.profession }}, {{ experience_display }}
             </p>
-
             <p><strong><img src="{% static 'users/img/emailIcon.svg' %}"></strong>
                 {{ job_seeker_profile.user.email }}
             </p>
@@ -63,8 +58,9 @@
             </p>
         </div>
     </div>
-        <div class="res-det">
-    <p>
+
+    <div class="res-det">
+        <p>
             {% if job_seeker_profile.status %}
                 <li class="yes">Ищу работу</li>
             {% else %}
@@ -74,54 +70,87 @@
 
         <h2>РЕЗЮМЕ
             <img
-        src="{% static 'users/img/toggleIcon.svg' %}"
-        alt="Toggle Icon"
-        class="toggle-icon"
-        onclick="toggleCard()"
-        title="Свернуть/Развернуть">
-    </h2>
-        </div>
+            src="{% static 'users/img/toggleIcon.svg' %}"
+            alt="Toggle Icon"
+            class="toggle-icon"
+            onclick="toggleCard()"
+            title="Свернуть/Развернуть">
+        </h2>
+    </div>
 
     <div class="profile-info" id="profile-info">
-    {% if job_seeker_profile.resume %}
-        <li>ДАТА РОЖДЕНИЯ</li>
-        <p>{{ job_seeker_profile.date_of_birth }}</p>
-        <li>УРОВЕНЬ ОБРАЗОВАНИЯ</li>
-        <p>{{ job_seeker_profile.resume.get_education_display }}</p>
-        <li>О СОИСКАТЕЛЕ</li>
-        <p>{{ job_seeker_profile.resume.summary }}</p>
-        <li>НАВЫКИ</li>
-        <p>{{ job_seeker_profile.resume.skills }}</p>
-        <li>ЗНАНИЕ ЯЗЫКОВ </li>
-        <p>{{ job_seeker_profile.resume.languages }}</p>
-
-    {% else %}
-        <p>Резюме отсутствует.</p>
-    {% endif %}
-
+        {% if job_seeker_profile.resume %}
+            <li>ДАТА РОЖДЕНИЯ</li>
+            <p>{{ job_seeker_profile.date_of_birth }}</p>
+            <li>УРОВЕНЬ ОБРАЗОВАНИЯ</li>
+            <p>{{ job_seeker_profile.resume.get_education_display }}</p>
+            <li>ОБРАЗОВАНИЕ</li>
+            <p>{{ job_seeker_profile.resume.skills }}</p>
+            <li>ОПЫТ РАБОТЫ</li>
+            <p>{{ job_seeker_profile.resume.summary }}</p>
+            <li>ЗНАНИЕ ЯЗЫКОВ </li>
+            <p>{{ job_seeker_profile.resume.languages }}</p>
+        {% else %}
+            <p>Резюме отсутствует.</p>
+        {% endif %}
         <a href="{% url 'resume_view' %}" class="button">Редактировать резюме</a>
 
         <h5>Дата создания профиля: {{ job_seeker_profile.created_at|date:"d-m-Y" }}</h5>
-</div>
+    </div>
+
+    <!-- Статистика кнопка -->
+    <button class="stat-button" onclick="openStatisticsModal()">Показать статистику откликов</button>
+
+
+    <!-- Модальное окно для статистики -->
+    <div id="statisticsModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeStatisticsModal()">&times;</span>
+            <h3>Статистика откликов</h3>
+            <ul>
+                <li>Всего откликов: {{ total_applications }}</li>
+                <li>Принято: {{ accepted }}</li>
+                <li>Отклонено: {{ rejected }}</li>
+                <li>В ожидании: {{ pending }}</li>
+            </ul>
+        </div>
+    </div>
 
 </div>
+
 <script>
-function toggleCard() {
-    const profileInfo = document.querySelector('.profile-info');
-    const toggleIcon = document.querySelector('.toggle-icon');
+    function toggleCard() {
+        const profileInfo = document.querySelector('.profile-info');
+        const toggleIcon = document.querySelector('.toggle-icon');
+        profileInfo.classList.toggle('collapsed');
+        toggleIcon.classList.toggle('rotated');
+    }
 
-    // Переключаем класс для открытия/закрытия карточки
-    profileInfo.classList.toggle('collapsed');
-    // Переключаем класс для поворота иконки
-    toggleIcon.classList.toggle('rotated');
-}
+        // Открытие модального окна
+    function openStatisticsModal() {
+        document.getElementById('statisticsModal').classList.add('show');
+    }
+
+    // Закрытие модального окна
+    function closeStatisticsModal() {
+        document.getElementById('statisticsModal').classList.remove('show');
+    }
+
+    // Закрытие модального окна, если кликнули вне его области
+    window.onclick = function(event) {
+        if (event.target == document.getElementById('statisticsModal')) {
+            closeStatisticsModal();
+        }
+    }
 
 </script>
 
+
+
 <footer>
-        <p>&copy; 2024 HiredUp</p>
-    </footer>
-</div>
+    <p>&copy; 2024 HiredUp</p>
+</footer>
+
 </body>
 </html>
 {% endblock %}

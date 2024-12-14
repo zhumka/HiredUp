@@ -12,7 +12,7 @@ from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from .forms import RegistrationForm, EmployerProfileForm, JobSeekerProfileForm, ResumeForm
 from users.models import UserType, JobSeekerProfile, EmployerProfile
-from work.models import Application
+from work.models import Application, Vacancy
 
 User = get_user_model()
 
@@ -122,11 +122,13 @@ def profile_view(request):
         # Пример статистики для работодателя, которую можно будет позже расширить
         total_vacancies = Vacancy.objects.filter(employer=employer_profile).count()
         active_vacancies = Vacancy.objects.filter(employer=employer_profile, is_active=True).count()
+        inactive_vacancies = Vacancy.objects.filter(employer=employer_profile, is_active=False).count()
 
         return render(request, 'users/profile_employer.html', {
             'employer_profile': employer_profile,
             'total_vacancies': total_vacancies,
             'active_vacancies': active_vacancies,
+            'inactive_vacancies': inactive_vacancies,
         })
 
     elif user_type == 'job_seeker':

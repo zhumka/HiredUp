@@ -6,66 +6,97 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Профиль Работодателя{% endblock %}</title>
     <link rel="stylesheet" type="text/css" href="{% static 'users/css/profile_employer.css' %}">
-
 </head>
 
-
 <body>
-
     <header class="top-panel">
-        <div class="logotype" >
+        <div class="logotype">
             <a href="{% url 'home' %}"><img src="{% static 'users/img/Logo.svg' %}" alt="HiredUp Logo"></a>
         </div>
 
         <nav class="nav-menu">
-        <a href="{% url 'home' %}">Главная</a>
-        {% if user.is_authenticated %}
-            <a href="{% url 'employer_vacancies' %}">Мои вакансии</a>
-            <a href="{% url 'applications' %}">Отклики</a>
-            <form action="{% url 'logout' %}" method="POST">
-                {% csrf_token %}
-                <button type="submit" >Выйти</button>
-            </form>
-        {% else %}
-            <a href="{% url 'login' %}">Войти</a>
-            <a href="{% url 'register' %}">Зарегистрироваться</a>
-        {% endif %}
-    </nav>
+            <a href="{% url 'home' %}">Главная</a>
+            {% if user.is_authenticated %}
+                <a href="{% url 'employer_vacancies' %}">Мои вакансии</a>
+                <a href="{% url 'applications' %}">Отклики</a>
+                <form action="{% url 'logout' %}" method="POST">
+                    {% csrf_token %}
+                    <button type="submit">Выйти</button>
+                </form>
+            {% else %}
+                <a href="{% url 'login' %}">Войти</a>
+                <a href="{% url 'register' %}">Зарегистрироваться</a>
+            {% endif %}
+        </nav>
     </header>
 
     {% block content %}
     <div class="profile-container">
         <a class="edit-icon" href="{% url 'edit_profile' %}" title="Редактировать профиль">
-        <img src="{% static 'users/img/editIcon.svg' %}" alt="edit icon">
-    </a>
-        <h1 class="profile-title">{{employer_profile.user.username }}</h1>
+            <img src="{% static 'users/img/editIcon.svg' %}" alt="edit icon">
+        </a>
+        <h1 class="profile-title">{{ employer_profile.user.username }}</h1>
         <div class="profile-pic">
-        {% if employer_profile.company_logo %}
-            <img src="{{ employer_profile.company_logo.url }}" >
-        {% endif %}
+            {% if employer_profile.company_logo %}
+                <img src="{{ employer_profile.company_logo.url }}" alt="Company Logo">
+            {% endif %}
         </div>
 
         <div class="profile-info">
-            <p class="NAME">{{employer_profile.company_name }}</p>
+            <p class="NAME">{{ employer_profile.company_name }}</p>
             <div class="det">
-                <p><strong><img src="{% static 'users/img/addressIcon.svg' %}"></strong>
-                {{employer_profile.company_address }}</p>
-                <p><strong><img src="{% static 'users/img/emailIcon.svg' %}"></strong>
-                {{employer_profile.user.email }}</p>
+                <p><strong><img src="{% static 'users/img/addressIcon.svg' %}"></strong> {{ employer_profile.company_address }}</p>
+                <p><strong><img src="{% static 'users/img/emailIcon.svg' %}"></strong> {{ employer_profile.user.email }}</p>
             </div>
 
-
-
             <h2>Описание компании</h2>
-            <p class="description">&emsp;{{employer_profile.company_description }}</p>
+            <p class="description">&emsp;{{ employer_profile.company_description }}</p>
 
             <a href="{% url 'create_vacancy' %}" class="button">Создать вакансию</a>
+
             <h5>Дата создания профиля: {{ employer_profile.created_at|date:"d-m-Y" }}</h5>
         </div>
+
+        <!-- Кнопка для отображения статистики -->
+        <button class="stat-button" onclick="openStatisticsModal()">Показать статистику вакансий</button>
+
+        <!-- Модальное окно для статистики вакансий -->
+        <div id="statisticsModal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeStatisticsModal()">&times;</span>
+                <h3>Статистика вакансий</h3>
+                <ul>
+                    <li>Всего вакансий: {{ total_vacancies }}</li>
+                    <li>Активных вакансий: {{ active_vacancies }}</li>
+                    <li>Неактивных вакансий: {{ inactive_vacancies }}</li>
+                </ul>
+            </div>
+        </div>
+
     </div>
+
     <footer>
         <p>&copy; 2024 HiredUp</p>
     </footer>
     {% endblock %}
 </body>
+
+<script>
+    // Открытие модального окна
+    function openStatisticsModal() {
+        document.getElementById('statisticsModal').classList.add('show');
+    }
+
+    // Закрытие модального окна
+    function closeStatisticsModal() {
+        document.getElementById('statisticsModal').classList.remove('show');
+    }
+
+    // Закрытие модального окна, если кликнули вне его области
+    window.onclick = function(event) {
+        if (event.target == document.getElementById('statisticsModal')) {
+            closeStatisticsModal();
+        }
+    }
+</script>
 </html>

@@ -91,6 +91,25 @@
     </section>
 {% endif %}
 
+
+    <!-- Кнопка для отображения статистики -->
+        <button class="stat-button" onclick="openStatisticsModal()">Показать статистику сайта</button>
+    <!-- Модальное окно для статистики вакансий -->
+    <div id="statisticsModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeStatisticsModal()">&times;</span>
+            <h3>Статистика сайта</h3>
+            <ul>
+                <li>Всего вакансий: {{ total_vacancies }}</li>
+                <li>Активных вакансий: {{ active_vacancies }}</li>
+                <li>Неактивных вакансий: {{ inactive_vacancies }}</li>
+                <li>Всего откликов: {{ total_applications }}</li>
+                <li>Всего cоискателей: {{ total_job_seekers }}</li>
+                <li>Всего работодателей: {{ total_employers }}</li>
+            </ul>
+        </div>
+    </div>
+
     <!-- Рекомендуемые вакансии -->
     <section class="recommended">
     <h2>Рекомендуемые вакансии</h2>
@@ -124,6 +143,25 @@
 
 
     </footer>
+
+    <script>
+        // Открытие модального окна
+        function openStatisticsModal() {
+            document.getElementById('statisticsModal').classList.add('show');
+        }
+
+        // Закрытие модального окна
+        function closeStatisticsModal() {
+            document.getElementById('statisticsModal').classList.remove('show');
+        }
+
+        // Закрытие модального окна, если кликнули вне его области
+        window.onclick = function(event) {
+            if (event.target == document.getElementById('statisticsModal')) {
+                closeStatisticsModal();
+            }
+        }
+    </script>
 
 </body>
 </html>
