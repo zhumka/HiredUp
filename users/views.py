@@ -4,7 +4,6 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.template.loader import render_to_string
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes, force_str
-
 from work.forms import VacancyForm
 from .tokens import account_activation_token
 from django.core.mail import EmailMessage
@@ -13,6 +12,7 @@ from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from .forms import RegistrationForm, EmployerProfileForm, JobSeekerProfileForm, ResumeForm
 from users.models import UserType, JobSeekerProfile, EmployerProfile
+from work.models import Application
 
 User = get_user_model()
 
@@ -112,23 +112,30 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 
 
-#Вьюшка профилей
 @login_required
 def profile_view(request):
     user_type = request.user.user_type.user_type  # Получаем тип пользователя
 
     if user_type == 'employer':
         employer_profile = request.user.employer_profile
-        return render(request, 'users/profile_employer.html', {'employer_profile': employer_profile})
+
+        # Пример статистики для работодателя, которую можно будет позже расширить
+        total_vacancies = Vacancy.objects.filter(employer=employer_profile).count()
+        active_vacancies = Vacancy.objects.filter(employer=employer_profile, is_active=True).count()
+
+        return render(request, 'users/profile_employer.html', {
+            'employer_profile': employer_profile,
+            'total_vacancies': total_vacancies,
+            'active_vacancies': active_vacancies,
+        })
 
     elif user_type == 'job_seeker':
         job_seeker_profile = request.user.job_seeker_profile
 
-        # Проверяем, что поле experience не None
+        # Проверяем, что поле resume не None
         if job_seeker_profile.resume is not None:
             experience = job_seeker_profile.resume.experience
             if experience is not None:
-                # Обработка правильности вывода опыта работы (год/года/лет).
                 if experience == 0:
                     experience_display = "без опыта работы"
                 elif experience == 1:
@@ -142,14 +149,26 @@ def profile_view(request):
         else:
             experience_display = "опыт не указан"
 
+        # Статистика откликов для соискателя
+        total_applications = Application.objects.filter(job_seeker=job_seeker_profile).count()
+        accepted = Application.objects.filter(job_seeker=job_seeker_profile, status='accepted').count()
+        rejected = Application.objects.filter(job_seeker=job_seeker_profile, status='rejected').count()
+        pending = Application.objects.filter(job_seeker=job_seeker_profile, status='pending').count()
+
+        # Передаем данные в шаблон
         return render(request, 'users/profile_jobseeker.html', {
             'job_seeker_profile': job_seeker_profile,
-            'experience_display': experience_display
+            'experience_display': experience_display,
+            'total_applications': total_applications,
+            'accepted': accepted,
+            'rejected': rejected,
+            'pending': pending,
         })
 
     else:
         messages.error(request, "Тип пользователя неопределен.")
         return redirect('login')
+
 
 #Вьюшка страницы редактирования профилей.
 @login_required
