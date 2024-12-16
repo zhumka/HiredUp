@@ -173,6 +173,8 @@ def profile_view(request):
 
 
 #Вьюшка страницы редактирования профилей.
+from django.core.files.storage import default_storage
+
 @login_required
 def edit_profile_view(request):
     user_type = request.user.user_type.user_type
@@ -193,15 +195,21 @@ def edit_profile_view(request):
         if request.method == 'POST':
             form = JobSeekerProfileForm(request.POST, request.FILES, instance=job_seeker_profile, user=request.user)
             if form.is_valid():
-                form.save()
+                # Удаляем старый аватар, если он был изменен или удален
+                remove_avatar = request.POST.get('remove_avatar', False)
+                if remove_avatar and job_seeker_profile.avatar:
+                    default_storage.delete(job_seeker_profile.avatar.path)  # Удаляем файл аватара
+                    job_seeker_profile.avatar = None  # Обновляем профиль без аватара
+                form.save()  # Сохраняем изменения
                 return redirect('profile')
         else:
-            form = JobSeekerProfileForm(instance=job_seeker_profile, user=request.user)  # Добавлено user=request.user
+            form = JobSeekerProfileForm(instance=job_seeker_profile, user=request.user)
         return render(request, 'users/edit_profile_jobseeker.html', {'form': form})
 
     else:
         messages.error(request, "Тип пользователя неопределен.")
         return redirect('login')
+
 
 
 from django.http import JsonResponse
