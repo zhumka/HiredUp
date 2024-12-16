@@ -81,9 +81,15 @@ label .tooltip {
     position: relative;
     display: inline-block;
     cursor: pointer;
-    margin-left: 5px;
+    margin: 10px;
     color: #FFDD00; /* Цвет вопросика */
+    text-align: center;
+    width:20px;
+    height:auto;
+    border:1.5px solid #FFDD00;
+    border-radius:50%;
 }
+
 
 label .tooltip .tooltip-text {
     visibility: hidden;

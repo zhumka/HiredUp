@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 {% load static %}
-<html lang="ru">
+<html lang="ru" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -18,15 +18,11 @@
 
         <nav class="nav-menu">
         {% if user.is_authenticated %}
-            <a href="{% url 'profile' %}">Профиль</a>
+            <a href="{% url 'profile' %}">Назад в профиль</a>
             <a href="{% url 'applications' %}">Отклики</a>
             {% if user.employer_profile %}  <!-- Проверяем, является ли пользователь работодателем -->
             <a href="{% url 'employer_vacancies' %}">Мои вакансии</a>  <!-- Ссылка на страницу списка вакансий -->
         {% endif %}
-            <form action="{% url 'logout' %}" method="POST">
-                {% csrf_token %}
-                <button class="leave">Выйти</button>
-            </form>
 
         {% else %}
 
@@ -40,7 +36,37 @@
     <div class="container">
         <h1>Редактирование профиля соискателя</h1>
         <form method="post" enctype="multipart/form-data">
-            {% csrf_token %}
+    {% csrf_token %}
+    <div class="avatar-settings">
+    <!-- Контейнер с аватаркой -->
+    <div class="custom-avatar-wrapper">
+        <div class="avatar-preview" id="avatar-preview">
+            {% if form.avatar.value %}
+                <img src="{{ form.avatar.value.url }}" alt="Current Image" class="current-avatar" id="current-avatar">
+            {% else %}
+                <img src="{% static 'users/img/defaultUserAvatar.svg' %}" alt="Default Avatar" class="current-avatar" id="current-avatar">
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Контейнер с кнопками -->
+    <div class="buttons-container">
+        <!-- Удаление изображения -->
+    <label class="remove-avatar-button" id="remove-avatar-button">
+        <input type="hidden" name="remove_avatar" id="remove-avatar-field" value="false">
+        <img src="{% static 'users/img/deleteIcon.svg' %}" class="edit-icon">
+        Удалить изображение
+    </label>
+    <!-- Изменение изображения -->
+    <label class="custom-avatar-label">
+        <input type="file" name="{{ form.avatar.html_name }}" id="{{ form.avatar.id_for_label }}" class="custom-file-input">
+        <img src="{% static 'users/img/changeAvatarIcon.svg' %}" alt="Edit Icon" class="edit-icon">
+        Изменить изображение
+    </label>
+
+</div>
+
+</div>
 
             <!-- Поля для username, first_name и last_name -->
             <div class="form-group">
@@ -76,8 +102,7 @@
             </div>
 
             <div class="form-group">
-                <label for="id_date_of_birth">Дата рождения (текущее значение):</label>
-                <span>{{ form.date_of_birth.value|date:"d.m.Y" }}</span>
+                <label for="id_date_of_birth">Дата рождения</label>
                 <br>
                 <!-- Поле для редактирования даты -->
                 <input type="date" name="date_of_birth" id="id_date_of_birth" value="{{ form.date_of_birth.value|date:'Y-m-d' }}">
@@ -91,14 +116,10 @@
                 {% endif %}
             </div>
 
-            <div class="form-group">
-                <label for="id_avatar">Аватарка</label>
-                {{ form.avatar }}
-            </div>
+
 
             <div class="form-group">
-                <label for="id_status">Статус (текущее значение):</label>
-                <span>{% if form.status.value == True %}Ищу работу{% else %}Не ищу работу{% endif %}</span>
+
                 <br>
                 <!-- Поле для выбора статуса -->
                 <div class="status-options">
@@ -140,6 +161,44 @@
                 }
             });
         });
+    </script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+    const fileInput = document.querySelector(".custom-file-input");
+    const avatarPreview = document.querySelector("#avatar-preview");
+    const currentAvatar = document.querySelector("#current-avatar");
+    const removeAvatarButton = document.querySelector("#remove-avatar-button");
+    const defaultAvatar = "{% static 'users/img/defaultUserAvatar.svg' %}";
+
+    // Обновление аватара при выборе файла
+    fileInput.addEventListener("change", (event) => {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                currentAvatar.src = e.target.result; // Обновляем превью
+                removeAvatarButton.style.visibility = "visible"; // Показываем кнопку удаления
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+
+    // Удаление аватара
+    removeAvatarButton.addEventListener("click", () => {
+        currentAvatar.src = defaultAvatar; // Устанавливаем аватар по умолчанию
+        fileInput.value = ""; // Очищаем файл
+        removeAvatarButton.style.visibility = "hidden"; // Скрываем кнопку удаления
+    });
+
+    // Скрытие кнопки удаления, если текущий аватар — дефолтный
+    if (currentAvatar.src.includes("defaultUserAvatar")) {
+        removeAvatarButton.style.visibility = "hidden";
+    } else {
+        removeAvatarButton.style.visibility = "visible";
+    }
+});
+
     </script>
 </body>
 </html>

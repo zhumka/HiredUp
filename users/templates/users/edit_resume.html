@@ -18,20 +18,12 @@
 
         <nav class="nav-menu">
         {% if user.is_authenticated %}
-            <a href="{% url 'profile' %}">Профиль</a>
+            <a href="{% url 'profile' %}">Назад в профиль</a>
             <a href="{% url 'applications' %}">Отклики</a>
             {% if user.employer_profile %}  <!-- Проверяем, является ли пользователь работодателем -->
             <a href="{% url 'employer_vacancies' %}">Мои вакансии</a>  <!-- Ссылка на страницу списка вакансий -->
         {% endif %}
-            <form action="{% url 'logout' %}" method="POST">
-                {% csrf_token %}
-                <button class="leave">Выйти</button>
-            </form>
 
-        {% else %}
-
-            <a href="{% url 'login' %}" >Войти</a>
-            <button onclick="{% url 'register' %}" class="button">Зарегистрироваться </button>
         {% endif %}
 
     </nav>
