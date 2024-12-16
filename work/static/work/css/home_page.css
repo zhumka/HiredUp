@@ -324,3 +324,99 @@ footer {
 footer p {
     margin-bottom: 20px;
 }
+
+
+/* Стиль для модального окна */
+.modal {
+    display: none; /* Скрыто по умолчанию */
+    position: fixed;
+    z-index: 1001;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4); /* Темный полупрозрачный фон */
+    padding-top: 60px;
+    transition: all 0.3s ease-in-out;
+}
+
+/* Контент модального окна */
+.modal-content {
+    background-color: #2a2a2a; /* Темный фон */
+    margin: 5% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 600px;
+    border-radius: 10px;
+    color: white;
+    box-shadow: rgba(151, 65, 252, 0.2) 0 15px 30px 5px;
+}
+
+/* Кнопка закрытия */
+.close {
+    color: white;
+    font-size: 28px;
+    font-weight: bold;
+    position: absolute;
+    top: 10px;
+    right: 25px;
+    transition: transform 0.3s ease;
+    cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+    color: rgba(177, 94, 192, 1);
+    transform: scale(1.1);
+}
+
+/* Заголовок модального окна */
+.modal-content h3 {
+    text-align: center;
+    font-size: 20px;
+    margin-bottom: 15px;
+    color: #B2DDFF;
+}
+
+/* Список статистики */
+.modal-content ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+
+.modal-content ul li {
+    margin-bottom: 10px;
+    font-size: 18px;
+}
+
+/* Кнопка для статистики (маленькая и в уголке) */
+.stat-button {
+    background: none;
+    color: white;
+    border: 3px solid white;
+    border-radius: 50px;
+    padding: 8px 16px;  /* Уменьшаем размеры */
+    cursor: pointer;
+    font-size: 12px;  /* Уменьшаем размер шрифта */
+    position: fixed;  /* Фиксируем кнопку */
+    bottom: 20px;  /* Располагаем внизу */
+    right: 20px;  /* Располагаем справа */
+    z-index: 1002;  /* Устанавливаем выше остальных элементов */
+    box-shadow: rgba(151, 65, 252, 0.2) 0 5px 15px 3px;
+    transition: all 0.3s ease;
+}
+
+.stat-button:hover {
+    color: rgba(177, 94, 192, 1);
+    border: 3px solid rgba(177, 94, 192, 1);
+    box-shadow: rgba(151, 65, 252, 0.2) 0 0px 35px 5px;
+}
+
+
+/* Стили для модального окна, когда оно открыто */
+.modal.show {
+    display: block;
+}

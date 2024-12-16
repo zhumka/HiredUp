@@ -8,7 +8,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django_filters.views import FilterView
 
 from hiredup.wsgi import application
-from users.models import JobSeekerProfile
+from users.models import JobSeekerProfile, EmployerProfile
 from work.models import Vacancy, JobCategory, Application
 from .filters import VacancyFilter
 from .forms import VacancyForm
@@ -38,12 +38,26 @@ def home_view(request):
         # Рекомендуем вакансии по популярным категориям
         employer_recommended_vacancies = Vacancy.objects.filter(is_active=True).order_by('?')[:6]
 
-    return render(request, 'work/home_page.html', {
-        'job_categories': job_categories,
-        'recommended_vacancies': recommended_vacancies,
-        'personalized_vacancies': personalized_vacancies,
-        'employer_recommended_vacancies': employer_recommended_vacancies,
-    })
+        # Статистика по сайту
+        total_vacancies = Vacancy.objects.count()  # Всего вакансий
+        active_vacancies = Vacancy.objects.filter(is_active=True).count()  # Активных вакансий
+        inactive_vacancies = Vacancy.objects.filter(is_active=False).count()  # Неактивных вакансий
+        total_applications = Application.objects.count()  # Всего откликов
+        total_job_seekers = JobSeekerProfile.objects.count()  # Всего соискателей
+        total_employers = EmployerProfile.objects.count()  # Всего работодателей
+
+        return render(request, 'work/home_page.html', {
+            'job_categories': job_categories,
+            'recommended_vacancies': recommended_vacancies,
+            'personalized_vacancies': personalized_vacancies,
+            'employer_recommended_vacancies': employer_recommended_vacancies,
+            'total_vacancies': total_vacancies,
+            'active_vacancies': active_vacancies,
+            'inactive_vacancies': inactive_vacancies,
+            'total_applications': total_applications,
+            'total_job_seekers': total_job_seekers,
+            'total_employers': total_employers,
+        })
 
 def vacancy_detail_view(request, vacancy_id):
     vacancy = get_object_or_404(Vacancy, id=vacancy_id)
