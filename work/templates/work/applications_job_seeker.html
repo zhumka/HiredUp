@@ -7,19 +7,28 @@
     <title>Мои отклики</title>
 </head>
 <body>
-    <nav>
-        <a href="{% url 'home' %}">Главная</a>
+    <header class="left-panel">
+        <div class="logotype">
+            <a href="{% url 'home' %}"><img src="{% static 'users/img/Logo.svg' %}" alt="HiredUp Logo"></a>
+        </div>
+
+        <nav class="nav-menu">
         {% if user.is_authenticated %}
             <a href="{% url 'profile' %}">Профиль</a>
-            <form action="{% url 'logout' %}" method="POST" style="display: inline;">
+            <a href="{% url 'applications' %}">Отклики</a>
+            {% if user.employer_profile %}
+            <a href="{% url 'employer_vacancies' %}">Мои вакансии</a>
+            {% endif %}
+            <form action="{% url 'logout' %}" method="POST">
                 {% csrf_token %}
-                <button type="submit" style="background: none; border: none; color: white; cursor: pointer;">Выйти</button>
+                <button class="leave">Выйти</button>
             </form>
         {% else %}
             <a href="{% url 'login' %}">Войти</a>
-            <a href="{% url 'register' %}">Зарегистрироваться</a>
+            <button onclick="{% url 'register' %}" class="button">Зарегистрироваться</button>
         {% endif %}
-    </nav>
+        </nav>
+    </header>
 
     <header>
         <h1>Мои отклики</h1>
@@ -31,15 +40,20 @@
             <ul class="applications-list">
                 {% for application in applications %}
                     <li class="application-item">
-                        <h3><a href="{% url 'vacancy_detail' application.vacancy.id %}">{{ application.vacancy.title }}</a></h3>
+                        <h3>{{ application.vacancy.title }}</h3>
                         <p>Статус: <span class="status {{ application.get_status_display|lower }}">{{ application.get_status_display }}</span></p>
                         <p><strong>Вакансия:</strong> {{ application.vacancy.profession.name }}</p>
                         <p><strong>Компания:</strong> {{ application.vacancy.employer.company_name }}</p>
 
-                        <!-- Показываем кнопку только если отклик принят -->
-                        {% if application.status == 'accepted' %}
-                            <button class="contactBtn" data-modal-id="modal-{{ application.id }}">Написать работодателю</button>
-                        {% endif %}
+                        <div class="application-buttons">
+                            <!-- Кнопка для написания сообщения -->
+                            {% if application.status == 'accepted' %}
+                                <button class="contactBtn" data-modal-id="modal-{{ application.id }}">Написать соискателю</button>
+                            {% endif %}
+
+                            <!-- Новая кнопка для перехода на подробное описание отклика -->
+                            <a href="{% url 'application_detail' application.id %}" class="detailsBtn">Подробнее</a>
+                        </div>
                     </li>
 
                     <!-- Модальное окно для отправки сообщения работодателю -->
@@ -48,9 +62,9 @@
                             <span class="close" data-modal-id="modal-{{ application.id }}">&times;</span>
                             <h3>Связаться с работодателем</h3>
                             <p>Вы можете написать на почту работодателя:</p>
-                            <!-- Проверка, что почта существует -->
+                            <!-- Заменяем ссылку на кнопку -->
                             {% if application.vacancy.employer.user.email %}
-                                <a href="mailto:{{ application.vacancy.employer.user.email }}" target="_blank">{{ application.vacancy.employer.user.email }}</a>
+                                <button class="emailBtn" onclick="window.location.href='mailto:{{ application.vacancy.employer.user.email }}'">Написать на почту</button>
                             {% else %}
                                 <p>Почта не доступна.</p>
                             {% endif %}
