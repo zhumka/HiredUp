@@ -41,6 +41,42 @@
         <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
 
+            <!-- Поле для загрузки логотипа компании -->
+            <div class="form-group">
+                <label for="id_company_logo">Логотип компании</label>
+                <div class="custom-logo-wrapper">
+                    <div class="logo-preview" id="logo-preview">
+                        {% if form.company_logo.value %}
+                            <img src="{{ form.company_logo.value.url }}" alt="Current Logo" class="current-logo" id="current-logo">
+                        {% else %}
+                            <img src="{% static 'users/img/defaultCompanyAvatar.svg' %}" alt="Default Logo" class="current-logo" id="current-logo">
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Container with buttons -->
+                <div class="buttons-container">
+                    <label class="remove-logo-button" id="remove-logo-button">
+                        <input type="hidden" name="remove_logo" id="remove-logo-field" value="false">
+                        <img src="{% static 'users/img/deleteIcon.svg' %}" class="edit-icon">
+                        Удалить логотип
+                    </label>
+                    <label class="custom-logo-label">
+                        <input type="file" name="company_logo" id="id_company_logo" class="custom-file-input">
+                        <img src="{% static 'users/img/changeAvatarIcon.svg' %}" alt="Edit Icon" class="edit-icon">
+                        Изменить логотип
+                    </label>
+                </div>
+            </div>
+
+            <script>
+                document.getElementById('remove-logo-button').addEventListener('click', function() {
+                    // Устанавливаем значение поля remove_avatar на true при удалении
+                    document.getElementById('remove-logo-field').value = 'true';
+                });
+            </script>
+
+
             <!-- Поле для названия компании -->
             <div class="form-group">
                 <label for="id_company_name">Название компании</label>
@@ -59,16 +95,48 @@
                 {{ form.company_address }}
             </div>
 
-            <!-- Поле для загрузки логотипа компании -->
-            <div class="form-group">
-                <label for="id_company_logo">Логотип компании</label>
-                {{ form.company_logo }}
-            </div>
-
             <!-- Кнопка для отправки формы -->
             <button type="submit">Сохранить изменения</button>
         </form>
     </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+        const fileInput = document.querySelector(".custom-file-input");
+        const avatarPreview = document.querySelector("#logo-preview");
+        const currentAvatar = document.querySelector("#current-logo");
+        const removeAvatarButton = document.querySelector("#remove-logo-button");
+        const defaultAvatar = "{% static 'users/img/defaultCompanyAvatar.svg' %}";
+
+        // Обновление аватара при выборе файла
+        fileInput.addEventListener("change", (event) => {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    currentAvatar.src = e.target.result; // Обновляем превью
+                    removeAvatarButton.style.visibility = "visible"; // Показываем кнопку удаления
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Удаление аватара
+        removeAvatarButton.addEventListener("click", () => {
+            currentAvatar.src = defaultAvatar; // Устанавливаем аватар по умолчанию
+            fileInput.value = ""; // Очищаем файл
+            removeAvatarButton.style.visibility = "hidden"; // Скрываем кнопку удаления
+        });
+
+        // Скрытие кнопки удаления, если текущий аватар — дефолтный
+        if (currentAvatar.src.includes("defaultCompanyAvatar")) {
+            removeAvatarButton.style.visibility = "hidden";
+        } else {
+            removeAvatarButton.style.visibility = "visible";
+        }
+    });
+
+    </script>
 
 </body>
 </html>

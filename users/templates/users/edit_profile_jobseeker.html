@@ -59,10 +59,17 @@
     </label>
     <!-- Изменение изображения -->
     <label class="custom-avatar-label">
-        <input type="file" name="{{ form.avatar.html_name }}" id="{{ form.avatar.id_for_label }}" class="custom-file-input">
+        <input type="file" name="avatar" id="id_avatar" class="custom-file-input">
         <img src="{% static 'users/img/changeAvatarIcon.svg' %}" alt="Edit Icon" class="edit-icon">
         Изменить изображение
     </label>
+    <script>
+        document.getElementById('remove-avatar-button').addEventListener('click', function() {
+            // Устанавливаем значение поля remove_avatar на true при удалении
+            document.getElementById('remove-avatar-field').value = 'true';
+        });
+    </script>
+
 
 </div>
 
@@ -74,14 +81,30 @@
                 {{ form.username }}
             </div>
 
+            <!-- Поле Имя -->
             <div class="form-group">
-                <label for="id_first_name">Имя</label>
+                <label for="id_first_name">{{ form.first_name.label }}</label>
                 {{ form.first_name }}
+                {% if form.first_name.errors %}
+                    <div class="error-message text-danger">
+                        {% for error in form.first_name.errors %}
+                            <p>{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
             </div>
 
+            <!-- Поле Фамилия -->
             <div class="form-group">
-                <label for="id_last_name">Фамилия</label>
+                <label for="id_last_name">{{ form.last_name.label }}</label>
                 {{ form.last_name }}
+                {% if form.last_name.errors %}
+                    <div class="error-message text-danger">
+                        {% for error in form.last_name.errors %}
+                            <p>{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
             </div>
 
             <!-- Поле для выбора категории -->

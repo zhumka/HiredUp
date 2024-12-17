@@ -92,8 +92,11 @@
 {% endif %}
 
 
-    <!-- Кнопка для отображения статистики -->
+    {% if user.is_authenticated %}
+        <!-- Кнопка для отображения статистики -->
         <button class="stat-button" onclick="openStatisticsModal()">Показать статистику сайта</button>
+    {% endif %}
+
     <!-- Модальное окно для статистики вакансий -->
     <div id="statisticsModal" class="modal">
         <div class="modal-content">

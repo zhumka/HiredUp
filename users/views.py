@@ -184,8 +184,21 @@ def edit_profile_view(request):
         if request.method == 'POST':
             form = EmployerProfileForm(request.POST, request.FILES, instance=employer_profile)
             if form.is_valid():
-                form.save()
+                # Проверка на удаление логотипа
+                remove_logo = request.POST.get('remove_logo', False)
+                if remove_logo == 'true' and employer_profile.company_logo:
+                    # Удаление логотипа
+                    default_storage.delete(employer_profile.company_logo.path)
+                    employer_profile.company_logo = None  # Удаляем логотип из профиля
+
+                # Если был загружен новый логотип
+                if 'company_logo' in request.FILES:
+                    new_logo = request.FILES['company_logo']
+                    employer_profile.company_logo = new_logo  # Обновляем логотип
+
+                form.save()  # Сохраняем изменения
                 return redirect('profile')
+
         else:
             form = EmployerProfileForm(instance=employer_profile)
         return render(request, 'users/edit_profile_employer.html', {'form': form})
@@ -195,11 +208,18 @@ def edit_profile_view(request):
         if request.method == 'POST':
             form = JobSeekerProfileForm(request.POST, request.FILES, instance=job_seeker_profile, user=request.user)
             if form.is_valid():
-                # Удаляем старый аватар, если он был изменен или удален
+                # Проверяем флаг удаления аватара
                 remove_avatar = request.POST.get('remove_avatar', False)
-                if remove_avatar and job_seeker_profile.avatar:
-                    default_storage.delete(job_seeker_profile.avatar.path)  # Удаляем файл аватара
-                    job_seeker_profile.avatar = None  # Обновляем профиль без аватара
+                if remove_avatar == 'true' and job_seeker_profile.avatar:
+                    # Удаляем файл аватара
+                    default_storage.delete(job_seeker_profile.avatar.path)
+                    job_seeker_profile.avatar = None  # Убираем аватар из профиля
+
+                # Если был загружен новый аватар, обновляем его
+                if 'avatar' in request.FILES:
+                    new_avatar = request.FILES['avatar']
+                    job_seeker_profile.avatar = new_avatar  # Сохраняем новый аватар
+
                 form.save()  # Сохраняем изменения
                 return redirect('profile')
         else:
@@ -209,6 +229,7 @@ def edit_profile_view(request):
     else:
         messages.error(request, "Тип пользователя неопределен.")
         return redirect('login')
+
 
 
 
