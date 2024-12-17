@@ -1,98 +1,291 @@
-/* Сброс стилей по умолчанию */
+/* Сброс стилей */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-/* Основной стиль страницы */
 body {
     font-family: Arial, sans-serif;
-    background-color: #f8f9fa;
-    color: #333;
+    background: linear-gradient(rgb(5, 6, 45, 0.9), rgb(33, 33, 33, 0.5)) padding-box,
+        linear-gradient(120deg, transparent 0%, #1d1d1d, #af40ff) border-box;
+    color: white;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     padding: 20px;
-    max-width: 1200px;
-    margin: 0 auto;
 }
 
-/* Заголовок */
+.container {
+    width: 90%;
+    max-width: 600px;
+}
+
 h1 {
+    font-size: 40px;
+    font-weight: 300;
+    margin-bottom: 20px;
+    text-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
     text-align: center;
-    font-size: 2em;
-    margin-bottom: 30px;
-    color: #007bff;
 }
 
-/* Стиль для формы */
 form {
-    display: grid;
-    grid-template-columns: 1fr 2fr;
-    gap: 15px;
-    background-color: #fff;
-    border-radius: 8px;
-    padding: 20px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background: linear-gradient(rgb(5, 6, 45, 0.9), rgb(33, 33, 33, 0.5)) padding-box,
+        linear-gradient(120deg, transparent 0%, #1d1d1d, #af40ff) border-box;
+    border: 1px solid transparent;
+    box-shadow: rgba(151, 65, 252, 0.2) 0 15px 30px -5px;
+    padding: 32px;
+    border-radius: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    background-size: 200% 200%;
+    transition: background-position 0.5s ease;
+}
+
+form:hover {
+    background-position: 100% 0;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-row {
+    display: flex;
+    gap: 20px;
 }
 
 label {
-    font-size: 1.1em;
-    color: #333;
+    position: relative;
+    font-size: 16px;
+    font-weight: 500;
+    color: #eee;
 }
 
 input, select, textarea {
-    padding: 10px;
-    font-size: 1em;
-    border: 1px solid #ccc;
+    padding: 12px;
+    border: 1px solid #96BDDA;
     border-radius: 5px;
-    width: 100%;
-    box-sizing: border-box;
-    transition: border-color 0.3s ease;
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    outline: none;
+    font-size: 16px;
+    transition: border-color 0.3s, background-color 0.3s;
+}
+
+/* Добавлено: Стили для опций выпадающих списков */
+select option {
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
 }
 
 input:focus, select:focus, textarea:focus {
-    border-color: #007bff;
-    outline: none;
+    border-color: #B2DDFF;
 }
 
-textarea {
-    resize: vertical;
-    min-height: 100px;
+/* Обновлено: стили для тултипов */
+label .tooltip {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+    margin-left: 5px;
+    color: #FFDD00; /* Цвет вопросика */
 }
 
-/* Стили для радиокнопок статуса */
-.status-options {
-    display: flex;
-    gap: 10px;
+label .tooltip .tooltip-text {
+    visibility: hidden;
+    width: 200px;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: #fff;
+    text-align: center;
+    border-radius: 5px;
+    padding: 10px;
+    position: absolute;
+    z-index: 1;
+    bottom: 100%; /* Положение тултипа */
+    left: 50%;
+    margin-left: -100px;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+label .tooltip:hover .tooltip-text {
+    visibility: visible;
+    opacity: 1;
+}
+
+.error-list {
+    color: #FF6347;
+    font-size: 14px;
+}
+
+button {
+    padding: 12px;
+    border: none;
+    border-radius: 5px;
+    background: linear-gradient(120deg, #af40ff, #5b42f3);
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.leave {
+    color: rgba(177, 94, 192, 1);
+    background: none;
+    font-size: 18px;
+    border-radius: 50px;
+    border: 3px solid rgba(177, 94, 192, 1);
+    cursor: pointer;
     align-items: center;
+    justify-content: center;
+    max-width: 100%;
+    min-width: 140px;
+    padding: 10px;
+    opacity: 0.8;
+}
+
+button:hover {
+    background: linear-gradient(120deg, #5b42f3, #af40ff);
+}
+
+
+/* Стили для левого навбара */
+.left-panel {
+  background: linear-gradient(rgb(5, 6, 45, 0.9), rgb(33, 33, 33, 0.5)) padding-box,
+    linear-gradient(120deg, transparent 0%, #1d1d1d, #af40ff) border-box;
+  border: 1px solid transparent;
+  box-shadow: rgba(151, 65, 252, 0.2) 0 15px 30px -5px;
+  position: fixed; /* Фиксированное позиционирование */
+  top: 0;
+  left: 0; /* Расположить слева */
+  width: 250px; /* Ширина панели */
+  height: 100%; /* Занимает всю высоту страницы */
+  padding: 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 40px;
+  box-sizing: border-box;
+  background-size: 200% 200%;
+  transition: background-position 0.5s ease;
+  color: white;
+}
+
+/* Для основного контента, чтобы не перекрывал левый панель */
+.container {
+  margin-left: 250px; /* Отступ слева, чтобы основной контент не перекрывался панелью */
+}
+
+/* Logo styling */
+.logotype {
+  width: 100px;
+  height: auto;
+}
+
+
+.left-panel:hover {
+  background-position: 100% 0;
+}
+
+/* Navigation menu */
+.nav-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.nav-menu a {
+  color: white;
+  text-decoration: none;
+  font-size: 18px;
+  transition: color 0.3s;
+}
+
+.nav-menu a:hover {
+  color: #DA97E5;
+  text-shadow: 0 4px 6px rgba(156, 39, 176, 0.5);
+}
+
+/* Active link styling */
+.nav-menu a.active {
+  color: #1d1d1d;
+  font-weight: bold;
+}
+
+/* Убедимся, что все поля имеют одинаковую ширину */
+input[type="number"], input[type="text"], textarea, select {
+    width: 100%; /* Задаем ширину 100% для всех полей */
+    padding: 12px;
+    border: 1px solid #96BDDA;
+    border-radius: 5px;
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    outline: none;
+    font-size: 16px;
+    transition: border-color 0.3s, background-color 0.3s;
+}
+
+/* Добавим фокус */
+input[type="number"]:focus, input[type="text"]:focus, textarea:focus, select:focus {
+    border-color: #B2DDFF;
+}
+
+/* Стили для поля выбора даты */
+input[type="date"] {
+    padding: 12px;
+    border: 1px solid #96BDDA;
+    border-radius: 5px;
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    outline: none;
+    font-size: 16px;
+    transition: border-color 0.3s, background-color 0.3s;
+    width: 100%;
+}
+
+input[type="date"]:focus {
+    border-color: #B2DDFF;
+}
+
+/* Стили для аватарки */
+.profile-section .file-upload input[type="file"] {
+    padding: 12px;
+    background: #2c2c2c;
+    color: #ddd;
+    border: 1px solid #96BDDA;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+    width: 100%;
+}
+
+.profile-section .file-upload input[type="file"]:hover {
+    background-color: #353535;
+}
+
+/* Статус (сделаем радиокнопки более визуально приятными) */
+.status-options input[type="radio"] {
+    transform: scale(1.2);
+    margin-right: 10px;
+    accent-color: #af40ff;  /* Изменяет цвет радиокнопки на основной цвет */
 }
 
 .status-options label {
-    font-size: 1.1em;
-}
-
-button[type="submit"] {
-    grid-column: span 2;
-    padding: 12px 20px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    font-size: 1.2em;
+    color: #ddd;
+    font-size: 16px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
 }
 
-button[type="submit"]:hover {
-    background-color: #0056b3;
+/* Сделаем статус более заметным */
+.status-options input[type="radio"]:checked + label {
+    font-weight: bold;
+    color: #af40ff;
 }
 
-/* Адаптивные стили */
-@media (max-width: 768px) {
-    form {
-        grid-template-columns: 1fr;
-    }
 
-    button[type="submit"] {
-        grid-column: span 1;
-    }
-}

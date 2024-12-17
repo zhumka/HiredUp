@@ -8,56 +8,72 @@
     <title>Вакансии работодателя</title>
 </head>
 <body>
-    <!-- Навигация -->
-    <nav>
-        <a href="{% url 'home' %}">Главная</a>
+    <header class="left-panel">
+        <div class="logotype">
+            <a href="{% url 'home' %}"><img src="{% static 'users/img/Logo.svg' %}" alt="HiredUp Logo"></a>
+        </div>
+
+        <nav class="nav-menu">
         {% if user.is_authenticated %}
             <a href="{% url 'profile' %}">Профиль</a>
             <a href="{% url 'applications' %}">Отклики</a>
-            <form action="{% url 'logout' %}" method="POST" style="display: inline;">
+            <form action="{% url 'logout' %}" method="POST">
                 {% csrf_token %}
-                <button type="submit" style="background: none; border: none; color: white; cursor: pointer;">Выйти</button>
+                <button class="leave">Выйти</button>
             </form>
         {% else %}
-            <a href="{% url 'login' %}">Войти</a>
-            <a href="{% url 'register' %}">Зарегистрироваться</a>
+
+            <a href="{% url 'login' %}" >Войти</a>
+            <button onclick="{% url 'register' %}" class="button">Зарегистрироваться </button>
         {% endif %}
+
     </nav>
+    </header>
 
     <!-- Заголовок -->
-    <h1>Мои вакансии</h1>
+    <h1 class="title">Мои вакансии</h1>
 
     <!-- Список вакансий -->
-    <section>
+    <section class="vacancy-list">
         {% if page_obj.object_list %}
-            <ul>
+            <ul class="vacancy-cards">
                 {% for vacancy in page_obj %}
-                    <li>
-                        <a href="{% url 'edit_vacancy' vacancy.id %}">{{ vacancy.title }}</a> <!-- Ссылка на редактирование -->
-                        <p>{{ vacancy.salary_min }} - {{ vacancy.salary_max }} рублей</p>
-                        <p>{{ vacancy.category }} - {{ vacancy.profession }}</p>
+                    <li class="vacancy-card">
+                        <div class="vacancy-info">
+                            <p class="vacancy-title">{{ vacancy.title }}</p>
+                            <div class="vacancy-details">
+                                <p class="category-profession">{{ vacancy.category }} - {{ vacancy.profession }}</p>
+                                <p class="experience">Требуемый опыт работы: {{ vacancy.experience_required }}</p>
+                                <p class="job-type">Тип работы: {{ vacancy.get_job_type_display }}</p>
+                                <p class="location">Местоположение: {{ vacancy.location }}</p>
+                                <p class="salary"> <img src="{% static 'users/img/salary.svg' %}"> от {{ vacancy.salary_min }} до {{ vacancy.salary_max }} сом</p>
+                            </div>
+                        </div>
+                        <div class="vacancy-actions">
+                            <a href="{% url 'vacancy_detail' vacancy.id %}" class="view-btn">Посмотреть</a>
+                            <a href="{% url 'edit_vacancy' vacancy.id %}" class="edit-btn">Редактировать</a>
+                        </div>
                     </li>
                 {% endfor %}
             </ul>
         {% else %}
-            <p>У вас пока нет вакансий.</p>
+            <p class="no-vacancies">У вас пока нет вакансий.</p>
         {% endif %}
     </section>
 
     <!-- Пагинация -->
-    <!--Тима, это пагинация, ее тоже можно настраивать стилями -->
     <div class="pagination">
         <span class="step-links">
             {% if page_obj.has_previous %}
-                <a href="?page=1">Первая</a>
-                <a href="?page={{ page_obj.previous_page_number }}">Назад</a>
+                <a href="?page=1" class="pagination-link">Первая</a>
+                <a href="?page={{ page_obj.previous_page_number }}" class="pagination-link">Назад</a>
             {% endif %}
 
-            <span>Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}</span>
+            <span class="page-info">Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}</span>
 
             {% if page_obj.has_next %}
-                <a href="?page={{ page_obj.next_page_number }}">Вперед</a>
-                <a href="?page={{ page_obj.paginator.num_pages }}">Последняя</a>
+                <a href="?page={{ page_obj.next_page_number }}" class="pagination-link">Вперед</a>
+                <a href="?page={{ page_obj.paginator.num_pages }}" class="pagination-link">Последняя</a>
             {% endif %}
         </span>
     </div>
