@@ -94,7 +94,7 @@
 
     {% if user.is_authenticated %}
         <!-- Кнопка для отображения статистики -->
-        <button class="stat-button" onclick="openStatisticsModal()">Показать статистику сайта</button>
+        <button class="stat-button" onclick="openStatisticsModal()">Статистика сайта</button>
     {% endif %}
 
     <!-- Модальное окно для статистики вакансий -->
@@ -137,10 +137,10 @@
     </section>
 
     <footer>
-        <h4>тех. поддержка</h4>
-        <a>instagram</a>
-        <a>telegram</a>
-        <a>phone number</a>
+        <h4>Связаться с нами<img src="{% static 'users/img/phoneIcon.svg' %}"></h4>
+        <a href="https://www.instagram.com/drobavik_tima" target="_blank" class="inst"><img src="{% static 'users/img/instagramIcon.svg' %}">instagram</a>
+        <a href="https://t.me/wacusay" target="_blank" class="tg"><img src="{% static 'users/img/telegramIcon.svg' %}">telegram</a>
+        <a href="https://wa.me/996552527370" target="_blank" class="wa"><img src="{% static 'users/img/whatsappIcon.svg' %}">WhatsApp</a>
 
         <p>HiredUp &copy; 2024 Все права защищены</p>
 

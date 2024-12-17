@@ -50,6 +50,15 @@ class Application(models.Model):
         ('accepted', 'Принято'),
         ('rejected', 'Отклонено'),
     ]
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES)
+
+    def get_status_css_class(self):
+        return {
+            'pending': 'status pending',
+            'reviewed': 'status reviewed',
+            'accepted': 'status accepted',
+            'rejected': 'status rejected',
+        }.get(self.status, 'status')
 
     vacancy = models.ForeignKey(
         'work.Vacancy',

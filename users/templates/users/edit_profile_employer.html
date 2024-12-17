@@ -21,10 +21,6 @@
             {% if user.employer_profile %}  <!-- Проверяем, является ли пользователь работодателем -->
             <a href="{% url 'employer_vacancies' %}">Мои вакансии</a>  <!-- Ссылка на страницу списка вакансий -->
         {% endif %}
-            <form action="{% url 'logout' %}" method="POST">
-                {% csrf_token %}
-                <button class="leave">Выйти</button>
-            </form>
 
         {% else %}
 
@@ -54,7 +50,10 @@
                     </div>
                 </div>
 
-                <!-- Container with buttons -->
+
+
+            </div>
+            <!-- Container with buttons -->
                 <div class="buttons-container">
                     <label class="remove-logo-button" id="remove-logo-button">
                         <input type="hidden" name="remove_logo" id="remove-logo-field" value="false">
@@ -67,8 +66,6 @@
                         Изменить логотип
                     </label>
                 </div>
-            </div>
-
             <script>
                 document.getElementById('remove-logo-button').addEventListener('click', function() {
                     // Устанавливаем значение поля remove_avatar на true при удалении

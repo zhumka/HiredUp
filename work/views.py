@@ -74,7 +74,7 @@ def vacancy_detail_view(request, vacancy_id):
 def apply_to_vacancy(request, vacancy_id):
     # Проверяем, является ли пользователь соискателем
     if request.user.user_type.user_type != 'job_seeker':
-        messages.error(request, 'Только соискатели могут откликаться на вакансии.')
+        messages.error(request, 'Только соискатели могут откликаться на вакансии >:(')
         return redirect('home')
 
     # Получаем вакансию
@@ -85,12 +85,12 @@ def apply_to_vacancy(request, vacancy_id):
     existing_application = Application.objects.filter(vacancy=vacancy, job_seeker=job_seeker_profile).first()
 
     if existing_application:
-        messages.info(request, 'Вы уже откликнулись на эту вакансию.')
+        messages.info(request, 'Вы уже откликнулись на эту вакансию :/')
         return redirect('vacancy_detail', vacancy_id=vacancy.id)
 
     # Проверяем, есть ли у соискателя резюме
     if not job_seeker_profile.resume:
-        messages.error(request, 'У вас нет резюме. Пожалуйста, добавьте резюме в свой профиль.')
+        messages.error(request, 'У вас нет резюме :/. Пожалуйста, добавьте резюме в свой профиль.')
         return redirect('edit_resume')
 
     # Создаем отклик на вакансию
@@ -101,7 +101,7 @@ def apply_to_vacancy(request, vacancy_id):
     )
 
     # Сообщение после успешного отклика
-    messages.success(request, 'Вы успешно откликнулись на вакансию.')
+    messages.success(request, 'Вы успешно откликнулись на вакансию! :D')
 
     return redirect('vacancy_detail', vacancy_id=vacancy.id)
 

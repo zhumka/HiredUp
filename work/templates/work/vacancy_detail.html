@@ -8,32 +8,30 @@
     <title>{{ vacancy.title }}</title>
 </head>
 <body>
-    <nav>
+<header class="top-panel">
+        <div class="logotype">
+            <a href="{% url 'home' %}"><img src="{% static 'users/img/Logo.svg' %}" alt="HiredUp Logo"></a>
+        </div>
+
+        <nav>
+
         <a href="{% url 'home' %}">Главная</a>
         {% if user.is_authenticated %}
             <a href="{% url 'profile' %}">Профиль</a>
             <form action="{% url 'logout' %}" method="POST" style="display: inline;">
                 {% csrf_token %}
-                <button type="submit" style="background: none; border: none; color: white; cursor: pointer;">Выйти</button>
+                <button type="submit">Выйти</button>
             </form>
         {% else %}
             <a href="{% url 'login' %}">Войти</a>
             <a href="{% url 'register' %}">Зарегистрироваться</a>
         {% endif %}
     </nav>
-
-    <header>
-        <h1>{{ vacancy.title }}</h1>
     </header>
 
-    <!-- Блок для отображения сообщений -->
-    <div class="messages">
-        {% for message in messages %}
-            <div class="message {{ message.tags }}">
-                {{ message }}
-            </div>
-        {% endfor %}
-    </div>
+
+        <h1>{{ vacancy.title }}</h1>
+
 
     <section class="vacancy-detail">
         <div class="vacancy-header">
@@ -62,24 +60,37 @@
 
         <!-- Блок с информацией о работодателе -->
         <div class="company-profile">
+
             <h3>О работодателе</h3>
+            {% if vacancy.employer.company_logo %}
+                <img src="{{ vacancy.employer.company_logo.url }}" alt="Логотип компании">
+            {% endif %}
             <p><strong>Компания:</strong> {{ vacancy.employer.company_name }}</p>
             <p><strong>Описание компании:</strong> {{ vacancy.employer.company_description }}</p>
             <p><strong>Контакт:</strong> {{ vacancy.employer.user.email }}</p>
         </div>
 
-        <div class="vacancy-back">
-            <a href="{% url 'home' %}" class="button-back">Назад</a>
-        </div>
+     <!-- Блок для отображения сообщений -->
+    <div class="messages">
+        {% for message in messages %}
+            <div class="message {{ message.tags }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    </div>
 
-        {% if user.user_type.user_type == 'job_seeker' %}
+
+
+    </section>
+<div class="buttons">
+ {% if user.user_type.user_type == 'job_seeker' %}
             {% if not existing_application %}
                 <form method="post" action="{% url 'apply_to_vacancy' vacancy.id %}">
                     {% csrf_token %}
                     <button type="submit" class="btn btn-primary">Откликнуться на вакансию</button>
                 </form>
             {% else %}
-                <button class="btn btn-secondary" disabled>Вы уже откликнулись на эту вакансию</button>
+                <button class="btn btn-secondary" disabled>Вы уже откликнулись на эту вакансию!!!</button>
             {% endif %}
         {% endif %}
 
@@ -88,6 +99,6 @@
                 <a href="{% url 'edit_vacancy' vacancy.id %}" class="btn btn-warning">Редактировать вакансию</a>
             </div>
         {% endif %}
-    </section>
+    </div>
 </body>
 </html>

@@ -7,13 +7,18 @@
     <title>Мои отклики</title>
 </head>
 <body>
-    <nav>
+<header class="top-panel">
+        <div class="logotype" >
+            <a href="{% url 'home' %}"><img src="{% static 'users/img/Logo.svg' %}" alt="HiredUp Logo"></a>
+        </div>
+
+        <nav>
         <a href="{% url 'home' %}">Главная</a>
         {% if user.is_authenticated %}
             <a href="{% url 'profile' %}">Профиль</a>
             <form action="{% url 'logout' %}" method="POST" style="display: inline;">
                 {% csrf_token %}
-                <button type="submit" style="background: none; border: none; color: white; cursor: pointer;">Выйти</button>
+                <button type="submit">Выйти</button>
             </form>
         {% else %}
             <a href="{% url 'login' %}">Войти</a>
@@ -21,8 +26,6 @@
         {% endif %}
     </nav>
 
-    <header>
-        <h1>Мои отклики</h1>
     </header>
 
     <section class="applications-section">
@@ -31,11 +34,11 @@
             <ul class="applications-list">
                 {% for application in applications %}
                     <li class="application-item">
-                        <h3><a href="{% url 'vacancy_detail' application.vacancy.id %}">{{ application.vacancy.title }}</a></h3>
-                        <p>Статус: <span class="status {{ application.get_status_display|lower }}">{{ application.get_status_display }}</span></p>
+                        <h3><a href="{% url 'vacancy_detail' application.vacancy.id %}">{{ application.vacancy.title }}    (подробнее...)</a></h3>
+
                         <p><strong>Вакансия:</strong> {{ application.vacancy.profession.name }}</p>
                         <p><strong>Компания:</strong> {{ application.vacancy.employer.company_name }}</p>
-
+                        <p>Статус: <span class="{{ application.get_status_css_class }}">{{ application.get_status_display }}</span></p>
                         <!-- Показываем кнопку только если отклик принят -->
                         {% if application.status == 'accepted' %}
                             <button class="contactBtn" data-modal-id="modal-{{ application.id }}">Написать работодателю</button>

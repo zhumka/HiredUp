@@ -17,10 +17,7 @@
         {% if user.is_authenticated %}
             <a href="{% url 'profile' %}">Профиль</a>
             <a href="{% url 'applications' %}">Отклики</a>
-            <form action="{% url 'logout' %}" method="POST">
-                {% csrf_token %}
-                <button class="leave">Выйти</button>
-            </form>
+
         {% else %}
 
             <a href="{% url 'login' %}" >Войти</a>
