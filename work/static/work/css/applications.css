@@ -76,7 +76,6 @@ button:hover {
 h1{
     color:white;
     margin-left:40px;
-
     display: inline;
 }
 
@@ -131,6 +130,14 @@ h1{
 .application-item p {
     color: white;
     margin: 5px 0;
+}
+.application-item a {
+    color: white;
+    text-decoration:none;
+    margin: 5px 0;
+}
+.application-item a:hover {
+    color: rgba(177, 94, 192, 1);
 }
 
 .status {
