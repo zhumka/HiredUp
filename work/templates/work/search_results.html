@@ -13,16 +13,17 @@
         <!-- Left panel (Optional, if you want a sidebar) -->
         <div class="left-panel">
             <div class="nav-menu">
-                <div class="logotype" >
+                <div class="logotype">
                     <a href="{% url 'home' %}"><img src="{% static 'users/img/Logo.svg' %}" alt="HiredUp Logo"></a>
                 </div>
                 <!-- Filter options -->
-                <h2><img src="{% static 'users/img/filterIcon.svg' %}">Фильтрация</h2>
-                <div class="form-group">
+                <h2><img src="{% static 'users/img/filterIcon.svg' %}" alt="Фильтр">Фильтрация</h2>
+                <form method="get">
+                    <div class="form-group">
                         <label for="category">Категория работы:</label>
                         {{ filter.form.category }}
                     </div>
-                <div class="form-group">
+                    <div class="form-group">
                         <label for="job_type">Тип работы:</label>
                         {{ filter.form.job_type }}
                     </div>
@@ -38,11 +39,10 @@
                         <label for="experience_required">Опыт:</label>
                         {{ filter.form.experience_required }}
                     </div>
-
                     <button type="submit" class="user-type-buttons button">
                         Применить фильтры
                     </button>
-                <!-- Add more links here as needed -->
+                </form>
             </div>
         </div>
 
@@ -55,8 +55,9 @@
                 <form method="get">
                     <div class="form-group-search">
                         <label for="search"></label>
-                        <input type="text" name="search" id="search" class="form-input" placeholder=" Введите ключевые слова..." value="{{ filter.data.search }}">
+                        <input type="text" name="search" id="search" class="form-input" placeholder="Введите ключевые слова..." value="{{ filter.data.search }}">
                     </div>
+                    <button type="submit" class="search-button">Найти</button>
                 </form>
             </div>
 
@@ -67,19 +68,25 @@
                         {% for vacancy in vacancies %}
                             <li>
                                 <a href="{% url 'vacancy_detail' vacancy_id=vacancy.id %}" class="vacancy">
-            <div class="emp-info2">
-                {% if vacancy.employer.company_logo %}
-                <img src="{{ vacancy.employer.company_logo.url }}" alt="Логотип компании">
-                {% endif %}
-                <div class="emp-info3">
-                    <h3>{{ vacancy.employer.company_name }}</h3>
-                    <p><img src="{% static 'users/img/addressIcon.svg' %}" alt="Иконка адреса" class="address"> {{ vacancy.employer.company_address }}</p>
-                </div>
-            </div>
-            <h3>{{ vacancy.title }}</h3>
-            <p><strong>Категория:</strong> {{ vacancy.category.name }}</p>
-            <p class="salary"><img src="{% static 'users/img/salary.svg' %}" > {{ vacancy.salary_min }} - {{ vacancy.salary_max }} сом</p>
-        </a>
+                                    <div class="emp-info2">
+                                        {% if vacancy.employer.company_logo %}
+                                            <img src="{{ vacancy.employer.company_logo.url }}" alt="Логотип компании">
+                                        {% endif %}
+                                        <div class="emp-info3">
+                                            <h3>{{ vacancy.employer.company_name }}</h3>
+                                            <p>
+                                                <img src="{% static 'users/img/addressIcon.svg' %}" alt="Иконка адреса" class="address">
+                                                {{ vacancy.employer.company_address }}
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <h3>{{ vacancy.title }}</h3>
+                                    <p><strong>Категория:</strong> {{ vacancy.category.name }}</p>
+                                    <p class="salary">
+                                        <img src="{% static 'users/img/salary.svg' %}" alt="Иконка зарплаты">
+                                        {{ vacancy.salary_min }} - {{ vacancy.salary_max }} сом
+                                    </p>
+                                </a>
                             </li>
                         {% endfor %}
                     </ul>
@@ -89,7 +96,6 @@
             </section>
 
             <!-- Pagination -->
-            <!--Тима, это пагинация, ее тоже можно настраивать стилями -->
             <section class="pagination">
                 {% if vacancies.has_previous %}
                     <a href="?page=1{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}">Первая</a>
@@ -103,16 +109,7 @@
                     <a href="?page={{ vacancies.paginator.num_pages }}{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}">Последняя</a>
                 {% endif %}
             </section>
-
-
-
-
-
-
-
-
         </div>
     </div>
-
 </body>
 </html>
