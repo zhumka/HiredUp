@@ -103,22 +103,28 @@ h1 {
 }
 
 
-/* Форма поиска */
+/* Основные стили формы поиска */
 .form-container {
     margin-bottom: 20px;
+    display: flex;
+    justify-content: center; /* Центрирование всей формы */
+}
 
-}
-.form-group-search input {
-    width: 615px;
-    padding: 10px;
-    border-radius:15px;
-    border: none;
-    font-size: 16px;
-    margin-bottom:30px;
-}
+/* Контейнер для строки поиска и кнопки */
 .form-group-search {
+    display: flex; /* Располагаем элементы горизонтально */
+    align-items: center; /* Выравнивание по вертикали */
+    gap: 10px; /* Расстояние между полем ввода и кнопкой */
+    margin-left: 0; /* Убираем лишние отступы */
+}
 
-     margin-left:230px;
+/* Поле ввода */
+.form-group-search input {
+    width: 500px; /* Ширина поля */
+    padding: 10px; /* Внутренний отступ */
+    border-radius: 15px; /* Закругление углов */
+    border: none; /* Убираем стандартную границу */
+    font-size: 16px; /* Размер шрифта */
 }
 
 .form-group input {
@@ -226,4 +232,35 @@ margin-left: 20px;
 
 .pagination span {
     color: white;
+}
+
+/* Стиль кнопки "Найти" */
+/* Кнопка "Найти" */
+.search-button {
+    background: linear-gradient(120deg, rgba(177, 94, 192, 1), rgba(5, 6, 45, 0.9)); /* Градиентный фон */
+    color: white; /* Цвет текста */
+    border: 2px solid rgba(177, 94, 192, 1); /* Граница кнопки */
+    border-radius: 50px; /* Закругление углов кнопки */
+    font-size: 16px; /* Размер шрифта */
+    padding: 10px 20px; /* Внутренние отступы */
+    cursor: pointer; /* Курсор при наведении */
+    transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease; /* Плавные эффекты */
+}
+
+/* Hover-эффект для кнопки */
+.search-button:hover {
+    background: rgba(177, 94, 192, 1); /* Цвет при наведении */
+    box-shadow: 0 4px 15px rgba(177, 94, 192, 0.5); /* Тень кнопки */
+    transform: translateY(-2px); /* Лёгкий подъём */
+}
+
+/* Общие стили для мобильных устройств */
+@media (max-width: 768px) {
+    .form-group-search input {
+        width: 100%; /* Поле растягивается на всю ширину */
+    }
+    .form-group-search {
+        flex-direction: column; /* Элементы располагаются вертикально */
+        gap: 15px; /* Увеличиваем расстояние между элементами */
+    }
 }

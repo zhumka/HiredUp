@@ -52,14 +52,12 @@
 
             <!-- Search and filter form -->
             <div class="form-container">
-                <form method="get">
-                    <div class="form-group-search">
-                        <label for="search"></label>
-                        <input type="text" name="search" id="search" class="form-input" placeholder="Введите ключевые слова..." value="{{ filter.data.search }}">
-                    </div>
+                <form method="get" class="form-group-search">
+                    <input type="text" name="search" id="search" class="form-input" placeholder="Введите ключевые слова..." value="{{ filter.data.search }}">
                     <button type="submit" class="search-button">Найти</button>
                 </form>
             </div>
+
 
             <!-- Results section -->
             <section class="results">
