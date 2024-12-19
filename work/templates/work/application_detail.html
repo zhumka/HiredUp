@@ -19,7 +19,7 @@
             <a href="{% url 'profile' %}">Профиль</a>
             <form action="{% url 'logout' %}" method="POST" style="display: inline;">
                 {% csrf_token %}
-                <button type="submit">Выйти</button>
+                <button class="leave" type="submit">Выйти</button>
             </form>
         {% else %}
             <a href="{% url 'login' %}">Войти</a>

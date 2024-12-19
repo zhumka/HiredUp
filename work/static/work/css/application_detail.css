@@ -181,4 +181,25 @@ p{
     }
 }
 
+.leave {
+    color: rgba(177, 94, 192, 1);
+    background: none;
+    font-size: 18px;
+    border-radius: 50px;
+    border: 3px solid rgba(177, 94, 192, 1);
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    max-width: 100%;
+    min-width: 140px;
+    padding: 10px;
+    opacity: 0.8;
+    margin-top: 16px;
+}
+
+.leave:hover {
+    color: white;
+    border: 3px solid white;;
+    box-shadow: white; 0 15px 30px 5px;
+}
 
